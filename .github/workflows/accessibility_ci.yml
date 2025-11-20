@@ -1,0 +1,109 @@
+name: Accessibility CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  accessibility-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.9.2'
+        channel: 'stable'
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Run accessibility tests
+      run: flutter test test/accessibility_test.dart --coverage
+
+    - name: Run accessibility audit
+      run: |
+        flutter test --machine | dart run lib/utils/accessibility_ci_integration.dart
+      env:
+        ACCESSIBILITY_BASELINE_PATH: accessibility_baseline.json
+        ACCESSIBILITY_MIN_SCORE: 85.0
+        ACCESSIBILITY_MAX_CRITICAL: 0
+        ACCESSIBILITY_MAX_MAJOR: 5
+
+    - name: Upload accessibility report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: accessibility-report
+        path: |
+          accessibility_ci_report.json
+          accessibility_ci_summary.txt
+          coverage/lcov.info
+
+    - name: Comment PR with accessibility results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const summary = fs.readFileSync('accessibility_ci_summary.txt', 'utf8');
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## Accessibility Audit Results\n\n${summary}`
+          });
+
+    - name: Fail on accessibility violations
+      if: failure()
+      run: |
+        echo "Accessibility audit failed. Check the reports above for details."
+        exit 1
+
+  accessibility-monitoring:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.9.2'
+        channel: 'stable'
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Update accessibility baseline
+      run: |
+        flutter test test/accessibility_test.dart
+        # Save current results as new baseline
+        cp accessibility_ci_report.json accessibility_baseline.json
+
+    - name: Generate compliance report
+      run: |
+        dart run lib/utils/accessibility_monitoring.dart --generate-report > compliance_report.md
+
+    - name: Upload compliance report
+      uses: actions/upload-artifact@v4
+      with:
+        name: compliance-report
+        path: compliance_report.md
+
+    - name: Send monitoring alert
+      if: failure()
+      run: |
+        echo "Accessibility monitoring detected issues"
+        # In a real implementation, you might send notifications to Slack, email, etc.
