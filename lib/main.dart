@@ -50,6 +50,7 @@ import 'package:nlaabo/services/secure_credential_service.dart';
 import 'package:nlaabo/utils/app_initialization_utils.dart';
 import 'package:nlaabo/config/app_config.dart';
 import 'package:nlaabo/config/build_config.dart';
+import 'package:nlaabo/config/web_config.dart';
 
 enum AppInitializationError {
   configurationMissing,
@@ -749,6 +750,11 @@ class _NlaaboBootstrapState extends State<NlaaboBootstrap> {
 
       // Initialize AppConfig
       await AppConfig.initialize(environment: BuildConfig.environment);
+
+      // Initialize web-specific configuration if running on web
+      if (kIsWeb) {
+        await WebConfig.initialize();
+      }
 
       // Initialize error reporting service
       final errorReportingService = ErrorReportingService();

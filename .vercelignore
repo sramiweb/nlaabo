@@ -1,0 +1,86 @@
+# Development files
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files (will be set in Vercel dashboard)
+.env
+.env.local
+.env.production
+
+# Test files
+test/
+coverage/
+
+# Documentation
+*.md
+docs/
+
+# Native builds
+android/
+ios/
+linux/
+macos/
+windows/
+
+# Python virtual environment
+env/
+venv/
+
+# Temporary files
+temp/
+tmp/
+.temp/
+.tmp/
+
+# Cache directories
+.mypy_cache/
+__pycache__/
+
+# Build artifacts
+*.apk
+*.ipa
+*.deb
+*.dmg
+*.exe
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Large media files (should be optimized)
+*.mov
+*.mp4
+*.avi
+
+# Supabase local development
+supabase/.temp/
+supabase/functions/_shared/

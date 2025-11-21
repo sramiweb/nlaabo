@@ -1,56 +1,211 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
-
+  
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <!-- Viewport meta tag removed - Flutter Web manages viewport configuration automatically -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <!-- SEO Meta Tags -->
+  <title>Nlaabo - Football Match Organizer</title>
+  <meta name="description" content="Connect with the football community, create teams, and organize matches. Join Nlaabo today!">
+  <meta name="keywords" content="football, soccer, team, match, organizer, sports, community">
+  <meta name="author" content="Nlaabo">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Nlaabo - Football Match Organizer">
+  <meta property="og:description" content="Connect with the football community, create teams, and organize matches">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:url" content="https://nlaabo.vercel.app">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nlaabo - Football Match Organizer">
+  <meta name="twitter:description" content="Connect with the football community, create teams, and organize matches">
+  <meta name="twitter:image" content="logo.png">
+  
+  <!-- Theme and App Meta Tags -->
   <meta name="theme-color" content="#1e4d3d">
-  <meta name="description" content="Nlaabo - Connect with the football community, create teams, and organize matches">
-
-  <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="nlaabo">
-  <link rel="apple-touch-icon" href="logo.png">
-  <link rel="apple-touch-icon" sizes="192x192" href="logo.png">
-  <link rel="apple-touch-icon" sizes="512x512" href="logo.png">
-
-  <!-- Preload critical Flutter resources -->
-  <link rel="preload" href="flutter_bootstrap.js" as="script">
-
-  <!-- DNS prefetch for Google Fonts -->
-  <link rel="dns-prefetch" href="//fonts.googleapis.com">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="logo.png"/>
-  <link rel="shortcut icon" type="image/png" href="logo.png"/>
-
-  <title>nlaabo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Nlaabo">
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="icons/Icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="icons/Icon-512.png">
+  
+  <!-- Manifest -->
   <link rel="manifest" href="manifest.json">
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="flutter_bootstrap.js" as="script">
+  
+  <!-- DNS prefetch for external resources -->
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//feaqayqeruinhmkbdlid.supabase.co">
+  <link rel="dns-prefetch" href="//unpkg.com">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://feaqayqeruinhmkbdlid.supabase.co">
+  
+  <!-- Loading styles -->
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #1e4d3d;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+    }
+    
+    .loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1e4d3d 0%, #2d5a47 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    
+    .loading-logo {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 30px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .loading-text {
+      color: white;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    .loading-progress {
+      margin-top: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    /* Critical CSS for initial render */
+    flt-glass-pane * {
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div id="loading" class="loading-container">
+    <img src="logo.png" alt="Nlaabo Logo" class="loading-logo">
+    <div class="loading-text">Nlaabo</div>
+    <div class="loading-spinner"></div>
+    <div id="loading-progress" class="loading-progress">Loading...</div>
+  </div>
+
+  <!-- Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('sw.js');
+        navigator.serviceWorker.register('flutter_service_worker.js?v=' + Date.now())
+          .then(function(registration) {
+            console.log('ServiceWorker registration successful');
+          })
+          .catch(function(error) {
+            console.log('ServiceWorker registration failed: ', error);
+          });
       });
     }
   </script>
+
+  <!-- Flutter Configuration -->
+  <script>
+    window.flutterConfiguration = {
+      assetBase: "/",
+      canvasKitBaseUrl: "https://unpkg.com/canvaskit-wasm@0.38.0/bin/",
+    };
+    
+    // Loading progress updates
+    let loadingSteps = [
+      'Initializing...',
+      'Loading resources...',
+      'Starting application...',
+      'Almost ready...'
+    ];
+    let currentStep = 0;
+    
+    function updateLoadingProgress() {
+      const progressElement = document.getElementById('loading-progress');
+      if (progressElement && currentStep < loadingSteps.length) {
+        progressElement.textContent = loadingSteps[currentStep];
+        currentStep++;
+      }
+    }
+    
+    // Update progress every 1.5 seconds
+    const progressInterval = setInterval(updateLoadingProgress, 1500);
+    
+    // Hide loading screen when Flutter is ready
+    window.addEventListener('flutter-first-frame', function() {
+      clearInterval(progressInterval);
+      const loading = document.getElementById('loading');
+      if (loading) {
+        loading.classList.add('fade-out');
+        setTimeout(() => loading.remove(), 500);
+      }
+    });
+    
+    // Fallback: hide loading after 15 seconds
+    setTimeout(function() {
+      clearInterval(progressInterval);
+      const loading = document.getElementById('loading');
+      if (loading) {
+        loading.classList.add('fade-out');
+        setTimeout(() => loading.remove(), 500);
+      }
+    }, 15000);
+  </script>
+
+  <!-- Flutter Bootstrap -->
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
