@@ -56,3 +56,4 @@ android/*.jks
 android/*.keystore
 ios/*.p12
 ios/*.mobileprovision
+.vercel
