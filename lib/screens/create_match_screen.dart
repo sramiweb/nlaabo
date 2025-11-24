@@ -676,7 +676,7 @@ class _CreateMatchScreenState extends State<CreateMatchScreen> {
                                   SizedBox(height: ResponsiveConstants.getResponsiveSpacing(context, 'sm2')),
 
                                   Text(
-                                    'Match Type',
+                                    'Match Recurrence',
                                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                       fontWeight: FontWeight.w600,
                                       color: context.colors.textPrimary,

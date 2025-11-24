@@ -43,6 +43,20 @@ class NavigationProvider with ChangeNotifier {
       route: '/teams',
     ),
     NavigationItem(
+      id: 'match_history',
+      labelKey: 'match_history',
+      mobileLabelKey: 'match_history',
+      icon: Icons.history_outlined,
+      route: '/match-history',
+    ),
+    NavigationItem(
+      id: 'search',
+      labelKey: 'advanced_search',
+      mobileLabelKey: 'advanced_search',
+      icon: Icons.search_outlined,
+      route: '/search',
+    ),
+    NavigationItem(
       id: 'profile',
       labelKey: 'profile',
       icon: Icons.person_outlined,

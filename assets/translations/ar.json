@@ -436,5 +436,17 @@
     "min":  "دقيقة",
     "age_range_optional":  "الفئة العمرية (اختياري)",
     "min_age":  "الحد الأدنى للعمر",
-    "max_age":  "الحد الأقصى للعمر"
+    "max_age":  "الحد الأقصى للعمر",
+    "team_members":  "أعضاء الفريق",
+    "match_history":  "سجل المباريات",
+    "advanced_search":  "بحث متقدم",
+    "no_members_yet":  "لا يوجد أعضاء بعد",
+    "no_match_history":  "لا يوجد سجل مباريات",
+    "search_matches_teams":  "البحث عن المباريات أو الفرق...",
+    "past_matches":  "المباريات السابقة",
+    "filter_by_date":  "تصفية حسب التاريخ",
+    "search_type":  "نوع البحث",
+    "all_results":  "جميع النتائج",
+    "matches_only":  "المباريات فقط",
+    "teams_only":  "الفرق فقط"
 }

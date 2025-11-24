@@ -1,0 +1,2618 @@
+<testsuites id="" name="" tests="204" failures="26" skipped="170" errors="0" time="1123.6653299999998">
+<testsuite name="nlaabo_tests.spec.ts" timestamp="2025-11-23T23:06:35.487Z" hostname="chromium" tests="34" failures="26" skipped="0" time="987.506" errors="0">
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.1 - App loads successfully" classname="nlaabo_tests.spec.ts" time="15.214">
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.2 - Login page accessible" classname="nlaabo_tests.spec.ts" time="30.063">
+<failure message="nlaabo_tests.spec.ts:23:9 1.2 - Login page accessible" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:23:9 › Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.2 - Login page accessible 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      28 |         return text.includes('Login') || text.includes('Sign In') || text.includes('Email');
+      29 |       });
+    > 30 |       expect(hasLoginElements).toBeTruthy();
+         |                                ^
+      31 |     });
+      32 |
+      33 |     test('1.3 - Signup page accessible', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:30:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      28 |         return text.includes('Login') || text.includes('Sign In') || text.includes('Email');
+      29 |       });
+    > 30 |       expect(hasLoginElements).toBeTruthy();
+         |                                ^
+      31 |     });
+      32 |
+      33 |     test('1.3 - Signup page accessible', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:30:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fc0f7-1-2---Login-page-accessible-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.3 - Signup page accessible" classname="nlaabo_tests.spec.ts" time="31.337">
+<failure message="nlaabo_tests.spec.ts:33:9 1.3 - Signup page accessible" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:33:9 › Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.3 - Signup page accessible 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      38 |         return text.includes('Sign Up') || text.includes('Register') || text.includes('Create Account');
+      39 |       });
+    > 40 |       expect(hasSignupLink).toBeTruthy();
+         |                             ^
+      41 |     });
+      42 |
+      43 |     test('1.4 - Unauthenticated cannot access dashboard', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:40:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      38 |         return text.includes('Sign Up') || text.includes('Register') || text.includes('Create Account');
+      39 |       });
+    > 40 |       expect(hasSignupLink).toBeTruthy();
+         |                             ^
+      41 |     });
+      42 |
+      43 |     test('1.4 - Unauthenticated cannot access dashboard', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:40:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-49037--3---Signup-page-accessible-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.4 - Unauthenticated cannot access dashboard" classname="nlaabo_tests.spec.ts" time="30.798">
+<failure message="nlaabo_tests.spec.ts:43:9 1.4 - Unauthenticated cannot access dashboard" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:43:9 › Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.4 - Unauthenticated cannot access dashboard 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      48 |         return text.includes('Login') || text.includes('Sign In');
+      49 |       });
+    > 50 |       expect(isRedirected).toBeTruthy();
+         |                            ^
+      51 |     });
+      52 |   });
+      53 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:50:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      48 |         return text.includes('Login') || text.includes('Sign In');
+      49 |       });
+    > 50 |       expect(isRedirected).toBeTruthy();
+         |                            ^
+      51 |     });
+      52 |   });
+      53 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:50:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-75a53-ted-cannot-access-dashboard-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.1 - Login with valid credentials" classname="nlaabo_tests.spec.ts" time="15.977">
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.2 - Login with invalid email" classname="nlaabo_tests.spec.ts" time="32.79">
+<failure message="nlaabo_tests.spec.ts:87:9 2.2 - Login with invalid email" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:87:9 › Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.2 - Login with invalid email 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      113 |         return text.includes('Login') || text.includes('Email');
+      114 |       });
+    > 115 |       expect(stillOnLogin).toBeTruthy();
+          |                            ^
+      116 |     });
+      117 |
+      118 |     test('2.3 - Login with empty credentials', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:115:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      113 |         return text.includes('Login') || text.includes('Email');
+      114 |       });
+    > 115 |       expect(stillOnLogin).toBeTruthy();
+          |                            ^
+      116 |     });
+      117 |
+      118 |     test('2.3 - Login with empty credentials', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:115:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-ceb0c----Login-with-invalid-email-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.3 - Login with empty credentials" classname="nlaabo_tests.spec.ts" time="32.396">
+<failure message="nlaabo_tests.spec.ts:118:9 2.3 - Login with empty credentials" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:118:9 › Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.3 - Login with empty credentials 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      134 |         return text.includes('required') || text.includes('error') || text.includes('Error');
+      135 |       });
+    > 136 |       expect(hasError).toBeTruthy();
+          |                        ^
+      137 |     });
+      138 |
+      139 |     test('2.4 - Password reset link exists', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:136:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      134 |         return text.includes('required') || text.includes('error') || text.includes('Error');
+      135 |       });
+    > 136 |       expect(hasError).toBeTruthy();
+          |                        ^
+      137 |     });
+      138 |
+      139 |     test('2.4 - Password reset link exists', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:136:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-58d9b-ogin-with-empty-credentials-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.4 - Password reset link exists" classname="nlaabo_tests.spec.ts" time="30.161">
+<failure message="nlaabo_tests.spec.ts:139:9 2.4 - Password reset link exists" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:139:9 › Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.4 - Password reset link exists 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      150 |         return false;
+      151 |       });
+    > 152 |       expect(forgotPasswordLink).toBeTruthy();
+          |                                  ^
+      153 |     });
+      154 |   });
+      155 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:152:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      150 |         return false;
+      151 |       });
+    > 152 |       expect(forgotPasswordLink).toBeTruthy();
+          |                                  ^
+      153 |     });
+      154 |   });
+      155 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:152:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-86eeb--Password-reset-link-exists-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.1 - Dashboard loads after login" classname="nlaabo_tests.spec.ts" time="33.837">
+<failure message="nlaabo_tests.spec.ts:158:9 3.1 - Dashboard loads after login" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:158:9 › Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.1 - Dashboard loads after login 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      184 |         return text.includes('Match') || text.includes('Team') || text.includes('Player');
+      185 |       });
+    > 186 |       expect(hasDashboard).toBeTruthy();
+          |                            ^
+      187 |     });
+      188 |
+      189 |     test('3.2 - Match organization feature exists', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:186:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      184 |         return text.includes('Match') || text.includes('Team') || text.includes('Player');
+      185 |       });
+    > 186 |       expect(hasDashboard).toBeTruthy();
+          |                            ^
+      187 |     });
+      188 |
+      189 |     test('3.2 - Match organization feature exists', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:186:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-574ad-Dashboard-loads-after-login-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.2 - Match organization feature exists" classname="nlaabo_tests.spec.ts" time="32.961">
+<failure message="nlaabo_tests.spec.ts:189:9 3.2 - Match organization feature exists" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:189:9 › Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.2 - Match organization feature exists 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      215 |         return text.includes('Create Match') || text.includes('New Match') || text.includes('Match');
+      216 |       });
+    > 217 |       expect(hasMatchFeature).toBeTruthy();
+          |                               ^
+      218 |     });
+      219 |
+      220 |     test('3.3 - Team management feature exists', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:217:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      215 |         return text.includes('Create Match') || text.includes('New Match') || text.includes('Match');
+      216 |       });
+    > 217 |       expect(hasMatchFeature).toBeTruthy();
+          |                               ^
+      218 |     });
+      219 |
+      220 |     test('3.3 - Team management feature exists', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:217:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e984f-organization-feature-exists-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.3 - Team management feature exists" classname="nlaabo_tests.spec.ts" time="33.071">
+<failure message="nlaabo_tests.spec.ts:220:9 3.3 - Team management feature exists" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:220:9 › Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.3 - Team management feature exists 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      246 |         return text.includes('Team') || text.includes('Teams');
+      247 |       });
+    > 248 |       expect(hasTeamFeature).toBeTruthy();
+          |                              ^
+      249 |     });
+      250 |
+      251 |     test('3.4 - Player profile feature exists', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:248:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      246 |         return text.includes('Team') || text.includes('Teams');
+      247 |       });
+    > 248 |       expect(hasTeamFeature).toBeTruthy();
+          |                              ^
+      249 |     });
+      250 |
+      251 |     test('3.4 - Player profile feature exists', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:248:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-b1efa-m-management-feature-exists-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.4 - Player profile feature exists" classname="nlaabo_tests.spec.ts" time="33.343">
+<failure message="nlaabo_tests.spec.ts:251:9 3.4 - Player profile feature exists" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:251:9 › Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.4 - Player profile feature exists 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      277 |         return text.includes('Player') || text.includes('Profile');
+      278 |       });
+    > 279 |       expect(hasPlayerFeature).toBeTruthy();
+          |                                ^
+      280 |     });
+      281 |   });
+      282 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:279:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      277 |         return text.includes('Player') || text.includes('Profile');
+      278 |       });
+    > 279 |       expect(hasPlayerFeature).toBeTruthy();
+          |                                ^
+      280 |     });
+      281 |   });
+      282 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:279:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-abf19-ayer-profile-feature-exists-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.1 - Mobile 320px" classname="nlaabo_tests.spec.ts" time="29.097">
+<failure message="nlaabo_tests.spec.ts:285:9 4.1 - Mobile 320px" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:285:9 › Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.1 - Mobile 320px 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      288 |       await waitForFlutterApp(page);
+      289 |       const content = await page.evaluate(() => document.body.innerText);
+    > 290 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      291 |     });
+      292 |
+      293 |     test('4.2 - Mobile 480px', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:290:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      288 |       await waitForFlutterApp(page);
+      289 |       const content = await page.evaluate(() => document.body.innerText);
+    > 290 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      291 |     });
+      292 |
+      293 |     test('4.2 - Mobile 480px', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:290:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7f7f3-E-DESIGN-4-1---Mobile-320px-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.2 - Mobile 480px" classname="nlaabo_tests.spec.ts" time="28.902">
+<failure message="nlaabo_tests.spec.ts:293:9 4.2 - Mobile 480px" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:293:9 › Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.2 - Mobile 480px 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      296 |       await waitForFlutterApp(page);
+      297 |       const content = await page.evaluate(() => document.body.innerText);
+    > 298 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      299 |     });
+      300 |
+      301 |     test('4.3 - Tablet 768px', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:298:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      296 |       await waitForFlutterApp(page);
+      297 |       const content = await page.evaluate(() => document.body.innerText);
+    > 298 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      299 |     });
+      300 |
+      301 |     test('4.3 - Tablet 768px', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:298:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-e3ab4-E-DESIGN-4-2---Mobile-480px-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.3 - Tablet 768px" classname="nlaabo_tests.spec.ts" time="29.062">
+<failure message="nlaabo_tests.spec.ts:301:9 4.3 - Tablet 768px" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:301:9 › Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.3 - Tablet 768px 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      304 |       await waitForFlutterApp(page);
+      305 |       const content = await page.evaluate(() => document.body.innerText);
+    > 306 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      307 |     });
+      308 |
+      309 |     test('4.4 - Desktop 1024px', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:306:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      304 |       await waitForFlutterApp(page);
+      305 |       const content = await page.evaluate(() => document.body.innerText);
+    > 306 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      307 |     });
+      308 |
+      309 |     test('4.4 - Desktop 1024px', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:306:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fe4b7-E-DESIGN-4-3---Tablet-768px-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.4 - Desktop 1024px" classname="nlaabo_tests.spec.ts" time="29.295">
+<failure message="nlaabo_tests.spec.ts:309:9 4.4 - Desktop 1024px" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:309:9 › Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.4 - Desktop 1024px 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      312 |       await waitForFlutterApp(page);
+      313 |       const content = await page.evaluate(() => document.body.innerText);
+    > 314 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      315 |     });
+      316 |
+      317 |     test('4.5 - Large desktop 1920px', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:314:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      312 |       await waitForFlutterApp(page);
+      313 |       const content = await page.evaluate(() => document.body.innerText);
+    > 314 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      315 |     });
+      316 |
+      317 |     test('4.5 - Large desktop 1920px', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:314:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-764d4-DESIGN-4-4---Desktop-1024px-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.5 - Large desktop 1920px" classname="nlaabo_tests.spec.ts" time="29.595">
+<failure message="nlaabo_tests.spec.ts:317:9 4.5 - Large desktop 1920px" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:317:9 › Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.5 - Large desktop 1920px 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      320 |       await waitForFlutterApp(page);
+      321 |       const content = await page.evaluate(() => document.body.innerText);
+    > 322 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      323 |     });
+      324 |   });
+      325 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:322:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      320 |       await waitForFlutterApp(page);
+      321 |       const content = await page.evaluate(() => document.body.innerText);
+    > 322 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      323 |     });
+      324 |   });
+      325 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:322:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-169e0--4-5---Large-desktop-1920px-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.1 - Invalid route handling" classname="nlaabo_tests.spec.ts" time="28.773">
+<failure message="nlaabo_tests.spec.ts:328:9 5.1 - Invalid route handling" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:328:9 › Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.1 - Invalid route handling 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      330 |       await waitForFlutterApp(page);
+      331 |       const content = await page.evaluate(() => document.body.innerText);
+    > 332 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      333 |     });
+      334 |
+      335 |     test('5.2 - Rapid navigation', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:332:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      330 |       await waitForFlutterApp(page);
+      331 |       const content = await page.evaluate(() => document.body.innerText);
+    > 332 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      333 |     });
+      334 |
+      335 |     test('5.2 - Rapid navigation', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:332:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-fb6a2--1---Invalid-route-handling-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.2 - Rapid navigation" classname="nlaabo_tests.spec.ts" time="72.156">
+<failure message="nlaabo_tests.spec.ts:335:9 5.2 - Rapid navigation" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:335:9 › Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.2 - Rapid navigation 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+      - navigating to "http://configlens.ddns.net:5000/", waiting until "load"
+
+
+      338 |       
+      339 |       for (let i = 0; i < 5; i++) {
+    > 340 |         await page.goto(BASE_URL);
+          |                    ^
+      341 |         await page.waitForTimeout(100);
+      342 |       }
+      343 |       
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:340:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+      - navigating to "http://configlens.ddns.net:5000/", waiting until "load"
+
+
+      338 |       
+      339 |       for (let i = 0; i < 5; i++) {
+    > 340 |         await page.goto(BASE_URL);
+          |                    ^
+      341 |         await page.waitForTimeout(100);
+      342 |       }
+      343 |       
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:340:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-7993e-LING-5-2---Rapid-navigation-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.3 - Large form input" classname="nlaabo_tests.spec.ts" time="29.365">
+<failure message="nlaabo_tests.spec.ts:348:9 5.3 - Large form input" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:348:9 › Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.3 - Large form input 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      360 |       
+      361 |       const content = await page.evaluate(() => document.body.innerText);
+    > 362 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      363 |     });
+      364 |   });
+      365 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:362:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      360 |       
+      361 |       const content = await page.evaluate(() => document.body.innerText);
+    > 362 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      363 |     });
+      364 |   });
+      365 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:362:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-eedb4-LING-5-3---Large-form-input-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.1 - Keyboard navigation" classname="nlaabo_tests.spec.ts" time="29.016">
+<failure message="nlaabo_tests.spec.ts:368:9 6.1 - Keyboard navigation" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:368:9 › Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.1 - Keyboard navigation 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      374 |       
+      375 |       const content = await page.evaluate(() => document.body.innerText);
+    > 376 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      377 |     });
+      378 |
+      379 |     test('6.2 - Focus management', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:376:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      374 |       
+      375 |       const content = await page.evaluate(() => document.body.innerText);
+    > 376 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      377 |     });
+      378 |
+      379 |     test('6.2 - Focus management', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:376:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-a1be0-Y-6-1---Keyboard-navigation-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.2 - Focus management" classname="nlaabo_tests.spec.ts" time="13.487">
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.3 - Accessibility button" classname="nlaabo_tests.spec.ts" time="28.301">
+<failure message="nlaabo_tests.spec.ts:391:9 6.3 - Accessibility button" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:391:9 › Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.3 - Accessibility button 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      400 |       
+      401 |       const content = await page.evaluate(() => document.body.innerText);
+    > 402 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      403 |     });
+      404 |   });
+      405 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:402:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      400 |       
+      401 |       const content = await page.evaluate(() => document.body.innerText);
+    > 402 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      403 |     });
+      404 |   });
+      405 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:402:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-071cb--6-3---Accessibility-button-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.1 - Page load time" classname="nlaabo_tests.spec.ts" time="28.117">
+<failure message="nlaabo_tests.spec.ts:408:9 7.1 - Page load time" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:408:9 › Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.1 - Page load time 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 10000
+    Received:   12180
+
+      411 |       await waitForFlutterApp(page);
+      412 |       const loadTime = Date.now() - startTime;
+    > 413 |       expect(loadTime).toBeLessThan(10000);
+          |                        ^
+      414 |     });
+      415 |
+      416 |     test('7.2 - Navigation performance', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:413:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 10000
+    Received:   13735
+
+      411 |       await waitForFlutterApp(page);
+      412 |       const loadTime = Date.now() - startTime;
+    > 413 |       expect(loadTime).toBeLessThan(10000);
+          |                        ^
+      414 |     });
+      415 |
+      416 |     test('7.2 - Navigation performance', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:413:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-f69d3-RMANCE-7-1---Page-load-time-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.2 - Navigation performance" classname="nlaabo_tests.spec.ts" time="52.956">
+<failure message="nlaabo_tests.spec.ts:416:9 7.2 - Navigation performance" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:416:9 › Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.2 - Navigation performance 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 10000
+    Received:   12781
+
+      422 |       await waitForFlutterApp(page);
+      423 |       const reloadTime = Date.now() - startTime;
+    > 424 |       expect(reloadTime).toBeLessThan(10000);
+          |                          ^
+      425 |     });
+      426 |   });
+      427 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:424:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 10000
+    Received:   12376
+
+      422 |       await waitForFlutterApp(page);
+      423 |       const reloadTime = Date.now() - startTime;
+    > 424 |       expect(reloadTime).toBeLessThan(10000);
+          |                          ^
+      425 |     });
+      426 |   });
+      427 |
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:424:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-1d48b--2---Navigation-performance-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.1 - Email validation" classname="nlaabo_tests.spec.ts" time="13.846">
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.2 - Required field validation" classname="nlaabo_tests.spec.ts" time="14.529">
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.1 - XSS protection" classname="nlaabo_tests.spec.ts" time="14.302">
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.2 - Password not in source" classname="nlaabo_tests.spec.ts" time="13.996">
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.3 - Secure headers" classname="nlaabo_tests.spec.ts" time="9.611">
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.1 - Arabic support" classname="nlaabo_tests.spec.ts" time="28.517">
+<failure message="nlaabo_tests.spec.ts:498:9 10.1 - Arabic support" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:498:9 › Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.1 - Arabic support 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      500 |       await waitForFlutterApp(page);
+      501 |       const content = await page.evaluate(() => document.body.innerText);
+    > 502 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      503 |     });
+      504 |
+      505 |     test('10.2 - English support', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:502:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      500 |       await waitForFlutterApp(page);
+      501 |       const content = await page.evaluate(() => document.body.innerText);
+    > 502 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      503 |     });
+      504 |
+      505 |     test('10.2 - English support', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:502:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-25733-GUAGE-10-1---Arabic-support-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.2 - English support" classname="nlaabo_tests.spec.ts" time="29.281">
+<failure message="nlaabo_tests.spec.ts:505:9 10.2 - English support" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:505:9 › Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.2 - English support 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      507 |       await waitForFlutterApp(page);
+      508 |       const content = await page.evaluate(() => document.body.innerText);
+    > 509 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      510 |     });
+      511 |
+      512 |     test('10.3 - French support', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:509:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      507 |       await waitForFlutterApp(page);
+      508 |       const content = await page.evaluate(() => document.body.innerText);
+    > 509 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      510 |     });
+      511 |
+      512 |     test('10.3 - French support', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:509:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3187c-UAGE-10-2---English-support-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.3 - French support" classname="nlaabo_tests.spec.ts" time="29.079">
+<failure message="nlaabo_tests.spec.ts:512:9 10.3 - French support" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:512:9 › Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.3 - French support 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      514 |       await waitForFlutterApp(page);
+      515 |       const content = await page.evaluate(() => document.body.innerText);
+    > 516 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      517 |     });
+      518 |
+      519 |     test('10.4 - Language persistence', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:516:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      514 |       await waitForFlutterApp(page);
+      515 |       const content = await page.evaluate(() => document.body.innerText);
+    > 516 |       expect(content.length).toBeGreaterThan(0);
+          |                              ^
+      517 |     });
+      518 |
+      519 |     test('10.4 - Language persistence', async ({ page }) => {
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:516:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-3b143-GUAGE-10-3---French-support-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.4 - Language persistence" classname="nlaabo_tests.spec.ts" time="54.275">
+<failure message="nlaabo_tests.spec.ts:519:9 10.4 - Language persistence" type="FAILURE">
+<![CDATA[  [chromium] › nlaabo_tests.spec.ts:519:9 › Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.4 - Language persistence 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      525 |       await waitForFlutterApp(page);
+      526 |       const reloadedContent = await page.evaluate(() => document.body.innerText);
+    > 527 |       expect(reloadedContent.length).toBeGreaterThan(0);
+          |                                      ^
+      528 |     });
+      529 |   });
+      530 | });
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:527:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      525 |       await waitForFlutterApp(page);
+      526 |       const reloadedContent = await page.evaluate(() => document.body.innerText);
+    > 527 |       expect(reloadedContent.length).toBeGreaterThan(0);
+          |                                      ^
+      528 |     });
+      529 |   });
+      530 | });
+        at D:\Projets\Dev\nlaabo\nlaabo_tests.spec.ts:527:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium-retry1\test-failed-1.png is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium-retry1\video.webm is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium-retry1\error-context.md is missing
+Warning: attachment nlaabo_tests-Nlaabo---Comp-6702f-10-4---Language-persistence-chromium-retry1\trace.zip is missing]]>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="nlaabo_tests.spec.ts" timestamp="2025-11-23T23:06:35.487Z" hostname="firefox" tests="34" failures="0" skipped="34" time="11.782" errors="0">
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.1 - App loads successfully" classname="nlaabo_tests.spec.ts" time="11.782">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.2 - Login page accessible" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.3 - Signup page accessible" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.4 - Unauthenticated cannot access dashboard" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.1 - Login with valid credentials" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.2 - Login with invalid email" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.3 - Login with empty credentials" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.4 - Password reset link exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.1 - Dashboard loads after login" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.2 - Match organization feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.3 - Team management feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.4 - Player profile feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.1 - Mobile 320px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.2 - Mobile 480px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.3 - Tablet 768px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.4 - Desktop 1024px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.5 - Large desktop 1920px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.1 - Invalid route handling" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.2 - Rapid navigation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.3 - Large form input" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.1 - Keyboard navigation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.2 - Focus management" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.3 - Accessibility button" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.1 - Page load time" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.2 - Navigation performance" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.1 - Email validation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.2 - Required field validation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.1 - XSS protection" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.2 - Password not in source" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.3 - Secure headers" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.1 - Arabic support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.2 - English support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.3 - French support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.4 - Language persistence" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="nlaabo_tests.spec.ts" timestamp="2025-11-23T23:06:35.487Z" hostname="webkit" tests="34" failures="0" skipped="34" time="0" errors="0">
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.1 - App loads successfully" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.2 - Login page accessible" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.3 - Signup page accessible" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.4 - Unauthenticated cannot access dashboard" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.1 - Login with valid credentials" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.2 - Login with invalid email" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.3 - Login with empty credentials" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.4 - Password reset link exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.1 - Dashboard loads after login" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.2 - Match organization feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.3 - Team management feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.4 - Player profile feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.1 - Mobile 320px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.2 - Mobile 480px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.3 - Tablet 768px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.4 - Desktop 1024px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.5 - Large desktop 1920px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.1 - Invalid route handling" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.2 - Rapid navigation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.3 - Large form input" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.1 - Keyboard navigation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.2 - Focus management" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.3 - Accessibility button" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.1 - Page load time" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.2 - Navigation performance" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.1 - Email validation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.2 - Required field validation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.1 - XSS protection" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.2 - Password not in source" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.3 - Secure headers" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.1 - Arabic support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.2 - English support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.3 - French support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.4 - Language persistence" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="nlaabo_tests.spec.ts" timestamp="2025-11-23T23:06:35.487Z" hostname="Mobile Chrome" tests="34" failures="0" skipped="34" time="0" errors="0">
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.1 - App loads successfully" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.2 - Login page accessible" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.3 - Signup page accessible" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.4 - Unauthenticated cannot access dashboard" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.1 - Login with valid credentials" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.2 - Login with invalid email" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.3 - Login with empty credentials" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.4 - Password reset link exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.1 - Dashboard loads after login" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.2 - Match organization feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.3 - Team management feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.4 - Player profile feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.1 - Mobile 320px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.2 - Mobile 480px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.3 - Tablet 768px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.4 - Desktop 1024px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.5 - Large desktop 1920px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.1 - Invalid route handling" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.2 - Rapid navigation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.3 - Large form input" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.1 - Keyboard navigation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.2 - Focus management" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.3 - Accessibility button" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.1 - Page load time" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.2 - Navigation performance" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.1 - Email validation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.2 - Required field validation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.1 - XSS protection" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.2 - Password not in source" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.3 - Secure headers" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.1 - Arabic support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.2 - English support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.3 - French support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.4 - Language persistence" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="nlaabo_tests.spec.ts" timestamp="2025-11-23T23:06:35.487Z" hostname="Mobile Safari" tests="34" failures="0" skipped="34" time="0" errors="0">
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.1 - App loads successfully" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.2 - Login page accessible" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.3 - Signup page accessible" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.4 - Unauthenticated cannot access dashboard" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.1 - Login with valid credentials" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.2 - Login with invalid email" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.3 - Login with empty credentials" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.4 - Password reset link exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.1 - Dashboard loads after login" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.2 - Match organization feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.3 - Team management feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.4 - Player profile feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.1 - Mobile 320px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.2 - Mobile 480px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.3 - Tablet 768px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.4 - Desktop 1024px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.5 - Large desktop 1920px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.1 - Invalid route handling" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.2 - Rapid navigation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.3 - Large form input" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.1 - Keyboard navigation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.2 - Focus management" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.3 - Accessibility button" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.1 - Page load time" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.2 - Navigation performance" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.1 - Email validation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.2 - Required field validation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.1 - XSS protection" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.2 - Password not in source" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.3 - Secure headers" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.1 - Arabic support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.2 - English support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.3 - French support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.4 - Language persistence" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="nlaabo_tests.spec.ts" timestamp="2025-11-23T23:06:35.487Z" hostname="iPad" tests="34" failures="0" skipped="34" time="0" errors="0">
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.1 - App loads successfully" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.2 - Login page accessible" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.3 - Signup page accessible" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 1. UNAUTHENTICATED FLOWS › 1.4 - Unauthenticated cannot access dashboard" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.1 - Login with valid credentials" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.2 - Login with invalid email" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.3 - Login with empty credentials" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 2. AUTHENTICATION FLOWS › 2.4 - Password reset link exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.1 - Dashboard loads after login" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.2 - Match organization feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.3 - Team management feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 3. AUTHENTICATED FLOWS › 3.4 - Player profile feature exists" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.1 - Mobile 320px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.2 - Mobile 480px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.3 - Tablet 768px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.4 - Desktop 1024px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 4. RESPONSIVE DESIGN › 4.5 - Large desktop 1920px" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.1 - Invalid route handling" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.2 - Rapid navigation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 5. ERROR HANDLING › 5.3 - Large form input" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.1 - Keyboard navigation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.2 - Focus management" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 6. ACCESSIBILITY › 6.3 - Accessibility button" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.1 - Page load time" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 7. PERFORMANCE › 7.2 - Navigation performance" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.1 - Email validation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 8. DATA VALIDATION › 8.2 - Required field validation" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.1 - XSS protection" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.2 - Password not in source" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 9. SECURITY › 9.3 - Secure headers" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.1 - Arabic support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.2 - English support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.3 - French support" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Nlaabo - Comprehensive Tests › 10. MULTI-LANGUAGE › 10.4 - Language persistence" classname="nlaabo_tests.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

@@ -436,5 +436,20 @@
     "min":  "min",
     "age_range_optional":  "Age Range (Optional)",
     "min_age":  "Min Age",
-    "max_age":  "Max Age"
+    "max_age":  "Max Age",
+    "errorLoadingRequests":  "Failed to load match requests",
+    "errorAcceptingRequest":  "Failed to accept match request",
+    "errorRejectingRequest":  "Failed to reject match request",
+    "team_members":  "Team Members",
+    "match_history":  "Match History",
+    "advanced_search":  "Advanced Search",
+    "no_members_yet":  "No members yet",
+    "no_match_history":  "No match history",
+    "search_matches_teams":  "Search matches or teams...",
+    "past_matches":  "Past Matches",
+    "filter_by_date":  "Filter by date",
+    "search_type":  "Search Type",
+    "all_results":  "All Results",
+    "matches_only":  "Matches Only",
+    "teams_only":  "Teams Only"
 }

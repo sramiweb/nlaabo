@@ -37,6 +37,10 @@ import 'package:nlaabo/screens/forgot_password_screen.dart';
 import 'package:nlaabo/screens/forgot_password_confirmation_screen.dart';
 import 'package:nlaabo/screens/reset_password_screen.dart';
 import 'package:nlaabo/screens/my_matches_screen.dart';
+import 'package:nlaabo/screens/match_requests_screen.dart';
+import 'package:nlaabo/screens/team_members_management_screen.dart';
+import 'package:nlaabo/screens/match_history_screen.dart';
+import 'package:nlaabo/screens/advanced_search_screen.dart';
 import 'package:nlaabo/screens/onboarding_screen.dart';
 import 'package:nlaabo/services/onboarding_service.dart';
 import 'package:nlaabo/widgets/main_layout.dart';
@@ -416,6 +420,104 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/match-requests',
+      builder: (context, state) => const MainLayout(child: MatchRequestsScreen()),
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: const MainLayout(child: MatchRequestsScreen()),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return PageTransitions.slideFadeTransition(
+            context: context,
+            animation: animation,
+            child: child,
+          );
+        },
+      ),
+    ),
+    GoRoute(
+      path: '/team/:id/members',
+      builder: (context, state) {
+        final teamId = state.pathParameters['id'];
+        if (teamId == null || teamId.isEmpty) {
+          return MainLayout(
+            child: Scaffold(
+              body: const Center(child: Text('Invalid team ID')),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () => context.go('/teams'),
+                child: const DirectionalIcon(icon: Icons.arrow_back),
+              ),
+            ),
+          );
+        }
+        return MainLayout(child: TeamMembersManagementScreen(teamId: teamId));
+      },
+      pageBuilder: (context, state) {
+        final teamId = state.pathParameters['id'];
+        if (teamId == null || teamId.isEmpty) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: MainLayout(
+              child: Scaffold(
+                body: const Center(child: Text('Invalid team ID')),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () => context.go('/teams'),
+                  child: const DirectionalIcon(icon: Icons.arrow_back),
+                ),
+              ),
+            ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return PageTransitions.slideFadeTransition(
+                context: context,
+                animation: animation,
+                child: child,
+              );
+            },
+          );
+        }
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: MainLayout(child: TeamMembersManagementScreen(teamId: teamId)),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return PageTransitions.slideFadeTransition(
+              context: context,
+              animation: animation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/match-history',
+      builder: (context, state) => const MainLayout(child: MatchHistoryScreen()),
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: const MainLayout(child: MatchHistoryScreen()),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return PageTransitions.slideFadeTransition(
+            context: context,
+            animation: animation,
+            child: child,
+          );
+        },
+      ),
+    ),
+    GoRoute(
+      path: '/search',
+      builder: (context, state) => const MainLayout(child: AdvancedSearchScreen()),
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: const MainLayout(child: AdvancedSearchScreen()),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return PageTransitions.slideFadeTransition(
+            context: context,
+            animation: animation,
+            child: child,
+          );
+        },
+      ),
+    ),
+    GoRoute(
       path: '/match/:id',
       builder: (context, state) {
         final matchId = state.pathParameters['id'];
@@ -599,7 +701,10 @@ bool _isValidRoute(String path) {
    '/my-matches',
    '/admin',
    '/settings',
-   '/notifications'
+   '/notifications',
+   '/match-requests',
+   '/match-history',
+   '/search'
  ];
  return validRoutes.contains(path) ||
         path.startsWith('/match/') ||

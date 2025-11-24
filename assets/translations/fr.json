@@ -320,5 +320,17 @@
     "select_team_2": "Sélectionner l'équipe 2",
     "team_1_required": "Veuillez sélectionner l'équipe 1",
     "team_2_required": "Veuillez sélectionner l'équipe 2",
-    "teams_must_be_different": "L'équipe 1 et l'équipe 2 doivent être différentes"
+    "teams_must_be_different": "L'équipe 1 et l'équipe 2 doivent être différentes",
+    "team_members": "Membres de l'équipe",
+    "match_history": "Historique des matchs",
+    "advanced_search": "Recherche avancée",
+    "no_members_yet": "Pas encore de membres",
+    "no_match_history": "Pas d'historique de matchs",
+    "search_matches_teams": "Rechercher des matchs ou des équipes...",
+    "past_matches": "Matchs passés",
+    "filter_by_date": "Filtrer par date",
+    "search_type": "Type de recherche",
+    "all_results": "Tous les résultats",
+    "matches_only": "Matchs uniquement",
+    "teams_only": "Équipes uniquement"
 }
