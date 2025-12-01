@@ -5,16 +5,14 @@ import '../models/team.dart' as team_models;
 import '../models/user.dart' as app_user;
 import '../repositories/team_repository.dart';
 import '../services/api_service.dart';
+import 'base_provider_mixin.dart';
 
-class TeamProvider with ChangeNotifier {
+class TeamProvider with ChangeNotifier, BaseProviderMixin {
   final TeamRepository _teamRepository;
   final ApiService _apiService;
 
   List<Team> _teams = [];
   List<Team> _userTeams = [];
-  bool _isLoading = false;
-  String? _error;
-  bool _disposed = false;
 
   TeamProvider(this._teamRepository, this._apiService) {
     _initializeRealtimeUpdates();
@@ -22,111 +20,43 @@ class TeamProvider with ChangeNotifier {
 
   List<Team> get teams => _teams;
   List<Team> get userTeams => _userTeams;
-  bool get isLoading => _isLoading;
-  String? get error => _error;
 
   void _initializeRealtimeUpdates() {
-    // Listen to all teams changes
     _apiService.teamsStream.listen(
       (teams) {
-        if (!_disposed) {
+        if (!disposed) {
           _teams = teams;
-          _isLoading = false;
-          _error = null;
+          clearError();
           notifyListeners();
         }
       },
       onError: (error) {
-        if (!_disposed) {
-          _error = error.toString();
-          _isLoading = false;
-          notifyListeners();
-        }
+        handleStreamError(error, loadTeams);
       },
-    ).onDone(() {
-      if (!_disposed) {
-        _error = 'Connection lost. Attempting to reconnect...';
-        notifyListeners();
-        Future.delayed(const Duration(seconds: 3), () {
-          if (!_disposed && _teams.isEmpty) {
-            loadTeams();
-          }
-        });
-      }
-    });
+    );
 
-    // Listen to user-specific teams changes
     _apiService.userTeamsStream.listen(
       (userTeams) {
-        if (!_disposed) {
+        if (!disposed) {
           _userTeams = userTeams;
-          _isLoading = false;
-          _error = null;
+          clearError();
           notifyListeners();
         }
       },
       onError: (error) {
-        if (!_disposed) {
-          _error = error.toString();
-          _isLoading = false;
-          notifyListeners();
-        }
+        handleStreamError(error, loadUserTeams);
       },
-    ).onDone(() {
-      if (!_disposed) {
-        _error = 'Connection lost. Attempting to reconnect...';
-        notifyListeners();
-        Future.delayed(const Duration(seconds: 3), () {
-          if (!_disposed && _userTeams.isEmpty) {
-            loadUserTeams();
-          }
-        });
-      }
-    });
+    );
   }
 
   Future<void> loadTeams() async {
-    if (_disposed) return;
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
-    try {
-      final teams = await _teamRepository.getAllTeams();
-      if (_disposed) return;
-      _teams = teams;
-      _error = null;
-    } catch (e) {
-      if (_disposed) return;
-      _error = e.toString();
-    } finally {
-      if (!_disposed) {
-        _isLoading = false;
-        notifyListeners();
-      }
-    }
+    _teams = await executeAsync(() => _teamRepository.getAllTeams());
+    if (!disposed) notifyListeners();
   }
 
   Future<void> loadUserTeams() async {
-    if (_disposed) return;
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
-    try {
-      final userTeams = await _teamRepository.getUserTeams();
-      if (_disposed) return;
-      _userTeams = userTeams;
-      _error = null;
-    } catch (e) {
-      if (_disposed) return;
-      _error = e.toString();
-    } finally {
-      if (!_disposed) {
-        _isLoading = false;
-        notifyListeners();
-      }
-    }
+    _userTeams = await executeAsync(() => _teamRepository.getUserTeams());
+    if (!disposed) notifyListeners();
   }
 
   Future<void> createTeam(
@@ -137,36 +67,26 @@ class TeamProvider with ChangeNotifier {
     String? logo,
     bool? isRecruiting,
   }) async {
-    _isLoading = true;
-    notifyListeners();
-
-    try {
-      await _teamRepository.createTeam(
+    await executeAsync(
+      () => _teamRepository.createTeam(
         name,
         location: location,
         numberOfPlayers: numberOfPlayers,
         description: description,
         logo: logo,
         isRecruiting: isRecruiting,
-      );
-      // Real-time updates will handle the UI refresh
-    } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-      rethrow;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+      ),
+    );
+    await loadUserTeams();
   }
 
   Future<void> toggleTeamRecruiting(String teamId) async {
     try {
       await _teamRepository.toggleTeamRecruiting(teamId);
-      // Real-time updates will handle the UI refresh
+      await loadTeams();
+      await loadUserTeams();
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -174,10 +94,10 @@ class TeamProvider with ChangeNotifier {
   Future<void> deleteTeam(String teamId, {String? reason}) async {
     try {
       await _teamRepository.deleteTeam(teamId, reason: reason);
-      // Real-time updates will handle the UI refresh
+      await loadTeams();
+      await loadUserTeams();
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -186,8 +106,7 @@ class TeamProvider with ChangeNotifier {
     try {
       return await _teamRepository.searchTeams(query);
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -196,8 +115,7 @@ class TeamProvider with ChangeNotifier {
     try {
       return await _teamRepository.getCities();
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -206,8 +124,7 @@ class TeamProvider with ChangeNotifier {
     try {
       return await _teamRepository.getTeam(teamId);
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -216,8 +133,7 @@ class TeamProvider with ChangeNotifier {
     try {
       return await _teamRepository.getTeamMembers(teamId);
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -226,8 +142,7 @@ class TeamProvider with ChangeNotifier {
     try {
       return await _teamRepository.getTeamJoinRequests(teamId);
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -239,8 +154,7 @@ class TeamProvider with ChangeNotifier {
     try {
       return await _teamRepository.createJoinRequest(teamId, message: message);
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -253,8 +167,7 @@ class TeamProvider with ChangeNotifier {
     try {
       return await _teamRepository.updateJoinRequestStatus(teamId, requestId, status);
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -263,8 +176,7 @@ class TeamProvider with ChangeNotifier {
     try {
       return await _teamRepository.getMyJoinRequests();
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -274,8 +186,7 @@ class TeamProvider with ChangeNotifier {
       await _teamRepository.cancelJoinRequest(teamId, requestId);
       // Real-time updates will handle the UI refresh
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
@@ -285,23 +196,10 @@ class TeamProvider with ChangeNotifier {
       await _teamRepository.leaveTeam(teamId);
       // Real-time updates will handle the UI refresh
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
+      setError(e.toString());
       rethrow;
     }
   }
 
-  void clearError() {
-    _error = null;
-    notifyListeners();
-  }
 
-  @override
-  void dispose() {
-    _disposed = true;
-    // Clean up real-time subscriptions to prevent memory leaks
-    _apiService.teamsStream.drain();
-    _apiService.userTeamsStream.drain();
-    super.dispose();
-  }
 }

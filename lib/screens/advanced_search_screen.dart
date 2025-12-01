@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../models/match.dart';
 import '../models/team.dart';
 import '../services/api_service.dart';
+import '../services/localization_service.dart';
 import '../widgets/directional_icon.dart';
 
 class AdvancedSearchScreen extends StatefulWidget {
@@ -58,7 +59,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Advanced Search'),
+        title: Text(LocalizationService().translate('advanced_search')),
         leading: IconButton(
           icon: const DirectionalIcon(icon: Icons.arrow_back),
           onPressed: () => context.pop(),
@@ -73,7 +74,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                 TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'Search matches or teams...',
+                    hintText: LocalizationService().translate('search_matches_teams'),
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: _searchController.text.isNotEmpty
                         ? IconButton(
@@ -97,10 +98,10 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                   children: [
                     Expanded(
                       child: SegmentedButton<String>(
-                        segments: const [
-                          ButtonSegment(value: 'all', label: Text('All')),
-                          ButtonSegment(value: 'matches', label: Text('Matches')),
-                          ButtonSegment(value: 'teams', label: Text('Teams')),
+                        segments: [
+                          ButtonSegment(value: 'all', label: Text(LocalizationService().translate('all_results'))),
+                          ButtonSegment(value: 'matches', label: Text(LocalizationService().translate('matches_only'))),
+                          ButtonSegment(value: 'teams', label: Text(LocalizationService().translate('teams_only'))),
                         ],
                         selected: {_searchType},
                         onSelectionChanged: (value) {
@@ -120,7 +121,9 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                 : _matchResults.isEmpty && _teamResults.isEmpty
                     ? Center(
                         child: Text(
-                          _searchController.text.isEmpty ? 'Enter search term' : 'No results found',
+                          _searchController.text.isEmpty 
+                            ? LocalizationService().translate('search_hint')
+                            : LocalizationService().translate('no_results_found'),
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       )
@@ -131,7 +134,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                             if (_matchResults.isNotEmpty) ...[
                               Padding(
                                 padding: const EdgeInsets.all(16),
-                                child: Text('Matches', style: Theme.of(context).textTheme.titleMedium),
+                                child: Text(LocalizationService().translate('matches'), style: Theme.of(context).textTheme.titleMedium),
                               ),
                               ..._matchResults.map((match) => ListTile(
                                 title: Text('${match.team1Name} vs ${match.team2Name}'),
@@ -142,7 +145,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                             if (_teamResults.isNotEmpty) ...[
                               Padding(
                                 padding: const EdgeInsets.all(16),
-                                child: Text('Teams', style: Theme.of(context).textTheme.titleMedium),
+                                child: Text(LocalizationService().translate('teams'), style: Theme.of(context).textTheme.titleMedium),
                               ),
                               ..._teamResults.map((team) => ListTile(
                                 title: Text(team.name),

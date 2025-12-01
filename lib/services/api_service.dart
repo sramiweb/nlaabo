@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:io';
+import '../utils/app_logger.dart';
+import '../utils/response_parser.dart';
 import 'error_handler.dart';
 import 'robust_supabase_client.dart';
 import '../models/user.dart' as app_user;
@@ -73,12 +75,12 @@ class ApiService {
           try {
             final teamId = json['team_id'] ?? json['team1_id'] ?? json['team_1_id'];
             if (teamId == null || teamId.toString().trim().isEmpty) {
-              debugPrint('Skipping match with missing team ID in stream: ${json['id']}');
+              logDebug('Skipping match with missing team ID in stream: ${json['id']}');
               continue;
             }
             matches.add(Match.fromJson(json));
           } catch (e) {
-            debugPrint('Failed to parse match data in stream: $e');
+            logError('Failed to parse match data in stream: $e');
             continue;
           }
         }
@@ -183,7 +185,7 @@ class ApiService {
      // Check authentication before setting up subscription
      final user = _supabase.auth.currentUser;
      if (user == null) {
-       debugPrint('Skipping real-time subscription setup for $channelName: user not authenticated');
+       logDebug('Skipping real-time subscription setup for $channelName: user not authenticated');
        return;
      }
 
@@ -209,11 +211,11 @@ class ApiService {
        channel.subscribe(
          (status, error) {
            if (status == RealtimeSubscribeStatus.subscribed) {
-             debugPrint('Successfully subscribed to $channelName');
+             logInfo('Successfully subscribed to $channelName');
            } else if (status == RealtimeSubscribeStatus.closed) {
              // Subscription closed, schedule removal to avoid concurrent modification
              Future.microtask(() => _activeSubscriptions.remove(channelName));
-             debugPrint('Subscription closed for $channelName');
+             logDebug('Subscription closed for $channelName');
            } else if (error != null) {
              ErrorHandler.logError(error, null, 'RealtimeSubscription_$channelName');
              // Only attempt to resubscribe if user is still authenticated
@@ -318,7 +320,7 @@ class ApiService {
     return ErrorHandler.withRetry(
       () async {
         try {
-          debugPrint('Starting signup process for email: $email');
+          logDebug('Starting signup process for email: $email');
 
           // Use Robust Supabase Client for signup with retry logic
           final authResponse = await RobustSupabaseClient.signUp(
@@ -333,7 +335,7 @@ class ApiService {
             },
           );
 
-          debugPrint('Auth signup completed. User created: ${authResponse.user != null}');
+          logDebug('Auth signup completed. User created: ${authResponse.user != null}');
 
           if (authResponse.user != null) {
             // Profile creation is now handled by database trigger
@@ -350,7 +352,7 @@ class ApiService {
                   .eq('id', authResponse.user!.id)
                   .single();
 
-              debugPrint('User profile confirmed in database');
+              logDebug('User profile confirmed in database');
 
               return {
                 'user': {
@@ -362,7 +364,7 @@ class ApiService {
               };
             } catch (profileError) {
               // Profile might not be created yet due to trigger delay
-              debugPrint('Profile not found immediately after signup (trigger might be processing): $profileError');
+              logWarning('Profile not found immediately after signup (trigger might be processing): $profileError');
 
               // Return success anyway since auth user was created
               return {
@@ -378,7 +380,7 @@ class ApiService {
             throw ValidationError('Failed to create account. Please try again.');
           }
         } on AuthException catch (e) {
-          debugPrint('AuthException during signup: ${e.message}');
+          logError('AuthException during signup: ${e.message}');
 
           // Enhanced error handling for different signup scenarios
           if (e.message.contains('already registered') ||
@@ -402,11 +404,11 @@ class ApiService {
                      e.message.contains('confirm your email')) {
             throw ValidationError('This email address needs to be confirmed first. Please check your email and confirm your account before signing up.');
           } else {
-            debugPrint('Unhandled AuthException: ${e.message}');
+            logError('Unhandled AuthException: ${e.message}');
             throw ValidationError('Signup failed: ${e.message}');
           }
         } on PostgrestException catch (e) {
-          debugPrint('PostgrestException during signup: ${e.message}');
+          logError('PostgrestException during signup: ${e.message}');
 
           // Handle database constraint violations
           if (e.message.contains('duplicate key') ||
@@ -419,7 +421,7 @@ class ApiService {
             throw DatabaseError('Database error during signup: ${e.message}');
           }
         } catch (e) {
-          debugPrint('Unexpected error during signup: $e');
+          logError('Unexpected error during signup: $e');
           if (e is ValidationError || e is DatabaseError || e is RateLimitError || e is ServiceUnavailableError) rethrow;
           throw GenericError('Signup failed: ${e.toString()}');
         }
@@ -447,14 +449,14 @@ class ApiService {
      return ErrorHandler.withRetry(
        () async {
          try {
-           debugPrint('Starting login process for email: $email');
+           logDebug('Starting login process for email: $email');
 
            final authResponse = await RobustSupabaseClient.signInWithPassword(
              email: sanitizedEmail,
              password: password,
            );
 
-           debugPrint('Auth login completed. User authenticated: ${authResponse.user != null}');
+           logDebug('Auth login completed. User authenticated: ${authResponse.user != null}');
 
            if (authResponse.user != null && authResponse.session != null) {
              // Try to get user profile from users table
@@ -465,7 +467,7 @@ class ApiService {
                    .eq('id', authResponse.user!.id)
                    .single();
 
-               debugPrint('User profile found in database');
+               logDebug('User profile found in database');
 
                return {
                  'user': app_user.User.fromJson(userProfile).toJson(),
@@ -475,7 +477,7 @@ class ApiService {
                };
              } catch (profileError) {
                // If profile doesn't exist, create it from auth user data
-               debugPrint('User profile not found, creating from auth data: $profileError');
+               logWarning('User profile not found, creating from auth data: $profileError');
 
                final userData = authResponse.user!.userMetadata ?? {};
                final newProfile = {
@@ -492,7 +494,7 @@ class ApiService {
 
                try {
                  await _supabase.from('users').insert(newProfile);
-                 debugPrint('User profile created successfully during login');
+                 logDebug('User profile created successfully during login');
 
                  return {
                    'user': app_user.User.fromJson(newProfile).toJson(),
@@ -502,7 +504,7 @@ class ApiService {
                  };
                } catch (insertError) {
                  // If insert fails due to RLS or other issues, return basic user data from auth
-                 debugPrint('Failed to create user profile during login: $insertError');
+                 logWarning('Failed to create user profile during login: $insertError');
 
                  // Return basic user data from auth (profile creation might be handled by trigger)
                  return {
@@ -522,7 +524,7 @@ class ApiService {
              throw AuthError('Invalid email or password');
            }
          } on AuthException catch (e) {
-           debugPrint('AuthException during login: ${e.message}');
+           logError('AuthException during login: ${e.message}');
 
            // Enhanced error handling for different login scenarios
            if (e.message.contains('Invalid login credentials') ||
@@ -543,11 +545,11 @@ class ApiService {
                       e.message.contains('signup disabled')) {
              throw ServiceUnavailableError('Account access is temporarily disabled. Please try again later.');
            } else {
-             debugPrint('Unhandled AuthException: ${e.message}');
+             logError('Unhandled AuthException: ${e.message}');
              throw ValidationError('Login failed: ${e.message}');
            }
          } on PostgrestException catch (e) {
-           debugPrint('PostgrestException during login: ${e.message}');
+           logError('PostgrestException during login: ${e.message}');
 
            // Handle database issues during profile access
            if (e.message.contains('duplicate key') ||
@@ -559,7 +561,7 @@ class ApiService {
              throw DatabaseError('Database error during login: ${e.message}');
            }
          } catch (e) {
-           debugPrint('Unexpected error during login: $e');
+           logError('Unexpected error during login: $e');
            if (e is AuthError || e is ValidationError || e is DatabaseError || e is RateLimitError || e is ServiceUnavailableError) rethrow;
            throw GenericError('Login failed: ${e.toString()}');
          }
@@ -686,13 +688,13 @@ class ApiService {
      final sanitizedPhone = phone != null ? InputSanitizer.sanitizePhone(phone) : null;
      final sanitizedLocation = location != null ? InputSanitizer.sanitizeTextField(location, maxLength: 100) : null;
      
-     debugPrint('ApiService.updateProfile called with parameters: name=$sanitizedName, position=$position, bio=$sanitizedBio, imageUrl=$imageUrl, gender=$gender, phone=$sanitizedPhone, age=$age, location=$sanitizedLocation, skillLevel=$skillLevel');
+     logDebug('updateProfile called with: name=$sanitizedName, position=$position, bio=$sanitizedBio, gender=$gender, phone=$sanitizedPhone, age=$age, location=$sanitizedLocation, skillLevel=$skillLevel');
 
      // Input validation with enhanced error messages
      if (sanitizedName != null) {
        final nameError = validateName(sanitizedName);
        if (nameError != null) {
-         debugPrint('Validation failed for name: $nameError');
+         logWarning('Validation failed for name: $nameError');
          throw ValidationError('Invalid name: $nameError');
        }
      }
@@ -709,7 +711,7 @@ class ApiService {
      if (age != null) {
        final ageError = validateAgeOptional(age.toString());
        if (ageError != null) {
-         debugPrint('Validation failed for age: $ageError');
+         logWarning('Validation failed for age: $ageError');
          throw ValidationError('Invalid age: $ageError');
        }
      }
@@ -717,7 +719,7 @@ class ApiService {
      if (location != null && location.isNotEmpty) {
        final locationError = validateLocation(location);
        if (locationError != null) {
-         debugPrint('Validation failed for location: $locationError');
+         logWarning('Validation failed for location: $locationError');
          throw ValidationError('Invalid location: $locationError');
        }
      }
@@ -726,7 +728,7 @@ class ApiService {
      if (imageUrl != null && imageUrl.isNotEmpty) {
        // Basic URL validation (can be enhanced with a proper URL validator if available)
        if (!Uri.tryParse(imageUrl)!.hasScheme) {
-         debugPrint('Validation failed for imageUrl: Invalid URL format');
+         logWarning('Validation failed for imageUrl: Invalid URL format');
          throw ValidationError('Invalid image URL format');
        }
      }
@@ -735,7 +737,7 @@ class ApiService {
        () async {
          final user = _supabase.auth.currentUser;
          if (user == null) {
-           debugPrint('No authenticated user found during profile update');
+           logError('No authenticated user found during profile update');
            throw AuthError('No authenticated user');
          }
 
@@ -750,7 +752,7 @@ class ApiService {
          if (sanitizedLocation != null) updates['location'] = sanitizedLocation;
          if (skillLevel != null) updates['skill_level'] = skillLevel;
 
-         debugPrint('Preparing to update user profile for user ${user.id} with data: $updates');
+         logDebug('Updating user profile for user ${user.id}');
 
          try {
            final response = await _supabase
@@ -760,16 +762,15 @@ class ApiService {
                .select()
                .single();
 
-           debugPrint('Profile update successful for user ${user.id}');
+           logDebug('Profile update successful for user ${user.id}');
 
            // Invalidate user stats cache since profile was updated
            await _cacheService.invalidateUserStatsCache();
 
            return app_user.User.fromJson(response);
          } catch (e) {
-           debugPrint('Database update failed for user ${user.id}: $e');
-           debugPrint('Update data: $updates');
-           debugPrint('Error type: ${e.runtimeType}');
+           logError('Database update failed for user ${user.id}: $e');
+           logError('Update data: $updates');
            rethrow;
          }
        },
@@ -781,13 +782,17 @@ class ApiService {
   Future<app_user.User> getUserById(String userId) async {
      return ErrorHandler.withRetry(
        () async {
-         final response = await _supabase
-             .from('users')
-             .select('*')
-             .eq('id', userId)
-             .single();
-
-         return app_user.User.fromJson(response);
+         try {
+           final response = await _supabase
+               .from('users')
+               .select('*')
+               .eq('id', userId)
+               .single();
+           return app_user.User.fromJson(response);
+         } catch (e) {
+           logError('Error fetching user $userId: $e');
+           throw GenericError('Failed to load user data');
+         }
        },
        config: _defaultRetryConfig,
        context: 'ApiService.getUserById',
@@ -797,16 +802,18 @@ class ApiService {
   Future<List<app_user.User>> getAllUsers() async {
     return ErrorHandler.withFallback(
       () async {
-        final dynamic response = await _supabase
+        final response = await _supabase
             .from('users')
             .select('*')
             .order('created_at');
 
-        if (response == null) return <app_user.User>[];
-        if (response is! List) return <app_user.User>[];
-        return response.map((dynamic json) => app_user.User.fromJson(json as Map<String, dynamic>)).toList();
+        return ResponseParser.parseList(
+          response,
+          (json) => app_user.User.fromJson(json),
+          context: 'ApiService.getAllUsers',
+        );
       },
-      <app_user.User>[], // Return empty list as fallback
+      <app_user.User>[],
       context: 'ApiService.getAllUsers',
     );
   }
@@ -840,13 +847,13 @@ class ApiService {
             final Map<String, dynamic> matchData = item as Map<String, dynamic>;
             final teamId = matchData['team_id'] ?? matchData['team1_id'] ?? matchData['team_1_id'];
             if (teamId == null || teamId.toString().trim().isEmpty) {
-              debugPrint('Skipping match with missing team ID: ${matchData['id']}');
+              logDebug('Skipping match with missing team ID: ${matchData['id']}');
               continue;
             }
             final match = Match.fromJson(matchData);
             matches.add(match);
           } catch (e) {
-            debugPrint('Failed to parse match data in getMyMatches: $e');
+            logError('Failed to parse match data in getMyMatches: $e');
             continue;
           }
         }
@@ -863,7 +870,7 @@ class ApiService {
       () => ErrorHandler.withFallback(
         () async {
           try {
-            debugPrint('🔍 ApiService.getMatches: Starting query...');
+            logDebug('getMatches: Starting query...');
             var query = _supabase
                 .from('matches')
                 .select('*, team1:team1_id(name), team2:team2_id(name)')
@@ -873,14 +880,14 @@ class ApiService {
             if (offset != null) query = query.range(offset, offset + (limit ?? 20) - 1);
 
             final dynamic response = await query;
-            debugPrint('📦 ApiService.getMatches: Response type: ${response.runtimeType}, length: ${response is List ? response.length : 'N/A'}');
+            logDebug('getMatches: Response type: ${response.runtimeType}, length: ${response is List ? response.length : 'N/A'}');
             
             if (response == null) {
-              debugPrint('⚠️ ApiService.getMatches: Response is null');
+              logWarning('getMatches: Response is null');
               return <Match>[];
             }
             if (response is! List) {
-              debugPrint('⚠️ ApiService.getMatches: Response is not a List');
+              logWarning('getMatches: Response is not a List');
               return <Match>[];
             }
             
@@ -892,7 +899,7 @@ class ApiService {
                 final Map<String, dynamic> matchData = item as Map<String, dynamic>;
                 final teamId = matchData['team_id'] ?? matchData['team1_id'] ?? matchData['team_1_id'];
                 if (teamId == null || teamId.toString().trim().isEmpty) {
-                  debugPrint('⚠️ Skipping match with missing team ID: ${matchData['id']}');
+                  logDebug('Skipping match with missing team ID: ${matchData['id']}');
                   skippedCount++;
                   continue;
                 }
@@ -908,14 +915,14 @@ class ApiService {
                 final match = Match.fromJson(matchData);
                 matches.add(match);
               } catch (e) {
-                debugPrint('❌ Failed to parse match data: $e');
+                logError('Failed to parse match data: $e');
                 continue;
               }
             }
-            debugPrint('✅ ApiService.getMatches: Returning ${matches.length} matches (skipped: $skippedCount)');
+            logDebug('getMatches: Returning ${matches.length} matches (skipped: $skippedCount)');
             return matches;
           } catch (e) {
-            debugPrint('❌ Error in getMatches: $e');
+            logError('Error in getMatches: $e');
             return <Match>[];
           }
         },
@@ -948,7 +955,7 @@ class ApiService {
              final Map<String, dynamic> matchData = item as Map<String, dynamic>;
              final teamId = matchData['team_id'] ?? matchData['team1_id'] ?? matchData['team_1_id'];
              if (teamId == null || teamId.toString().trim().isEmpty) {
-               debugPrint('Skipping match with missing team ID: ${matchData['id']}');
+               logDebug('Skipping match with missing team ID: ${matchData['id']}');
                continue;
              }
              
@@ -963,7 +970,7 @@ class ApiService {
              final match = Match.fromJson(matchData);
              matches.add(match);
            } catch (e) {
-             debugPrint('Failed to parse match data in getAllMatches: $e');
+             logError('Failed to parse match data in getAllMatches: $e');
              continue;
            }
          }
@@ -1241,7 +1248,7 @@ class ApiService {
        () async {
          final user = _supabase.auth.currentUser;
          if (user == null) {
-           debugPrint('No authenticated user found');
+           logError('No authenticated user found');
            throw AuthError('No authenticated user');
          }
 
@@ -1267,14 +1274,14 @@ class ApiService {
          if (kIsWeb) {
            try {
              await _supabase.auth.refreshSession();
-             debugPrint('Web session refreshed proactively');
+             logDebug('Web session refreshed proactively');
            } catch (refreshError) {
-             debugPrint('Proactive session refresh failed: $refreshError');
+             logWarning('Proactive session refresh failed: $refreshError');
            }
          }
 
-         debugPrint('Creating team for user: ${user.id}');
-         debugPrint('Platform: ${kIsWeb ? "Web" : "Mobile"}');
+         logDebug('Creating team for user: ${user.id}');
+         logDebug('Platform: ${kIsWeb ? "Web" : "Mobile"}');
 
          final teamData = {
            'name': sanitizedName,
@@ -1288,7 +1295,7 @@ class ApiService {
            'max_age': maxAge,
          };
 
-         debugPrint('Team data: $teamData');
+         logDebug('Team data prepared for creation');
 
          try {
            final response = await _supabase
@@ -1297,19 +1304,19 @@ class ApiService {
                .select()
                .single();
 
-           debugPrint('Team created successfully: $response');
+           logDebug('Team created successfully');
            final team = Team.fromJson(response);
 
            // Owner is automatically added by database trigger
            // Wait briefly for trigger to complete
            await Future.delayed(const Duration(milliseconds: 300));
-           debugPrint('Team owner added by trigger');
+           logDebug('Team owner added by trigger');
            await _cacheService.invalidateTeamsCache();
            return team;
          } catch (e) {
-           debugPrint('Team creation failed: $e');
+           logError('Team creation failed: $e');
            if (kIsWeb && e.toString().contains('JWT')) {
-             debugPrint('Web JWT issue detected, attempting refresh and retry');
+             logWarning('Web JWT issue detected, attempting refresh and retry');
              try {
                await _supabase.auth.refreshSession();
                // Retry the operation once after refresh
@@ -1322,7 +1329,7 @@ class ApiService {
                final team = Team.fromJson(retryResponse);
                
                // Owner is automatically added by database trigger
-               debugPrint('Team owner will be added automatically by trigger (retry)');
+               logDebug('Team owner will be added automatically by trigger (retry)');
                await _cacheService.invalidateTeamsCache();
                return team;
              } catch (refreshError) {
@@ -1367,7 +1374,7 @@ class ApiService {
              );
            }
          } catch (e) {
-           debugPrint('Failed to create notification: $e');
+           logWarning('Failed to create notification: $e');
          }
        },
        config: _defaultRetryConfig,
@@ -1423,16 +1430,18 @@ class ApiService {
   Future<List<NotificationModel>> getNotifications() async {
     return ErrorHandler.withFallback(
       () async {
-        final dynamic response = await _supabase
+        final response = await _supabase
             .from('notifications')
             .select('*')
             .order('created_at', ascending: false);
 
-        if (response == null) return <NotificationModel>[];
-        if (response is! List) return <NotificationModel>[];
-        return response.map((dynamic json) => NotificationModel.fromJson(json as Map<String, dynamic>)).toList();
+        return ResponseParser.parseList(
+          response,
+          (json) => NotificationModel.fromJson(json),
+          context: 'ApiService.getNotifications',
+        );
       },
-      <NotificationModel>[], // Return empty list as fallback
+      <NotificationModel>[],
       context: 'ApiService.getNotifications',
     );
   }
@@ -1495,7 +1504,7 @@ class ApiService {
        'ApiService._fetchTeamsFromNetwork',
        () => ErrorHandler.withFallback(
          () async {
-           debugPrint('🔍 ApiService._fetchTeamsFromNetwork: Starting query...');
+           logDebug('_fetchTeamsFromNetwork: Starting query...');
            
            // Get current user for filtering
            final user = _supabase.auth.currentUser;
@@ -1506,13 +1515,15 @@ class ApiService {
              try {
                final userProfile = await _supabase
                    .from('users')
-                   .select('gender, age')
+                   .select('*')
                    .eq('id', user.id)
                    .single();
-               userGender = userProfile['gender'];
-               userAge = userProfile['age'];
+               userGender = userProfile['gender'] as String?;
+               userAge = userProfile['age'] as int?;
              } catch (e) {
-               debugPrint('Could not fetch user profile for filtering: $e');
+               logWarning('Could not fetch user profile for filtering: $e');
+               userGender = null;
+               userAge = null;
              }
            }
            
@@ -1533,19 +1544,19 @@ class ApiService {
            }
 
            final dynamic response = await orderedQuery;
-           debugPrint('📦 ApiService._fetchTeamsFromNetwork: Response type: ${response.runtimeType}, length: ${response is List ? response.length : 'N/A'}');
+           logDebug('_fetchTeamsFromNetwork: Response type: ${response.runtimeType}, length: ${response is List ? response.length : 'N/A'}');
            
            if (response == null) {
-             debugPrint('⚠️ ApiService._fetchTeamsFromNetwork: Response is null');
+             logWarning('_fetchTeamsFromNetwork: Response is null');
              return <Team>[];
            }
            if (response is! List) {
-             debugPrint('⚠️ ApiService._fetchTeamsFromNetwork: Response is not a List');
+             logWarning('_fetchTeamsFromNetwork: Response is not a List');
              return <Team>[];
            }
            
            final teams = response.map((dynamic json) => Team.fromJson(json as Map<String, dynamic>)).toList();
-           debugPrint('✅ ApiService._fetchTeamsFromNetwork: Returning ${teams.length} teams');
+           logDebug('_fetchTeamsFromNetwork: Returning ${teams.length} teams');
            return teams;
          },
          <Team>[],
@@ -1598,12 +1609,12 @@ class ApiService {
              final city = City.fromJson(item as Map<String, dynamic>);
              // Additional validation for city data
              if (city.id.trim().isEmpty || city.name.trim().isEmpty) {
-               debugPrint('Skipping invalid city data: ${city.id}');
+               logDebug('Skipping invalid city data: ${city.id}');
                continue;
              }
              cities.add(city);
            } catch (e) {
-             debugPrint('Failed to parse city data: $e');
+             logError('Failed to parse city data: $e');
              continue; // Skip invalid items instead of failing completely
            }
          }
@@ -1635,44 +1646,41 @@ class ApiService {
   Future<List<app_user.User>> getTeamMembers(String teamId) async {
     return ErrorHandler.withFallback(
       () async {
-        debugPrint('🔍 Fetching team members for teamId: $teamId');
+        logDebug('Fetching team members for teamId: $teamId');
         
-        // Get team members directly from team_members table
-        final dynamic response = await _supabase
-            .from('team_members')
-            .select('*, users(*)')
-            .eq('team_id', teamId);
+        try {
+          final dynamic response = await _supabase
+              .from('team_members')
+              .select('*, users(*)')
+              .eq('team_id', teamId);
 
-        debugPrint('📦 Team members response: $response');
-        if (response == null) {
-          debugPrint('⚠️ Response is null');
+          if (response == null || response is! List) {
+            logWarning('Team members response is null or not a List');
+            return <app_user.User>[];
+          }
+          logDebug('Found ${response.length} team member records');
+          
+          final members = response.map((dynamic json) {
+            final dynamic userData = json['users'];
+            if (userData == null || userData is! Map<String, dynamic>) {
+              return null;
+            }
+            try {
+              return app_user.User.fromJson(userData);
+            } catch (e) {
+              logError('Error parsing user data: $e');
+              return null;
+            }
+          }).where((user) => user != null).cast<app_user.User>().toList();
+          
+          logDebug('Returning ${members.length} parsed members');
+          return members;
+        } catch (e) {
+          logError('Error fetching team members: $e');
           return <app_user.User>[];
         }
-        if (response is! List) {
-          debugPrint('⚠️ Response is not a List');
-          return <app_user.User>[];
-        }
-        debugPrint('✅ Found ${response.length} team member records');
-        
-        final members = response.map((dynamic json) {
-          debugPrint('👤 Processing member: ${json['user_id']}');
-          final dynamic userData = json['users'];
-          if (userData == null || userData is! Map<String, dynamic>) {
-            debugPrint('⚠️ No user data for member ${json['user_id']}');
-            return null;
-          }
-          try {
-            return app_user.User.fromJson(userData);
-          } catch (e) {
-            debugPrint('❌ Error parsing user data: $e');
-            return null;
-          }
-        }).where((user) => user != null).cast<app_user.User>().toList();
-        
-        debugPrint('✅ Returning ${members.length} parsed members');
-        return members;
       },
-      <app_user.User>[], // Return empty list as fallback
+      <app_user.User>[],
       context: 'ApiService.getTeamMembers',
     );
   }
@@ -1752,7 +1760,7 @@ class ApiService {
              metadata: {'request_id': response['id']},
            );
          } catch (e) {
-           debugPrint('Failed to create notification: $e');
+           logWarning('Failed to create notification: $e');
          }
 
          return team_models.TeamJoinRequest.fromJson(response);
@@ -1795,7 +1803,7 @@ class ApiService {
            throw AuthError('No authenticated user');
          }
 
-         debugPrint('🔵 updateJoinRequestStatus: teamId=$teamId, requestId=$requestId, status=$status');
+         logDebug('updateJoinRequestStatus: teamId=$teamId, requestId=$requestId, status=$status');
 
          await _authService.validateOperation(
            userId: user.id,
@@ -1811,32 +1819,32 @@ class ApiService {
              .select('*, users(*), teams(*)')
              .single();
 
-         debugPrint('📦 Join request updated: $response');
+         logDebug('Join request updated');
 
          try {
            final request = team_models.TeamJoinRequest.fromJson(response);
-           debugPrint('✅ Parsed request: userId=${request.userId}, status=${request.status}');
+           logDebug('Parsed request: userId=${request.userId}, status=${request.status}');
            
            if (status == 'approved') {
              try {
-               debugPrint('🔵 Adding team member using safe function: teamId=$teamId, userId=${request.userId}');
+               logDebug('Adding team member using safe function: teamId=$teamId, userId=${request.userId}');
                final insertResult = await _supabase.rpc('add_team_member_safe', params: {
                  'p_team_id': teamId,
                  'p_user_id': request.userId,
                  'p_role': 'member',
                });
-               debugPrint('✅ Team member added successfully: $insertResult');
+               logDebug('Team member added successfully');
                
                // Invalidate caches to refresh team data
                await _cacheService.invalidateTeamsCache();
                await _cacheService.invalidateUserStatsCache();
-               debugPrint('🗑️ Caches invalidated');
+               logDebug('Caches invalidated');
              } catch (e) {
-               debugPrint('❌ Error adding team member: $e');
+               logError('Error adding team member: $e');
                if (e.toString().contains('duplicate') || 
                    e.toString().contains('already exists') ||
                    e.toString().contains('Member already exists')) {
-                 debugPrint('⚠️ Member already exists in team, continuing...');
+                 logWarning('Member already exists in team, continuing...');
                } else {
                  rethrow;
                }
@@ -1848,7 +1856,7 @@ class ApiService {
                type: 'team_invite',
                relatedId: teamId,
              );
-             debugPrint('✅ Notification sent to user ${request.userId}');
+             logDebug('Notification sent to user ${request.userId}');
            } else if (status == 'rejected') {
              await createNotification(
                userId: request.userId,
@@ -1859,7 +1867,7 @@ class ApiService {
              );
            }
          } catch (e) {
-           debugPrint('❌ Failed to process approval/notification: $e');
+           logError('Failed to process approval/notification: $e');
          }
 
          return team_models.TeamJoinRequest.fromJson(response);
@@ -1913,17 +1921,19 @@ class ApiService {
   Future<List<Team>> searchTeams(String query) async {
     return ErrorHandler.withFallback(
       () async {
-        final dynamic response = await _supabase
+        final response = await _supabase
             .from('teams')
             .select('*')
             .or('name.ilike.%$query%,location.ilike.%$query%')
             .order('created_at', ascending: false);
 
-        if (response == null) return <Team>[];
-        if (response is! List) return <Team>[];
-        return response.map((dynamic json) => Team.fromJson(json as Map<String, dynamic>)).toList();
+        return ResponseParser.parseList(
+          response,
+          (json) => Team.fromJson(json),
+          context: 'ApiService.searchTeams',
+        );
       },
-      <Team>[], // Return empty list as fallback
+      <Team>[],
       context: 'ApiService.searchTeams',
     );
   }
@@ -2139,7 +2149,7 @@ class ApiService {
              relatedId: teamId,
            );
          } catch (e) {
-           debugPrint('Error in leaveTeam: $e');
+           logError('Error in leaveTeam: $e');
            rethrow;
          }
        },
@@ -2197,7 +2207,7 @@ class ApiService {
             relatedId: teamId,
           );
         } catch (e) {
-          debugPrint('Failed to create notification (non-critical): $e');
+          logWarning('Failed to create notification (non-critical): $e');
         }
       },
       config: _defaultRetryConfig,
@@ -2246,7 +2256,7 @@ class ApiService {
         final user = _supabase.auth.currentUser;
         if (user == null) throw AuthError('No authenticated user');
 
-        debugPrint('🔵 Accepting match request: $matchId');
+        logDebug('Accepting match request: $matchId');
 
         // Update match status - trigger handles notifications
         final response = await _supabase
@@ -2260,18 +2270,18 @@ class ApiService {
             .select('*, team1:team1_id(name), team2:team2_id(name)')
             .single();
 
-        debugPrint('✅ Match status updated to confirmed');
+        logDebug('Match status updated to confirmed');
 
         // Add all team members from both teams to match_participants
         // This is optional - if the function doesn't exist, players can join manually
         try {
-          debugPrint('🔵 Adding team members to match participants');
+          logDebug('Adding team members to match participants');
           await _supabase.rpc('add_team_members_to_match', params: {
             'p_match_id': matchId,
           });
-          debugPrint('✅ Team members added to match participants');
+          logDebug('Team members added to match participants');
         } catch (e) {
-          debugPrint('⚠️ Could not auto-add team members (function may not exist): $e');
+          logWarning('Could not auto-add team members (function may not exist): $e');
           // This is non-critical - the match is confirmed
           // Players can join manually if the function doesn't exist
         }
@@ -2342,7 +2352,7 @@ class ApiService {
             }
             matches.add(Match.fromJson(matchData));
           } catch (e) {
-            debugPrint('Failed to parse match request: $e');
+            logError('Failed to parse match request: $e');
             continue;
           }
         }

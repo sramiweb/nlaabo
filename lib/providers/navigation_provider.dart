@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../services/localization_service.dart';
 
 /// Navigation item model
 class NavigationItem {
@@ -16,9 +15,6 @@ class NavigationItem {
     required this.icon,
     required this.route,
   });
-  
-  String get label => LocalizationService().translate(labelKey);
-  String get mobileLabel => LocalizationService().translate(mobileLabelKey ?? labelKey);
 }
 
 /// Navigation provider for managing navigation state across desktop and mobile

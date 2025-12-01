@@ -8,6 +8,7 @@ import '../../../constants/responsive_constants.dart';
 import '../../../providers/navigation_provider.dart';
 import '../../../providers/notification_provider.dart';
 import '../../../providers/localization_provider.dart';
+import '../../../services/localization_service.dart';
 
 /// DesktopSidebar component with fixed width and dark background
 /// as specified in the design system specifications
@@ -86,8 +87,20 @@ class _NavigationItemWidget extends StatefulWidget {
   State<_NavigationItemWidget> createState() => _NavigationItemWidgetState();
 }
 
-class _NavigationItemWidgetState extends State<_NavigationItemWidget> {
+class _NavigationItemWidgetState extends State<_NavigationItemWidget> with WidgetsBindingObserver {
   bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +110,7 @@ class _NavigationItemWidgetState extends State<_NavigationItemWidget> {
     return Semantics(
       button: true,
       selected: widget.isActive,
-      label: widget.item.label,
+      label: LocalizationService().translate(widget.item.labelKey),
       child: Focus(
         autofocus: widget.isActive,
         child: ConstrainedBox(
@@ -175,7 +188,7 @@ class _NavigationItemWidgetState extends State<_NavigationItemWidget> {
                   SizedBox(width: responsiveIconSpacing),
                   Expanded(
                     child: Text(
-                      widget.item.label,
+                      LocalizationService().translate(widget.item.labelKey),
                       style: AppTextStyles.bodyText.copyWith(
                         color: widget.isActive
                             ? AppColors.primary

@@ -4,6 +4,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/foundation.dart';
 import 'package:vm_service/vm_service.dart' as vm_service;
 import 'package:vm_service/vm_service_io.dart' as vm_service_io;
+import '../utils/app_logger.dart';
 import 'error_handler.dart';
 
 /// Performance monitoring service for tracking app performance metrics
@@ -49,7 +50,7 @@ class PerformanceMonitor {
       }
     } catch (e) {
       // VM service not available, continue without advanced profiling
-      debugPrint('VM service connection failed: $e');
+      logWarning('VM service connection failed: $e');
     }
   }
 
@@ -507,7 +508,7 @@ class PerformanceMonitor {
   /// Log performance report to debug console
   void logReport() {
     if (kDebugMode) {
-      debugPrint(generateReport());
+      logInfo(generateReport());
     }
   }
 

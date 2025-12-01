@@ -7,6 +7,8 @@ import '../services/localization_service.dart';
 import '../services/api_service.dart';
 import '../services/team_service.dart';
 import '../widgets/optimized_filter_bar.dart';
+import '../utils/notification_handler.dart';
+import '../services/team_service.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -17,6 +19,13 @@ class NotificationsScreen extends StatefulWidget {
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
   final ApiService _apiService = ApiService();
+  late TeamService _teamService;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _teamService = context.read<TeamService>();
+  }
 
   @override
   void initState() {
@@ -32,12 +41,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     try {
       final notificationProvider = context.read<NotificationProvider>();
       await notificationProvider.markAsRead(notificationId);
-      // Real-time updates will handle the UI refresh
     } catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to mark as read: $error')),
-        );
+        NotificationHandler.showError(context, 'Failed to mark as read: $error');
       }
     }
   }
@@ -47,16 +53,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       await _apiService.acceptMatchRequest(matchId);
       await _markAsRead(notificationId);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(LocalizationService().translate('notification.match_request_accepted.title'))),
-        );
+        NotificationHandler.showSuccess(context, LocalizationService().translate('notification.match_request_accepted.title'));
         context.read<NotificationProvider>().loadNotifications();
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
+        NotificationHandler.showError(context, 'Error: $e');
       }
     }
   }
@@ -66,16 +68,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       await _apiService.rejectMatchRequest(matchId);
       await _markAsRead(notificationId);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(LocalizationService().translate('notification.match_request_rejected.title'))),
-        );
+        NotificationHandler.showSuccess(context, LocalizationService().translate('notification.match_request_rejected.title'));
         context.read<NotificationProvider>().loadNotifications();
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
+        NotificationHandler.showError(context, 'Error: $e');
       }
     }
   }
@@ -142,40 +140,71 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     }
   }
 
+  Color _getNotificationColor(String type) {
+    switch (type) {
+      case 'match_request':
+        return Colors.blue;
+      case 'team_join_request':
+        return Colors.green;
+      case 'match_accepted':
+        return Colors.green;
+      case 'match_rejected':
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  IconData _getNotificationIcon(String type) {
+    switch (type) {
+      case 'match_request':
+        return Icons.sports_soccer;
+      case 'team_join_request':
+        return Icons.group_add;
+      case 'match_accepted':
+        return Icons.check_circle;
+      case 'match_rejected':
+        return Icons.cancel;
+      default:
+        return Icons.notifications;
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inMinutes < 1) {
+      return 'Just now';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes}m ago';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours}h ago';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays}d ago';
+    } else {
+      return '${date.month}/${date.day}/${date.year}';
+    }
+  }
+
   Future<void> _clearAllNotifications() async {
-    final localization = LocalizationService();
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(localization.translate('clear_all_notifications')),
-        content: Text(localization.translate('clear_all_notifications_confirm')),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext, false),
-            child: Text(localization.translate('cancel')),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(dialogContext, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(localization.translate('clear_all')),
-          ),
-        ],
-      ),
+    final confirmed = await NotificationHandler.showConfirmDialog(
+      context,
+      title: LocalizationService().translate('clear_all_notifications'),
+      message: LocalizationService().translate('clear_all_notifications_confirm'),
+      confirmLabel: LocalizationService().translate('clear_all'),
+      confirmColor: Colors.red,
     );
 
     if (confirmed == true && mounted) {
       try {
         await context.read<NotificationProvider>().clearAllNotifications();
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(LocalizationService().translate('notifications_cleared'))),
-          );
+          NotificationHandler.showSuccess(context, LocalizationService().translate('notifications_cleared'));
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: $e')),
-          );
+          NotificationHandler.showError(context, 'Error: $e');
         }
       }
     }
@@ -374,71 +403,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  Color _getNotificationColor(String type) {
-    switch (type) {
-      case 'match_created':
-      case 'match_joined':
-        return Colors.green;
-      case 'match_left':
-        return Colors.orange;
-      case 'team_invite':
-      case 'team_join_request':
-        return Colors.purple;
-      case 'team_join_approved':
-        return Colors.purple;
-      case 'team_join_rejected':
-        return Colors.orange;
-      case 'team_member_left':
-      case 'team_member_removed':
-        return Colors.red;
-      case 'match_request':
-        return Colors.blue;
-      case 'match_accepted':
-        return Colors.blue;
-      case 'match_rejected':
-        return Colors.orange;
-      case 'match_reminder':
-        return Colors.amber;
-      case 'system_notification':
-        return Colors.grey;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  IconData _getNotificationIcon(String type) {
-    switch (type) {
-      case 'match_created':
-        return Icons.sports_soccer;
-      case 'match_joined':
-        return Icons.person_add;
-      case 'match_left':
-        return Icons.exit_to_app;
-      case 'team_invite':
-      case 'team_join_request':
-        return Icons.group_add;
-      case 'team_join_approved':
-        return Icons.group_add;
-      case 'team_join_rejected':
-        return Icons.group_add;
-      case 'team_member_left':
-      case 'team_member_removed':
-        return Icons.person_remove;
-      case 'match_request':
-        return Icons.sports_soccer;
-      case 'match_accepted':
-        return Icons.sports_soccer;
-      case 'match_rejected':
-        return Icons.sports_soccer;
-      case 'match_reminder':
-        return Icons.alarm;
-      case 'system_notification':
-        return Icons.info;
-      default:
-        return Icons.notifications;
-    }
-  }
-
   void _handleNotificationTap(NotificationModel notification) {
     if (notification.relatedId == null) return;
 
@@ -460,25 +424,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       case 'team_member_removed':
         context.push('/teams/${notification.relatedId}');
         break;
-    }
-  }
-
-  String _formatDate(DateTime date) {
-    final now = DateTime.now();
-    final difference = now.difference(date);
-
-    if (difference.inMinutes < 1) {
-      return LocalizationService().translate('just_now');
-    } else if (difference.inHours < 1) {
-      return '${difference.inMinutes}m ago';
-    } else if (difference.inDays == 0) {
-      return '${difference.inHours}h ago';
-    } else if (difference.inDays == 1) {
-      return LocalizationService().translate('yesterday');
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
-    } else {
-      return '${date.day}/${date.month}/${date.year}';
     }
   }
 }

@@ -9,6 +9,7 @@ import '../../../constants/responsive_constants.dart';
 import '../../../providers/navigation_provider.dart';
 import '../../../providers/notification_provider.dart';
 import '../../../providers/localization_provider.dart';
+import '../../../services/localization_service.dart';
 
 /// MobileBottomNav component with glassmorphism effect
 /// as specified in the design system specifications
@@ -143,7 +144,7 @@ class _NavigationItemWidgetState extends State<_NavigationItemWidget>
     return Semantics(
       button: true,
       selected: widget.isActive,
-      label: widget.item.label,
+      label: LocalizationService().translate(widget.item.labelKey),
       child: ConstrainedBox(
         constraints: const BoxConstraints(
           minHeight: 44.0, // Minimum touch target size (WCAG AA)
@@ -206,7 +207,7 @@ class _NavigationItemWidgetState extends State<_NavigationItemWidget>
                       SizedBox(height: responsiveIconSpacing),
                       Flexible(
                         child: Text(
-                          widget.item.mobileLabel,
+                          LocalizationService().translate(widget.item.mobileLabelKey ?? widget.item.labelKey),
                           style: AppTextStyles.caption.copyWith(
                             color: widget.isActive
                                 ? context.colors.primary

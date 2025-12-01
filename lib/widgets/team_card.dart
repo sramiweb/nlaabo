@@ -8,8 +8,8 @@ import '../utils/responsive_utils.dart';
 
 class TeamCard extends StatelessWidget {
   final Team team;
-  final Map<String, dynamic> ownerInfo;
-  final int memberCount;
+  final Map<String, dynamic>? ownerInfo;
+  final int? memberCount;
   final VoidCallback onTap;
   final bool isOwnerLoading;
   final VoidCallback? onRetry;
@@ -17,8 +17,8 @@ class TeamCard extends StatelessWidget {
   const TeamCard({
     super.key,
     required this.team,
-    required this.ownerInfo,
-    required this.memberCount,
+    this.ownerInfo,
+    this.memberCount,
     required this.onTap,
     this.isOwnerLoading = false,
     this.onRetry,
@@ -126,52 +126,19 @@ class TeamCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                isOwnerLoading
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(Icons.person, size: ResponsiveUtils.getIconSize(context, 13), color: Colors.blue.shade400),
-                                        SizedBox(width: ResponsiveConstants.getResponsiveSpacing(context, 'xs')),
-                                        SizedBox(
-                                          width: 12,
-                                          height: 12,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade400),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : ownerInfo.containsKey('error')
-                                      ? Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(Icons.person, size: ResponsiveUtils.getIconSize(context, 13), color: Colors.red.shade400),
-                                            SizedBox(width: ResponsiveConstants.getResponsiveSpacing(context, 'xs')),
-                                            IconButton(
-                                              icon: Icon(Icons.refresh, color: Colors.blue.shade400),
-                                              onPressed: onRetry,
-                                              padding: const EdgeInsets.all(12),
-                                              constraints: const BoxConstraints(
-                                                minWidth: 48,
-                                                minHeight: 48,
-                                              ),
-                                              iconSize: 24,
-                                              tooltip: 'Retry loading team',
-                                            ),
-                                          ],
-                                        )
-                                      : _buildInfoRow(context, Icons.person, ownerInfo['name'] ?? LocalizationService().translate('not_specified'), Colors.blue.shade400),
+                                ownerInfo != null
+                                  ? _buildInfoRow(context, Icons.person, ownerInfo!['name'] ?? LocalizationService().translate('not_specified'), Colors.blue.shade400)
+                                  : _buildInfoRow(context, Icons.person, LocalizationService().translate('not_specified'), Colors.blue.shade400),
                                 SizedBox(height: ResponsiveConstants.getResponsiveSpacing(context, 'sm')),
                                 _buildInfoRow(context, Icons.location_on, team.location ?? LocalizationService().translate('not_specified'), Colors.red.shade400),
                                 SizedBox(height: ResponsiveConstants.getResponsiveSpacing(context, 'sm')),
-                                _buildInfoRow(context, Icons.people, '$memberCount / ${team.maxPlayers}', Colors.green.shade400),
+                                _buildInfoRow(context, Icons.people, '${memberCount ?? 0} / ${team.maxPlayers}', Colors.green.shade400),
                               ],
                             ),
                           ),
                           SizedBox(width: ResponsiveConstants.getResponsiveSpacing(context, 'sm')),
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.getResponsiveSpacing(context, 'sm2'), vertical: ResponsiveConstants.getResponsiveSpacing(context, 'xs2')),
+                            padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.getResponsiveSpacing(context, 'sm'), vertical: ResponsiveConstants.getResponsiveSpacing(context, 'xs')),
                             decoration: BoxDecoration(
                               color: team.isRecruiting ? Colors.green : Colors.grey.shade400,
                               borderRadius: BorderRadius.circular(20),
@@ -180,7 +147,7 @@ class TeamCard extends StatelessWidget {
                               team.isRecruiting ? LocalizationService().translate('recruiting') : LocalizationService().translate('closed'),
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 11,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),

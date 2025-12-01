@@ -7,6 +7,7 @@ import '../services/error_reporting_service.dart';
 import '../services/feedback_service.dart';
 import '../services/robust_supabase_client.dart';
 import '../models/user.dart' as app_user;
+import '../utils/app_logger.dart';
 
 class AuthProvider with ChangeNotifier {
   final ApiService _apiService = ApiService();
@@ -94,17 +95,14 @@ class AuthProvider with ChangeNotifier {
         }
       } catch (e) {
         if (e.toString().contains('not initialized')) {
-          // Supabase not initialized yet, this is expected during app startup
-          debugPrint('Supabase not initialized yet during auth check: $e');
+          logDebug('Supabase not initialized yet during auth check: $e');
         } else {
-          // User not authenticated - this is expected on first launch
-          debugPrint('User not authenticated: $e');
+          logDebug('User not authenticated: $e');
         }
         _currentUser = null;
       }
     } catch (e) {
-      // General error handling
-      debugPrint('Error in _loadSavedToken: $e');
+      logError('Error in _loadSavedToken: $e');
       _currentUser = null;
     } finally {
       _isLoading = false;
@@ -135,7 +133,7 @@ class AuthProvider with ChangeNotifier {
     _safeNotifyListeners();
 
     try {
-      debugPrint('AuthProvider: Starting signup process for email: $email');
+      logDebug('Starting signup process for email: $email');
 
       final response = await _apiService.signup(
         name: name,
@@ -147,7 +145,7 @@ class AuthProvider with ChangeNotifier {
         role: role ?? 'player',
       );
 
-      debugPrint('AuthProvider: Signup API call completed successfully');
+      logDebug('Signup API call completed successfully');
 
       // Handle different API response structures
       if (response.containsKey('user') || response.containsKey('data')) {
@@ -161,12 +159,12 @@ class AuthProvider with ChangeNotifier {
             fallbackEmail: email,
           );
 
-          debugPrint('AuthProvider: User object created successfully. User ID: ${_currentUser?.id}');
+          logDebug('User object created successfully. User ID: ${_currentUser?.id}');
 
           // Store session token if available (for confirmed accounts)
           if (sessionData != null && sessionData is Map<String, dynamic> && sessionData.containsKey('access_token')) {
             await _saveToken(sessionData['access_token'] as String);
-            debugPrint('AuthProvider: Session token saved. User is logged in.');
+            logDebug('Session token saved. User is logged in.');
 
             // Initialize real-time updates after successful login
             _initializeRealtimeUpdates();
@@ -177,7 +175,7 @@ class AuthProvider with ChangeNotifier {
             return true; // Email confirmed and session active
           } else {
             // Email confirmation required - user created but not confirmed
-            debugPrint('AuthProvider: Email confirmation required. User created but not logged in.');
+            logDebug('Email confirmation required. User created but not logged in.');
             _isLoading = false;
             _safeNotifyListeners();
             return false; // Email confirmation pending
@@ -185,10 +183,10 @@ class AuthProvider with ChangeNotifier {
         }
       }
 
-      debugPrint('AuthProvider: Invalid response structure received');
+      logError('Invalid response structure received');
       throw Exception('Signup failed: Invalid response structure');
     } catch (e, st) {
-      debugPrint('AuthProvider: Signup failed with error: $e');
+      logError('Signup failed with error: $e');
 
       final standardizedError = ErrorHandler.standardizeError(e, st);
       ErrorHandler.logError(standardizedError, st, 'AuthProvider.signup');
@@ -216,14 +214,14 @@ class AuthProvider with ChangeNotifier {
     _safeNotifyListeners();
 
     try {
-      debugPrint('AuthProvider: Starting login process for email: $email');
+      logDebug('Starting login process for email: $email');
 
       final response = await _apiService.login(
         email: email,
         password: password,
       );
 
-      debugPrint('AuthProvider: Login API call completed successfully');
+      logDebug('Login API call completed successfully');
 
       // Handle the response structure
       if (response.containsKey('user')) {
@@ -238,12 +236,12 @@ class AuthProvider with ChangeNotifier {
           _currentUser = userData as app_user.User;
         }
 
-        debugPrint('AuthProvider: User object created successfully. User ID: ${_currentUser?.id}');
+        logDebug('User object created successfully. User ID: ${_currentUser?.id}');
 
         // Save token if available
         if (response.containsKey('access_token')) {
           await _saveToken(response['access_token'] as String);
-          debugPrint('AuthProvider: Session token saved');
+          logDebug('Session token saved');
         }
 
         // Initialize real-time updates after successful login
@@ -251,16 +249,16 @@ class AuthProvider with ChangeNotifier {
         // Initialize real-time subscriptions in ApiService
         _apiService.initializeRealtimeSubscriptions();
 
-        debugPrint('AuthProvider: Login process completed successfully');
+        logDebug('Login process completed successfully');
       } else {
-        debugPrint('AuthProvider: Invalid response structure - no user data found');
+        logError('Invalid response structure - no user data found');
         throw Exception('Login failed: Invalid response structure');
       }
 
       _isLoading = false;
       _safeNotifyListeners();
     } catch (e, st) {
-      debugPrint('AuthProvider: Login failed with error: $e');
+      logError('Login failed with error: $e');
 
       final standardizedError = ErrorHandler.standardizeError(e, st);
       ErrorHandler.logError(standardizedError, st, 'AuthProvider.login');
@@ -398,13 +396,9 @@ class AuthProvider with ChangeNotifier {
     String? location,
     String? skillLevel,
   }) async {
-    debugPrint('🔵 AuthProvider.updateProfile called with:');
-    debugPrint('  name: $name, position: $position, bio: $bio');
-    debugPrint('  phone: $phone, age: $age, location: $location');
-    debugPrint('  gender: $gender, skillLevel: $skillLevel, imageUrl: $imageUrl');
+    logDebug('updateProfile called with: name=$name, position=$position, bio=$bio, phone=$phone, age=$age, location=$location, gender=$gender, skillLevel=$skillLevel, imageUrl=$imageUrl');
     
     try {
-      debugPrint('🔵 Calling _apiService.updateProfile...');
       final updatedUser = await _apiService.updateProfile(
         name: name,
         position: position,
@@ -416,14 +410,12 @@ class AuthProvider with ChangeNotifier {
         location: location,
         skillLevel: skillLevel,
       );
-      debugPrint('✅ _apiService.updateProfile completed');
-      debugPrint('👤 Updated user: ${updatedUser.toJson()}');
+      logDebug('updateProfile completed successfully');
       
       _currentUser = updatedUser;
       _safeNotifyListeners();
-      debugPrint('✅ AuthProvider.updateProfile completed successfully');
     } catch (e, st) {
-      debugPrint('❌ AuthProvider.updateProfile error: $e');
+      logError('updateProfile error: $e');
       ErrorHandler.logError(e, st, 'AuthProvider.updateProfile');
       rethrow;
     }
@@ -452,7 +444,7 @@ class AuthProvider with ChangeNotifier {
       };
       return app_user.User.fromJson(completeData);
     } catch (e) {
-      debugPrint('User.fromJson failed: $e. Creating fallback user.');
+      logWarning('User.fromJson failed: $e. Creating fallback user.');
       
       final id = userData['id']?.toString();
       if (id == null || id.isEmpty) {

@@ -7,19 +7,17 @@ class LocalizationProvider extends ChangeNotifier {
   Locale _locale = const Locale('ar'); // Default to Arabic
 
   LocalizationProvider() {
-    // Initialize with Arabic first
     _locale = const Locale('ar');
-    // Load Arabic translations synchronously during initialization
     _initializeWithArabic();
-    // Then auto-initialize with current language state
     _initializeWithCurrentLanguage();
   }
 
-  /// Internal initialization method to load Arabic synchronously
   void _initializeWithArabic() {
-    // Load Arabic translations synchronously during provider creation
-    _localizationService.loadLanguage('ar');
-    debugPrint('LocalizationProvider: Initialized with Arabic translations');
+    _localizationService.loadLanguage('ar').then((_) {
+      debugPrint('LocalizationProvider: Initialized with Arabic translations');
+    }).catchError((e) {
+      debugPrint('LocalizationProvider: Failed to load Arabic: $e');
+    });
   }
 
   /// Internal initialization method

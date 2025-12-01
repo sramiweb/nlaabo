@@ -3,7 +3,7 @@ import '../models/match.dart';
 import '../models/team.dart';
 import '../models/user.dart' as app_user;
 import '../services/api_service.dart';
-
+import '../utils/app_logger.dart';
 import '../constants/home_constants.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -51,7 +51,7 @@ class HomeProvider extends ChangeNotifier {
 
       // Load fresh data from API with fallback
       try {
-        debugPrint('🔍 HomeProvider: Fetching matches and teams...');
+        logDebug('HomeProvider: Fetching matches and teams...');
         final matches = await _apiService.getMatches();
         final teams = await _apiService.getAllTeams();
 
@@ -61,15 +61,15 @@ class HomeProvider extends ChangeNotifier {
         _allMatches = matches;
         _allTeams = teams;
 
-        debugPrint('✅ HomeProvider: Fetched ${_allMatches.length} matches, ${_allTeams.length} teams');
+        logDebug('HomeProvider: Fetched ${_allMatches.length} matches, ${_allTeams.length} teams');
 
         // Show error if both are empty
         if (_allMatches.isEmpty && _allTeams.isEmpty) {
           _errorMessage = 'No matches or teams available. Create your first team or match to get started!';
-          debugPrint('⚠️ HomeProvider: Database appears empty');
+          logWarning('HomeProvider: Database appears empty');
         }
       } catch (apiError) {
-        debugPrint('❌ HomeProvider: API call failed: $apiError');
+        logError('HomeProvider: API call failed: $apiError');
         _errorMessage = 'Failed to load data. Please check your connection and try again.';
         _allMatches = [];
         _allTeams = [];
@@ -82,7 +82,7 @@ class HomeProvider extends ChangeNotifier {
       _filterContent();
       _notifyIfNotDisposed();
     } catch (e) {
-      debugPrint('❌ HomeProvider.loadData error: $e');
+      logError('HomeProvider.loadData error: $e');
       _errorMessage = 'An unexpected error occurred. Please try again.';
       _allMatches = [];
       _allTeams = [];

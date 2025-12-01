@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
 import '../providers/home_provider.dart';
 import '../services/localization_service.dart';
+import '../utils/app_logger.dart';
 import '../constants/translation_keys.dart';
 import '../widgets/match_card.dart';
 import '../widgets/team_card.dart';
@@ -19,11 +20,7 @@ import '../design_system/spacing/app_spacing.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/responsive_text_utils.dart';
 import '../constants/responsive_constants.dart';
-import '../services/team_service.dart';
-import '../services/user_service.dart';
-import '../repositories/team_repository.dart';
-import '../repositories/user_repository.dart';
-import '../services/api_service.dart';
+import '../utils/error_message_formatter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,117 +30,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TeamService? _teamService;
-  UserService? _userService;
-  Map<String, Map<String, dynamic>> _teamOwners = {}; // teamId -> owner info
-  Map<String, int> _teamMemberCounts = {}; // teamId -> member count
-  final Map<String, bool> _ownerLoadingStates = {}; // teamId -> is loading owner
-
-  void _showLocationPicker(BuildContext context) {
-    // TODO: Implement location picker
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Location picker coming soon')),
-    );
-  }
-
-  void _showCategoryPicker(BuildContext context) {
-    // TODO: Implement category picker
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Category picker coming soon')),
-    );
-  }
-
-  Future<void> _loadTeamOwnerData() async {
-    try {
-      final homeProvider = context.read<HomeProvider>();
-      final teamIds = homeProvider.featuredTeams.map((team) => team.id).toList();
-
-      if (teamIds.isEmpty) return;
-
-      // Set loading states for all teams
-      if (mounted) {
-        setState(() {
-          for (final teamId in teamIds) {
-            _ownerLoadingStates[teamId] = true;
-          }
-        });
-      }
-
-      // Use batch API calls for better performance
-      final batchData = await _teamService!.getTeamDataBatch(teamIds);
-
-      final ownersMap = batchData['owners'] as Map<String, Map<String, dynamic>>;
-      final memberCountsMap = batchData['memberCounts'] as Map<String, int>;
-
-      if (mounted) {
-        setState(() {
-          _teamOwners = ownersMap;
-          _teamMemberCounts = memberCountsMap;
-          // Set loading to false for all teams
-          for (final teamId in teamIds) {
-            _ownerLoadingStates[teamId] = false;
-          }
-        });
-      }
-    } catch (e) {
-      // Even on error, set loading to false for all teams to prevent stuck loading
-      if (mounted) {
-        setState(() {
-          _ownerLoadingStates.clear(); // Reset all loading states
-        });
-      }
-      debugPrint('Failed to load team owner data: $e');
-    }
-  }
-
-  Future<void> _retryLoadOwner(String teamId) async {
-    if (!mounted) return;
-
-    setState(() {
-      _ownerLoadingStates[teamId] = true;
-    });
-
-    try {
-      final result = await _teamService!.processTeamBatch(teamId);
-      if (mounted) {
-        setState(() {
-          _teamOwners[teamId] = result['owner'] as Map<String, dynamic>;
-          _teamMemberCounts[teamId] = result['memberCount'] as int;
-          _ownerLoadingStates[teamId] = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _ownerLoadingStates[teamId] = false;
-        });
-      }
-      debugPrint('Failed to retry load owner for team $teamId: $e');
-    }
-  }
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Initialize repositories and services
-      final apiService = ApiService();
-      final teamRepository = TeamRepository(apiService);
-      final userRepository = UserRepository(apiService);
-      _teamService = TeamService(teamRepository);
-      _userService = UserService(userRepository);
-
-      // Set UserService for batch operations
-      _teamService!.setUserService(_userService!);
-
       final homeProvider = context.read<HomeProvider>();
       final authProvider = context.read<AuthProvider>();
 
       homeProvider.loadData();
       homeProvider.checkUserTeamMembership(authProvider.user);
-
-      // Load team owner data after teams are loaded
-      _loadTeamOwnerData();
     });
   }
 
@@ -158,12 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (errorMessage != null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(errorMessage),
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                ),
-              );
+              context.showError(errorMessage);
             }
           });
         }
@@ -195,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: ResponsiveConstants.getResponsiveSpacing(context, 'sm2')),
                     if (provider.searchQuery.isNotEmpty)
                       _buildSearchResults(context, provider)
-                    else ...[
+                    else ...{
                       _buildSectionHeader(
                         context,
                         LocalizationService().translate(TranslationKeys.featuredMatches),
@@ -211,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: ResponsiveConstants.getResponsiveSpacing(context, 'sm')),
                       _buildFeaturedTeams(context, provider),
-                    ],
+                    },
                         ],
                       ),
                     ),
@@ -294,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () => context.go('/create-team'),
                     ),
                   ),
-                  if (provider.isUserInTeam) ...[
+                  if (provider.isUserInTeam) ...{
                     const SizedBox(height: AppSpacing.sm),
                     SizedBox(
                       width: double.infinity,
@@ -305,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () => context.go('/create-match'),
                       ),
                     ),
-                  ],
+                  },
                 ],
               ),
       ),
@@ -398,10 +288,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: TeamCard(
                     key: ValueKey(team.id),
                     team: team,
-                    ownerInfo: _teamOwners[team.id] ?? {'name': LocalizationService().translate('team_owner_label')},
-                    memberCount: _teamMemberCounts[team.id] ?? 0,
-                    isOwnerLoading: _ownerLoadingStates[team.id] ?? false,
-                    onRetry: () => _retryLoadOwner(team.id),
                     onTap: () => context.push('/teams/${team.id}'),
                   ),
                 ),
@@ -438,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
           style: AppTextStyles.sectionTitle,
         ),
         const SizedBox(height: 8),
-        if (provider.featuredMatches.isNotEmpty) ...[
+        if (provider.featuredMatches.isNotEmpty) ...{
           Text(
             LocalizationService().translate(TranslationKeys.matches),
             style: AppTextStyles.cardTitle,
@@ -466,8 +352,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 8),
-        ],
-        if (provider.featuredTeams.isNotEmpty) ...[
+        },
+        if (provider.featuredTeams.isNotEmpty) ...{
           Text(
             LocalizationService().translate(TranslationKeys.teams),
             style: AppTextStyles.cardTitle,
@@ -490,10 +376,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: TeamCard(
                         key: ValueKey(team.id),
                         team: team,
-                        ownerInfo: _teamOwners[team.id] ?? {'name': LocalizationService().translate('team_owner_label')},
-                        memberCount: _teamMemberCounts[team.id] ?? 0,
-                        isOwnerLoading: _ownerLoadingStates[team.id] ?? false,
-                        onRetry: () => _retryLoadOwner(team.id),
                         onTap: () => context.push('/teams/${team.id}'),
                       ),
                     ),
@@ -502,7 +384,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
-        ],
+        },
       ],
     );
   }

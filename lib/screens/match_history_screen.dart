@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../models/match.dart';
 import '../services/api_service.dart';
+import '../services/localization_service.dart';
 import '../widgets/directional_icon.dart';
 
 class MatchHistoryScreen extends StatefulWidget {
@@ -47,7 +49,7 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Match History'),
+        title: Text(LocalizationService().translate('match_history')),
         leading: IconButton(
           icon: const DirectionalIcon(icon: Icons.arrow_back),
           onPressed: () => context.pop(),
@@ -62,7 +64,7 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
                     children: [
                       Icon(Icons.history, size: 64, color: Colors.grey[400]),
                       const SizedBox(height: 16),
-                      Text('No match history', style: Theme.of(context).textTheme.titleLarge),
+                      Text(LocalizationService().translate('no_match_history'), style: Theme.of(context).textTheme.titleLarge),
                     ],
                   ),
                 )

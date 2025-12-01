@@ -51,17 +51,21 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     try {
       final owner = await _apiService.getUserById(_team!.ownerId);
       if (!mounted) return;
-
       setState(() {
         _ownerName = owner.name;
         _ownerLoadingState = OwnerLoadingState.loaded;
       });
     } catch (e) {
       if (!mounted) return;
-
+      debugPrint('Failed to load owner: $e');
       setState(() {
         _ownerLoadingState = OwnerLoadingState.error;
         _ownerError = e.toString();
+      });
+      Future.delayed(const Duration(seconds: 3), () {
+        if (mounted && _ownerLoadingState == OwnerLoadingState.error) {
+          _loadOwnerData();
+        }
       });
     }
   }
@@ -356,7 +360,9 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             )
-          : SingleChildScrollView(
+          : RefreshIndicator(
+              onRefresh: _loadTeamData,
+              child: SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Center(
                 child: ConstrainedBox(
@@ -819,6 +825,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                   ),
                 ),
               ),
+            ),
             ),
     );
   }

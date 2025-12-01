@@ -6,8 +6,8 @@ import '../providers/auth_provider.dart';
 import '../providers/localization_provider.dart';
 import '../services/localization_service.dart';
 import '../services/error_handler.dart';
-import '../services/feedback_service.dart';
 import '../utils/validators.dart';
+import '../utils/error_message_formatter.dart';
 import '../constants/translation_keys.dart';
 import '../design_system/components/buttons/primary_button.dart';
 import '../design_system/components/forms/app_text_field.dart';
@@ -31,7 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
 
   bool _obscurePassword = true;
-  // Local submitting flag to disable the submit button while submitting.
   bool _isSubmitting = false;
 
   @override
@@ -58,26 +57,16 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       if (!mounted) return;
 
-      // Debug: Log JWT token
-
-      // Show success feedback
-      context.showSuccess(LocalizationService().translate('login_success'));
-
-      context.go('/home');
+      if (mounted) context.showSuccess(LocalizationService().translate('login_success'));
+      if (mounted) context.go('/home');
     } catch (error, st) {
       if (!mounted) return;
-
-      // Log the error with context
       ErrorHandler.logError(error, st, 'LoginScreen._login');
-
-      // Show error feedback with retry option
-      context.showError(error, onRetry: () => _login());
+      if (mounted) context.showError(error, onRetry: () => _login());
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +85,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Header
                     FadeInAnimation(
                       delay: const Duration(milliseconds: 200),
                       child: Column(
@@ -130,12 +118,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     AppSpacing.verticalXxl,
 
-                    // Form
                     Form(
                       key: _formKey,
                       child: Column(
                         children: [
-                          // Email Field
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 400),
                             child: AppTextField(
@@ -150,7 +136,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           AppSpacing.verticalLg,
 
-                          // Password Field
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 600),
                             child: AppTextField(
@@ -177,7 +162,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           AppSpacing.verticalMd,
 
-                          // Forgot Password
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 800),
                             child: Align(
@@ -196,7 +180,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           AppSpacing.verticalXl,
 
-                          // Login Button
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 1000),
                             child: SizedBox(
@@ -211,7 +194,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           AppSpacing.verticalLg,
 
-                          // Divider
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 1200),
                             child: Row(
@@ -233,7 +215,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           AppSpacing.verticalLg,
 
-                          // Sign Up Link
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 1400),
                             child: Row(
@@ -268,4 +249,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-

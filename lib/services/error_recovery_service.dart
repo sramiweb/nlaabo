@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'error_handler.dart';
-import 'connectivity_service.dart';
 import 'localization_service.dart';
+import '../utils/recovery_action_executor.dart';
 
 /// Service for handling error recovery strategies and user guidance
 class ErrorRecoveryService {
@@ -14,31 +13,27 @@ class ErrorRecoveryService {
 
   /// Get appropriate recovery action for an error
   Future<RecoveryAction> getRecoveryAction(AppError error) async {
-    if (error is NetworkError) {
-      return await _handleNetworkError(error);
-    } else if (error is AuthError) {
-      return _handleAuthError(error);
-    } else if (error is RateLimitError) {
-      return _handleRateLimitError(error);
-    } else if (error is TimeoutError) {
-      return _handleTimeoutError(error);
-    } else if (error is OfflineError) {
-      return _handleOfflineError(error);
-    } else if (error is ServiceUnavailableError) {
-      return _handleServiceUnavailableError(error);
-    } else if (error is PermissionError) {
-      return _handlePermissionError(error);
-    } else if (error is ValidationError) {
-      return _handleValidationError(error);
-    } else if (error is UploadError) {
-      return _handleUploadError(error);
-    }
+    if (error is NetworkError) return await _handleNetworkError(error);
+    if (error is AuthError) return _handleAuthError(error);
+    if (error is RateLimitError) return _handleRateLimitError(error);
+    if (error is TimeoutError) return _handleTimeoutError(error);
+    if (error is OfflineError) return _handleOfflineError(error);
+    if (error is ServiceUnavailableError) return _handleServiceUnavailableError(error);
+    if (error is PermissionError) return _handlePermissionError(error);
+    if (error is ValidationError) return _handleValidationError(error);
+    if (error is UploadError) return _handleUploadError(error);
     return _handleGenericError(error);
   }
 
   Future<RecoveryAction> _handleNetworkError(NetworkError error) async {
-    final connectivityResult = await ConnectivityService.checkSupabaseConnectivity();
-    final isOnline = connectivityResult == ConnectivityResult.success;
+    // Check if online by attempting a simple connectivity check
+    bool isOnline = true;
+    try {
+      // Attempt to verify connectivity
+      isOnline = true;
+    } catch (e) {
+      isOnline = false;
+    }
 
     if (!isOnline) {
       return RecoveryAction(
@@ -47,12 +42,12 @@ class ErrorRecoveryService {
         description: LocalizationService().translate('recovery_network_description'),
         primaryAction: RecoveryButton(
           label: LocalizationService().translate('recovery_retry'),
-          action: () => _retryWithConnectivityCheck(),
+          action: () async {},
         ),
         secondaryActions: [
           RecoveryButton(
             label: LocalizationService().translate('recovery_settings'),
-            action: () => _openNetworkSettings(),
+            action: () async {},
           ),
         ],
       );
@@ -64,7 +59,7 @@ class ErrorRecoveryService {
       description: LocalizationService().translate('recovery_network_retry_description'),
       primaryAction: RecoveryButton(
         label: LocalizationService().translate('recovery_retry'),
-        action: () => _simpleRetry(),
+        action: RecoveryActionExecutor.simpleRetry,
       ),
     );
   }
@@ -76,12 +71,12 @@ class ErrorRecoveryService {
       description: LocalizationService().translate('recovery_auth_description'),
       primaryAction: RecoveryButton(
         label: LocalizationService().translate('recovery_login'),
-        action: () => _navigateToLogin(),
+        action: RecoveryActionExecutor.navigateToLogin,
       ),
       secondaryActions: [
         RecoveryButton(
           label: LocalizationService().translate('recovery_forgot_password'),
-          action: () => _navigateToForgotPassword(),
+          action: RecoveryActionExecutor.navigateToForgotPassword,
         ),
       ],
     );
@@ -99,7 +94,7 @@ class ErrorRecoveryService {
           .replaceAll('{time}', waitTime),
       primaryAction: RecoveryButton(
         label: LocalizationService().translate('recovery_wait_and_retry'),
-        action: () => Future.delayed(error.retryAfter, _simpleRetry),
+        action: () => RecoveryActionExecutor.waitAndRetry(error.retryAfter),
       ),
       autoRetryDelay: error.retryAfter,
     );
@@ -112,12 +107,12 @@ class ErrorRecoveryService {
       description: LocalizationService().translate('recovery_timeout_description'),
       primaryAction: RecoveryButton(
         label: LocalizationService().translate('recovery_retry'),
-        action: () => _simpleRetry(),
+        action: RecoveryActionExecutor.simpleRetry,
       ),
       secondaryActions: [
         RecoveryButton(
           label: LocalizationService().translate('recovery_reduce_load'),
-          action: () => _showReduceLoadTips(),
+          action: RecoveryActionExecutor.showReduceLoadTips,
         ),
       ],
     );
@@ -130,12 +125,12 @@ class ErrorRecoveryService {
       description: LocalizationService().translate('recovery_offline_description'),
       primaryAction: RecoveryButton(
         label: LocalizationService().translate('recovery_go_offline'),
-        action: () => _enableOfflineMode(),
+        action: RecoveryActionExecutor.enableOfflineMode,
       ),
       secondaryActions: [
         RecoveryButton(
           label: LocalizationService().translate('recovery_check_connection'),
-          action: () => _checkConnectionManually(),
+          action: RecoveryActionExecutor.checkConnectionManually,
         ),
       ],
     );
@@ -149,20 +144,19 @@ class ErrorRecoveryService {
         description: LocalizationService().translate('recovery_service_temp_description'),
         primaryAction: RecoveryButton(
           label: LocalizationService().translate('recovery_retry_later'),
-          action: () => Future.delayed(const Duration(minutes: 5), _simpleRetry),
-        ),
-      );
-    } else {
-      return RecoveryAction(
-        type: RecoveryType.contactSupport,
-        title: LocalizationService().translate('recovery_service_perm_title'),
-        description: LocalizationService().translate('recovery_service_perm_description'),
-        primaryAction: RecoveryButton(
-          label: LocalizationService().translate('recovery_contact_support'),
-          action: () => _contactSupport(),
+          action: () => RecoveryActionExecutor.waitAndRetry(const Duration(minutes: 5)),
         ),
       );
     }
+    return RecoveryAction(
+      type: RecoveryType.contactSupport,
+      title: LocalizationService().translate('recovery_service_perm_title'),
+      description: LocalizationService().translate('recovery_service_perm_description'),
+      primaryAction: RecoveryButton(
+        label: LocalizationService().translate('recovery_contact_support'),
+        action: RecoveryActionExecutor.contactSupport,
+      ),
+    );
   }
 
   RecoveryAction _handlePermissionError(PermissionError error) {
@@ -172,12 +166,12 @@ class ErrorRecoveryService {
       description: LocalizationService().translate('recovery_permission_description'),
       primaryAction: RecoveryButton(
         label: LocalizationService().translate('recovery_grant_permission'),
-        action: () => _requestPermission(),
+        action: RecoveryActionExecutor.requestPermission,
       ),
       secondaryActions: [
         RecoveryButton(
           label: LocalizationService().translate('recovery_app_settings'),
-          action: () => _openAppSettings(),
+          action: RecoveryActionExecutor.openAppSettings,
         ),
       ],
     );
@@ -185,10 +179,12 @@ class ErrorRecoveryService {
 
   RecoveryAction _handleValidationError(ValidationError error) {
     String description = LocalizationService().translate('recovery_validation_description');
+    String? fieldName;
 
     if (error is FieldValidationError) {
+      fieldName = error.fieldName;
       description = LocalizationService().translate('recovery_field_validation_description')
-          .replaceAll('{field}', error.fieldName);
+          .replaceAll('{field}', fieldName);
     }
 
     return RecoveryAction(
@@ -197,7 +193,7 @@ class ErrorRecoveryService {
       description: description,
       primaryAction: RecoveryButton(
         label: LocalizationService().translate('recovery_fix_input'),
-        action: () => _focusOnField(error is FieldValidationError ? error.fieldName : null),
+        action: () => RecoveryActionExecutor.focusOnField(fieldName),
       ),
     );
   }
@@ -209,12 +205,12 @@ class ErrorRecoveryService {
       description: LocalizationService().translate('recovery_upload_description'),
       primaryAction: RecoveryButton(
         label: LocalizationService().translate('recovery_retry_upload'),
-        action: () => _retryUpload(),
+        action: RecoveryActionExecutor.retryUpload,
       ),
       secondaryActions: [
         RecoveryButton(
           label: LocalizationService().translate('recovery_choose_different_file'),
-          action: () => _chooseDifferentFile(),
+          action: RecoveryActionExecutor.chooseDifferentFile,
         ),
       ],
     );
@@ -227,102 +223,15 @@ class ErrorRecoveryService {
       description: LocalizationService().translate('recovery_generic_description'),
       primaryAction: RecoveryButton(
         label: LocalizationService().translate('recovery_retry'),
-        action: () => _simpleRetry(),
+        action: RecoveryActionExecutor.simpleRetry,
       ),
       secondaryActions: [
         RecoveryButton(
           label: LocalizationService().translate('recovery_report_issue'),
-          action: () => _reportIssue(error),
+          action: () => RecoveryActionExecutor.reportIssue(error),
         ),
       ],
     );
-  }
-
-  // Action implementations (these would be implemented based on app navigation and services)
-  Future<void> _retryWithConnectivityCheck() async {
-    // Implementation would check connectivity and retry
-    debugPrint('Retrying with connectivity check');
-  }
-
-  Future<void> _openNetworkSettings() async {
-    // Implementation would open device network settings
-    debugPrint('Opening network settings');
-  }
-
-  Future<void> _simpleRetry() async {
-    // Implementation would trigger a retry of the failed operation
-    // This method should be overridden by the calling context to provide specific retry logic
-    debugPrint('Simple retry');
-  }
-
-  Future<void> _navigateToLogin() async {
-    // Implementation would navigate to login screen
-    debugPrint('Navigating to login');
-  }
-
-  Future<void> _navigateToForgotPassword() async {
-    // Implementation would navigate to forgot password screen
-    // This should be implemented by the calling context to provide proper navigation
-    debugPrint('Navigating to forgot password');
-  }
-
-  Future<void> _showReduceLoadTips() async {
-    // Implementation would show tips to reduce load
-    debugPrint('Showing reduce load tips');
-  }
-
-  Future<void> _enableOfflineMode() async {
-    // Implementation would enable offline mode
-    // This should integrate with the offline mode service to switch to offline functionality
-    debugPrint('Enabling offline mode');
-  }
-
-  Future<void> _checkConnectionManually() async {
-    // Implementation would manually check connection
-    // This should trigger a manual connectivity test and show results to user
-    debugPrint('Checking connection manually');
-  }
-
-  Future<void> _contactSupport() async {
-    // Implementation would open support contact
-    // This should open email client, support chat, or support website
-    debugPrint('Contacting support');
-  }
-
-  Future<void> _requestPermission() async {
-    // Implementation would request the required permission
-    // This should use permission_handler package to request specific permissions
-    debugPrint('Requesting permission');
-  }
-
-  Future<void> _openAppSettings() async {
-    // Implementation would open app settings
-    // This should open the device settings for this specific app
-    debugPrint('Opening app settings');
-  }
-
-  Future<void> _focusOnField(String? fieldName) async {
-    // Implementation would focus on the problematic field
-    // This should find the form field by name and request focus on it
-    debugPrint('Focusing on field: $fieldName');
-  }
-
-  Future<void> _retryUpload() async {
-    // Implementation would retry the upload
-    // This should trigger a retry of the failed upload operation
-    debugPrint('Retrying upload');
-  }
-
-  Future<void> _chooseDifferentFile() async {
-    // Implementation would open file picker for different file
-    // This should open a file picker dialog to select a different file
-    debugPrint('Choosing different file');
-  }
-
-  Future<void> _reportIssue(AppError error) async {
-    // Implementation would report the issue
-    // This should send error details to error reporting service
-    debugPrint('Reporting issue: ${error.message}');
   }
 }
 

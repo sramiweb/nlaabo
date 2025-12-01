@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import '../utils/app_logger.dart';
 import 'localization_service.dart';
 import 'dart:async';
 
@@ -458,7 +459,7 @@ class ErrorHandler {
     // Only log in debug mode to avoid console spam
     if (kDebugMode) {
       final String ctx = context != null ? ' [$context]' : '';
-      debugPrint(
+      logError(
         'Error$ctx: ${standardizedError.runtimeType} (${standardizedError.code})',
       );
     }
