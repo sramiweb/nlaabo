@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 
 /// Cache entry with TTL support
 class CacheEntry<T> {

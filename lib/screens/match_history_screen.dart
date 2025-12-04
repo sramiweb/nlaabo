@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import '../models/match.dart';
 import '../services/api_service.dart';
 import '../services/localization_service.dart';
@@ -84,7 +83,7 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
                               const SizedBox(height: 4),
                               Text('Date: ${match.matchDate.toLocal().toString().split('.')[0]}'),
                               Text('Location: ${match.location}'),
-                              if (match.status != null) Text('Status: ${match.status}'),
+                              Text('Status: ${match.status}'),
                             ],
                           ),
                           onTap: () => context.push('/match/${match.id}'),

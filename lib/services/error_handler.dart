@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import '../utils/app_logger.dart';
 import 'localization_service.dart';
 import 'dart:async';
 

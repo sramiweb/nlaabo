@@ -208,7 +208,7 @@ class AsyncFormHelper {
       final result = await operation();
       onLoadingEnd();
       return result;
-    } catch (error, st) {
+    } catch (error) {
       onLoadingEnd();
       onError(error);
       return null;
@@ -233,7 +233,7 @@ class AsyncFormHelper {
       }
       onLoadingEnd();
       return results;
-    } catch (error, st) {
+    } catch (error) {
       onLoadingEnd();
       onError(error);
       return [];

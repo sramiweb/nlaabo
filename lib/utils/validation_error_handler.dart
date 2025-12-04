@@ -54,11 +54,11 @@ class ValidationErrorHandler {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.warning_amber, color: Colors.white),
-                const SizedBox(width: 12),
-                const Expanded(
+                Icon(Icons.warning_amber, color: Colors.white),
+                SizedBox(width: 12),
+                Expanded(
                   child: Text(
                     'Validation Errors',
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

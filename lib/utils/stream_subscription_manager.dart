@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 
 /// Manages stream subscriptions with automatic cleanup
 class StreamSubscriptionManager {

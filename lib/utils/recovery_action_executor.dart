@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import '../services/error_handler.dart';
 import '../services/connectivity_service.dart';
-import '../services/localization_service.dart';
 import 'app_logger.dart';
 
 /// Consolidated recovery action executor for all error recovery operations

@@ -6,6 +6,7 @@
 /// - Unused repository imports
 /// - Unused widget imports
 /// - Unused utility imports
+library;
 
 class ImportAnalyzer {
   static const Map<String, List<String>> commonUnused = {
