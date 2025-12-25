@@ -19,12 +19,11 @@ class GlobalErrorBoundary extends StatefulWidget {
 
 class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
   Object? _error;
-  StackTrace? _stackTrace;
 
   @override
   void initState() {
     super.initState();
-    
+
     // Catch Flutter framework errors
     FlutterError.onError = (details) {
       _handleError(details.exception, details.stack);
@@ -37,7 +36,6 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
       if (mounted) {
         setState(() {
           _error = error;
-          _stackTrace = stackTrace;
         });
       }
     });
@@ -55,7 +53,6 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
   void _retry() {
     setState(() {
       _error = null;
-      _stackTrace = null;
     });
   }
 

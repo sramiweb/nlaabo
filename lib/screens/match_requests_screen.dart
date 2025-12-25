@@ -39,10 +39,8 @@ class _MatchRequestsScreenState extends State<MatchRequestsScreen> {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              LocalizationService().translate('errorLoadingRequests') ?? 
-              'Failed to load match requests: $e'
-            ),
+            content:
+                Text(LocalizationService().translate('errorLoadingRequests')),
             backgroundColor: Colors.red,
           ),
         );
@@ -67,10 +65,8 @@ class _MatchRequestsScreenState extends State<MatchRequestsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              LocalizationService().translate('errorAcceptingRequest') ?? 
-              'Failed to accept request: $e'
-            ),
+            content:
+                Text(LocalizationService().translate('errorAcceptingRequest')),
             backgroundColor: Colors.red,
           ),
         );
@@ -84,7 +80,8 @@ class _MatchRequestsScreenState extends State<MatchRequestsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Reject Match Request'),
-        content: const Text('Are you sure you want to reject this match request?'),
+        content:
+            const Text('Are you sure you want to reject this match request?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -116,10 +113,8 @@ class _MatchRequestsScreenState extends State<MatchRequestsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              LocalizationService().translate('errorRejectingRequest') ?? 
-              'Failed to reject request: $e'
-            ),
+            content:
+                Text(LocalizationService().translate('errorRejectingRequest')),
             backgroundColor: Colors.red,
           ),
         );
@@ -159,8 +154,8 @@ class _MatchRequestsScreenState extends State<MatchRequestsScreen> {
                       Text(
                         'Match requests from other teams will appear here',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey[600],
-                        ),
+                              color: Colors.grey[600],
+                            ),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -173,7 +168,7 @@ class _MatchRequestsScreenState extends State<MatchRequestsScreen> {
                     itemBuilder: (context, index) {
                       final match = _pendingRequests[index];
                       final isProcessing = _processingIds[match.id] ?? false;
-                      
+
                       return Card(
                         margin: const EdgeInsets.all(8),
                         child: ListTile(
@@ -197,18 +192,21 @@ class _MatchRequestsScreenState extends State<MatchRequestsScreen> {
                               ? const SizedBox(
                                   width: 24,
                                   height: 24,
-                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
                                 )
                               : Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      icon: const Icon(Icons.check, color: Colors.green),
+                                      icon: const Icon(Icons.check,
+                                          color: Colors.green),
                                       onPressed: () => _handleAccept(match),
                                       tooltip: 'Accept',
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.close, color: Colors.red),
+                                      icon: const Icon(Icons.close,
+                                          color: Colors.red),
                                       onPressed: () => _handleReject(match),
                                       tooltip: 'Reject',
                                     ),

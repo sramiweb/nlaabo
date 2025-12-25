@@ -13,8 +13,10 @@ class ImageManagementService {
   final ImageUploadService _uploadService = ImageUploadService();
 
   // Storage quotas (in bytes)
-  static const int userAvatarQuota = 50 * 1024 * 1024; // 50MB per user for avatars
-  static const int teamLogoQuota = 100 * 1024 * 1024; // 100MB per team for logos
+  static const int userAvatarQuota =
+      50 * 1024 * 1024; // 50MB per user for avatars
+  static const int teamLogoQuota =
+      100 * 1024 * 1024; // 100MB per team for logos
 
   // Cache configuration
   static const Duration cacheDuration = Duration(days: 7);
@@ -127,11 +129,12 @@ class ImageManagementService {
           .eq('user_id', userId)
           .single();
 
+      final usedBytes = (response['used_bytes'] as int?) ?? 0;
       return {
-        'used': response['used_bytes'] ?? 0,
+        'used': usedBytes,
         'quota': userAvatarQuota,
-        'available': userAvatarQuota - (response['used_bytes'] ?? 0),
-        'percentage': ((response['used_bytes'] ?? 0) / userAvatarQuota) * 100,
+        'available': userAvatarQuota - usedBytes,
+        'percentage': (usedBytes / userAvatarQuota) * 100,
       };
     } catch (e) {
       // If no record exists, return default values
@@ -153,11 +156,12 @@ class ImageManagementService {
           .eq('team_id', teamId)
           .single();
 
+      final usedBytes = (response['used_bytes'] as int?) ?? 0;
       return {
-        'used': response['used_bytes'] ?? 0,
+        'used': usedBytes,
         'quota': teamLogoQuota,
-        'available': teamLogoQuota - (response['used_bytes'] ?? 0),
-        'percentage': ((response['used_bytes'] ?? 0) / teamLogoQuota) * 100,
+        'available': teamLogoQuota - usedBytes,
+        'percentage': (usedBytes / teamLogoQuota) * 100,
       };
     } catch (e) {
       // If no record exists, return default values
@@ -194,7 +198,8 @@ class ImageManagementService {
       // Remove oldest files if cache exceeds max objects
       if (files.length > maxCacheObjects) {
         final sortedFiles = files.whereType<File>().toList()
-          ..sort((a, b) => a.statSync().modified.compareTo(b.statSync().modified));
+          ..sort(
+              (a, b) => a.statSync().modified.compareTo(b.statSync().modified));
 
         final excessCount = files.length - maxCacheObjects;
         for (var i = 0; i < excessCount; i++) {
@@ -262,27 +267,29 @@ class ImageManagementService {
   }
 
   /// Checks if user has enough storage quota
-  Future<void> _checkUserStorageQuota(String userId, int additionalBytes) async {
+  Future<void> _checkUserStorageQuota(
+      String userId, int additionalBytes) async {
     final usage = await getUserStorageUsage(userId);
     final newTotal = usage['used'] + additionalBytes;
 
     if (newTotal > userAvatarQuota) {
       throw Exception(
         'Storage quota exceeded. You have used ${usage['used']} bytes out of $userAvatarQuota bytes. '
-            'Additional $additionalBytes bytes would exceed your limit.',
+        'Additional $additionalBytes bytes would exceed your limit.',
       );
     }
   }
 
   /// Checks if team has enough storage quota
-  Future<void> _checkTeamStorageQuota(String teamId, int additionalBytes) async {
+  Future<void> _checkTeamStorageQuota(
+      String teamId, int additionalBytes) async {
     final usage = await getTeamStorageUsage(teamId);
-    final newTotal = usage['used'] + additionalBytes;
+    final newTotal = (usage['used'] as int) + additionalBytes;
 
     if (newTotal > teamLogoQuota) {
       throw Exception(
         'Storage quota exceeded. The team has used ${usage['used']} bytes out of $teamLogoQuota bytes. '
-            'Additional $additionalBytes bytes would exceed the limit.',
+        'Additional $additionalBytes bytes would exceed the limit.',
       );
     }
   }
@@ -323,12 +330,15 @@ class ImageManagementService {
 
   /// Validates image before upload with comprehensive security checks
   Future<void> validateImage(File imageFile, {bool isAvatar = true}) async {
-    final maxSize = isAvatar ? ImageUploadService.maxAvatarSize : ImageUploadService.maxLogoSize;
+    final maxSize = isAvatar
+        ? ImageUploadService.maxAvatarSize
+        : ImageUploadService.maxLogoSize;
 
     // Check file size
     final fileSize = await imageFile.length();
     if (fileSize > maxSize) {
-      throw Exception('Image file is too large. Maximum size is ${maxSize ~/ (1024 * 1024)}MB.');
+      throw Exception(
+          'Image file is too large. Maximum size is ${maxSize ~/ (1024 * 1024)}MB.');
     }
 
     // Check for minimum file size (prevent empty or tiny files)
@@ -337,16 +347,20 @@ class ImageManagementService {
     }
 
     // Check file extension
-    final extension = path.extension(imageFile.path).toLowerCase().replaceAll('.', '');
+    final extension =
+        path.extension(imageFile.path).toLowerCase().replaceAll('.', '');
     if (!ImageUploadService.supportedFormats.contains(extension)) {
-      throw Exception('Unsupported image format. Supported formats: ${ImageUploadService.supportedFormats.join(", ")}');
+      throw Exception(
+          'Unsupported image format. Supported formats: ${ImageUploadService.supportedFormats.join(", ")}');
     }
 
     // Read file header to validate actual file type (prevent extension spoofing)
     final fileBytes = await imageFile.readAsBytes();
     final actualFormat = _detectImageFormat(fileBytes);
-    if (actualFormat == null || !ImageUploadService.supportedFormats.contains(actualFormat)) {
-      throw Exception('File content does not match the declared image format. Possible security threat detected.');
+    if (actualFormat == null ||
+        !ImageUploadService.supportedFormats.contains(actualFormat)) {
+      throw Exception(
+          'File content does not match the declared image format. Possible security threat detected.');
     }
 
     // Check for malicious content in file header
@@ -363,19 +377,22 @@ class ImageManagementService {
         final height = dimensions['height'];
         if (width != null && height != null) {
           if (width > maxDimension || height > maxDimension) {
-            throw Exception('Image dimensions are too large. Maximum allowed dimension is ${maxDimension}px.');
+            throw Exception(
+                'Image dimensions are too large. Maximum allowed dimension is ${maxDimension}px.');
           }
 
           // Check aspect ratio to prevent extremely skewed images
           final aspectRatio = width / height;
           if (aspectRatio > 10 || aspectRatio < 0.1) {
-            throw Exception('Image aspect ratio is invalid. Please use a more balanced image.');
+            throw Exception(
+                'Image aspect ratio is invalid. Please use a more balanced image.');
           }
         }
       }
     } catch (e) {
       // If we can't decode dimensions, still allow upload but log warning
-      ErrorHandler.logError(e, null, 'ImageManagementService.validateImage - dimension check failed');
+      ErrorHandler.logError(e, null,
+          'ImageManagementService.validateImage - dimension check failed');
     }
   }
 
@@ -389,19 +406,31 @@ class ImageManagementService {
     }
 
     // PNG: 89 50 4E 47
-    if (bytes[0] == 0x89 && bytes[1] == 0x50 && bytes[2] == 0x4E && bytes[3] == 0x47) {
+    if (bytes[0] == 0x89 &&
+        bytes[1] == 0x50 &&
+        bytes[2] == 0x4E &&
+        bytes[3] == 0x47) {
       return 'png';
     }
 
     // GIF: 47 49 46 38
-    if (bytes[0] == 0x47 && bytes[1] == 0x49 && bytes[2] == 0x46 && bytes[3] == 0x38) {
+    if (bytes[0] == 0x47 &&
+        bytes[1] == 0x49 &&
+        bytes[2] == 0x46 &&
+        bytes[3] == 0x38) {
       return 'gif';
     }
 
     // WebP: 52 49 46 46 (RIFF) followed by WEBP
     if (bytes.length >= 12 &&
-        bytes[0] == 0x52 && bytes[1] == 0x49 && bytes[2] == 0x46 && bytes[3] == 0x46 &&
-        bytes[8] == 0x57 && bytes[9] == 0x45 && bytes[10] == 0x42 && bytes[11] == 0x50) {
+        bytes[0] == 0x52 &&
+        bytes[1] == 0x49 &&
+        bytes[2] == 0x46 &&
+        bytes[3] == 0x46 &&
+        bytes[8] == 0x57 &&
+        bytes[9] == 0x45 &&
+        bytes[10] == 0x42 &&
+        bytes[11] == 0x50) {
       return 'webp';
     }
 
@@ -411,7 +440,8 @@ class ImageManagementService {
   /// Checks for malicious patterns in image file
   bool _containsMaliciousPatterns(List<int> bytes) {
     // Check for embedded scripts or HTML
-    final byteString = String.fromCharCodes(bytes.take(512)); // Check first 512 bytes
+    final byteString =
+        String.fromCharCodes(bytes.take(512)); // Check first 512 bytes
 
     final maliciousPatterns = [
       RegExp(r'<script', caseSensitive: false),
@@ -432,7 +462,8 @@ class ImageManagementService {
   }
 
   /// Gets image dimensions from file bytes
-  Future<Map<String, int>?> _getImageDimensions(List<int> bytes, String format) async {
+  Future<Map<String, int>?> _getImageDimensions(
+      List<int> bytes, String format) async {
     try {
       // For now, return null - dimension checking can be implemented with image package
       // This prevents adding another dependency but still provides the security framework
@@ -446,11 +477,14 @@ class ImageManagementService {
   Future<void> cleanupUserImages(String userId) async {
     try {
       // Get all user avatars
-      final avatars = await _supabase.storage.from('avatars').list(path: userId);
+      final avatars =
+          await _supabase.storage.from('avatars').list(path: userId);
 
       // Delete from storage
       for (final avatar in avatars) {
-        await _supabase.storage.from('avatars').remove(['$userId/${avatar.name}']);
+        await _supabase.storage
+            .from('avatars')
+            .remove(['$userId/${avatar.name}']);
       }
 
       // Clear user storage usage
@@ -464,11 +498,14 @@ class ImageManagementService {
   Future<void> cleanupTeamImages(String teamId) async {
     try {
       // Get all team logos
-      final logos = await _supabase.storage.from('team-logos').list(path: teamId);
+      final logos =
+          await _supabase.storage.from('team-logos').list(path: teamId);
 
       // Delete from storage
       for (final logo in logos) {
-        await _supabase.storage.from('team-logos').remove(['$teamId/${logo.name}']);
+        await _supabase.storage
+            .from('team-logos')
+            .remove(['$teamId/${logo.name}']);
       }
 
       // Clear team storage usage

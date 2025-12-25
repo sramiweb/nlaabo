@@ -60,7 +60,15 @@ class Match {
     if (location.trim().isEmpty) {
       throw ArgumentError('Match location cannot be empty');
     }
-    if (!['pending', 'confirmed', 'open', 'closed', 'cancelled', 'completed', 'in_progress'].contains(status)) {
+    if (![
+      'pending',
+      'confirmed',
+      'open',
+      'closed',
+      'cancelled',
+      'completed',
+      'in_progress'
+    ].contains(status)) {
       throw ArgumentError(
         'Invalid status: must be pending, confirmed, open, closed, cancelled, completed, or in_progress',
       );
@@ -81,14 +89,19 @@ class Match {
     }
 
     // Handle both legacy team_id and new team1_id/team2_id structure
-    final teamId = json['team_id'] ?? json['teamId'] ?? json['team1_id'] ?? json['team_1_id'] ?? '';
+    final teamId = json['team_id'] ??
+        json['teamId'] ??
+        json['team1_id'] ??
+        json['team_1_id'] ??
+        '';
     if (teamId.toString().trim().isEmpty) {
       throw const FormatException('Team ID is required and cannot be empty');
     }
 
     final location = json['location'];
     if (location == null || location.toString().trim().isEmpty) {
-      throw const FormatException('Match location is required and cannot be empty');
+      throw const FormatException(
+          'Match location is required and cannot be empty');
     }
 
     // Parse and validate matchDate
@@ -119,7 +132,8 @@ class Match {
 
     // Validate status
     final status = json['status']?.toString() ?? 'pending';
-    if (!['pending', 'confirmed', 'open', 'closed', 'cancelled', 'completed'].contains(status)) {
+    if (!['pending', 'confirmed', 'open', 'closed', 'cancelled', 'completed']
+        .contains(status)) {
       throw const FormatException(
         'Invalid status: must be pending, confirmed, open, closed, cancelled, or completed',
       );
@@ -137,8 +151,7 @@ class Match {
     }
 
     // Validate matchType
-    final matchType =
-        json['match_type']?.toString() ??
+    final matchType = json['match_type']?.toString() ??
         json['matchType']?.toString() ??
         'mixed';
     if (!['male', 'female', 'mixed'].contains(matchType)) {
@@ -154,34 +167,38 @@ class Match {
       location: location.toString().trim(),
       status: status,
       createdAt: createdAt,
-      teamName:
-          json['teams']?['name']?.toString() ??
+      teamName: (json['teams'] as Map<String, dynamic>?)?['name']?.toString() ??
           json['team_name']?.toString() ??
           json['teamName']?.toString(),
       title: json['title']?.toString() ?? json['match_title']?.toString(),
       team1Id: json['team1_id']?.toString() ?? json['team_1_id']?.toString(),
       team2Id: json['team2_id']?.toString() ?? json['team_2_id']?.toString(),
-      team1Name:
-          json['team1_name']?.toString() ??
+      team1Name: json['team1_name']?.toString() ??
           json['team_1_name']?.toString() ??
           json['team1Name']?.toString(),
-      team2Name:
-          json['team2_name']?.toString() ??
+      team2Name: json['team2_name']?.toString() ??
           json['team_2_name']?.toString() ??
           json['team2Name']?.toString(),
       maxPlayers: maxPlayers != null ? int.parse(maxPlayers.toString()) : null,
       description: json['description']?.toString(),
-      createdBy:
-          json['owner_id']?.toString() ??
+      createdBy: json['owner_id']?.toString() ??
           json['created_by']?.toString() ??
           json['createdBy']?.toString(),
       matchType: matchType,
-      team1Score: json['team1_score'] != null ? int.tryParse(json['team1_score'].toString()) : null,
-      team2Score: json['team2_score'] != null ? int.tryParse(json['team2_score'].toString()) : null,
+      team1Score: json['team1_score'] != null
+          ? int.tryParse(json['team1_score'].toString())
+          : null,
+      team2Score: json['team2_score'] != null
+          ? int.tryParse(json['team2_score'].toString())
+          : null,
       resultNotes: json['result_notes']?.toString(),
-      completedAt: json['completed_at'] != null ? DateTime.tryParse(json['completed_at'].toString()) : null,
+      completedAt: json['completed_at'] != null
+          ? DateTime.tryParse(json['completed_at'].toString())
+          : null,
       team2Confirmed: json['team2_confirmed'] == true,
-      durationMinutes: json['duration_minutes'] != null ? int.tryParse(json['duration_minutes'].toString()) ?? 90 : 90,
+      durationMinutes: json['duration_minutes'] != null
+          ? int.tryParse(json['duration_minutes'].toString()) ?? 90
+          : 90,
       isRecurring: json['is_recurring'] == true,
       recurrencePattern: json['recurrence_pattern']?.toString(),
     );
@@ -207,7 +224,8 @@ class Match {
     if (team2Id != null) map['team2_id'] = team2Id;
     map['duration_minutes'] = durationMinutes;
     map['is_recurring'] = isRecurring;
-    if (recurrencePattern != null) map['recurrence_pattern'] = recurrencePattern;
+    if (recurrencePattern != null)
+      map['recurrence_pattern'] = recurrencePattern;
 
     return map;
   }

@@ -39,17 +39,19 @@ class TeamPreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardWidth = ResponsiveUtils.getCardWidth(context, maxWidth: TeamPreviewCardConstants.cardWidth);
-    final iconSize = ResponsiveUtils.getIconSize(context, TeamPreviewCardConstants.iconSize);
+    final cardWidth = ResponsiveUtils.getCardWidth(context,
+        maxWidth: TeamPreviewCardConstants.cardWidth);
+    final iconSize =
+        ResponsiveUtils.getIconSize(context, TeamPreviewCardConstants.iconSize);
 
-    final teamName = team.name ?? '';
+    final teamName = team.name;
     final location = team.location;
     final logo = team.logo;
 
-    final semanticLabel = AccessibilityUtils.getSemanticLabel('team_preview', teamName);
-    final semanticHint = isSelected
-        ? 'Team selected for match'
-        : 'Tap to select team for match';
+    final semanticLabel =
+        AccessibilityUtils.getSemanticLabel('team_preview', teamName);
+    final semanticHint =
+        isSelected ? 'Team selected for match' : 'Tap to select team for match';
 
     return Semantics(
       label: semanticLabel,
@@ -60,7 +62,8 @@ class TeamPreviewCard extends StatelessWidget {
       child: Card(
         elevation: isSelected ? 6 : 2,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(TeamPreviewCardConstants.cardBorderRadius),
+          borderRadius:
+              BorderRadius.circular(TeamPreviewCardConstants.cardBorderRadius),
           side: isSelected
               ? BorderSide(
                   color: Theme.of(context).colorScheme.primary,
@@ -70,15 +73,20 @@ class TeamPreviewCard extends StatelessWidget {
         ),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(TeamPreviewCardConstants.cardBorderRadius),
+          borderRadius:
+              BorderRadius.circular(TeamPreviewCardConstants.cardBorderRadius),
           child: Container(
             width: cardWidth,
             height: TeamPreviewCardConstants.cardHeight,
             padding: const EdgeInsets.all(TeamPreviewCardConstants.padding),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(TeamPreviewCardConstants.cardBorderRadius),
+              borderRadius: BorderRadius.circular(
+                  TeamPreviewCardConstants.cardBorderRadius),
               color: isSelected
-                  ? Theme.of(context).colorScheme.primary.withOpacitySafe(TeamPreviewCardConstants.alphaSecondary)
+                  ? Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withOpacitySafe(TeamPreviewCardConstants.alphaSecondary)
                   : null,
             ),
             child: Row(
@@ -91,13 +99,19 @@ class TeamPreviewCard extends StatelessWidget {
                           imageUrl: logo,
                           width: TeamPreviewCardConstants.logoSize,
                           height: TeamPreviewCardConstants.logoSize,
-                          borderRadius: BorderRadius.circular(TeamPreviewCardConstants.cardBorderRadius),
+                          borderRadius: BorderRadius.circular(
+                              TeamPreviewCardConstants.cardBorderRadius),
                           placeholder: Container(
                             width: TeamPreviewCardConstants.logoSize,
                             height: TeamPreviewCardConstants.logoSize,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.secondary.withOpacitySafe(TeamPreviewCardConstants.alphaSecondary),
-                              borderRadius: BorderRadius.circular(TeamPreviewCardConstants.cardBorderRadius),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withOpacitySafe(
+                                      TeamPreviewCardConstants.alphaSecondary),
+                              borderRadius: BorderRadius.circular(
+                                  TeamPreviewCardConstants.cardBorderRadius),
                             ),
                             child: Icon(
                               Icons.groups,
@@ -110,8 +124,13 @@ class TeamPreviewCard extends StatelessWidget {
                           width: TeamPreviewCardConstants.logoSize,
                           height: TeamPreviewCardConstants.logoSize,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary.withOpacitySafe(TeamPreviewCardConstants.alphaSecondary),
-                            borderRadius: BorderRadius.circular(TeamPreviewCardConstants.cardBorderRadius),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacitySafe(
+                                    TeamPreviewCardConstants.alphaSecondary),
+                            borderRadius: BorderRadius.circular(
+                                TeamPreviewCardConstants.cardBorderRadius),
                           ),
                           child: Icon(
                             Icons.groups,
@@ -133,15 +152,19 @@ class TeamPreviewCard extends StatelessWidget {
                         teamName,
                         style: AccessibilityUtils.getAccessibleTextStyle(
                           context: context,
-                          baseStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onSurface,
-                            fontSize: context.isMobile
-                                ? TeamPreviewCardConstants.mobileFontSize
-                                : TeamPreviewCardConstants.desktopFontSize,
-                          ),
+                          baseStyle: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontSize: context.isMobile
+                                    ? TeamPreviewCardConstants.mobileFontSize
+                                    : TeamPreviewCardConstants.desktopFontSize,
+                              ),
                         ),
-                        maxLines: TeamPreviewCardConstants.teamNameMaxLines.toInt(),
+                        maxLines:
+                            TeamPreviewCardConstants.teamNameMaxLines.toInt(),
                         overflow: TextOverflow.ellipsis,
                       ),
 
@@ -152,19 +175,38 @@ class TeamPreviewCard extends StatelessWidget {
                             Icon(
                               Icons.location_on,
                               size: iconSize * 0.8,
-                              color: Theme.of(context).colorScheme.onSurface.withOpacitySafe(TeamPreviewCardConstants.alphaOnSurface),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withOpacitySafe(
+                                      TeamPreviewCardConstants.alphaOnSurface),
                             ),
-                            const SizedBox(width: TeamPreviewCardConstants.iconSpacing),
+                            const SizedBox(
+                                width: TeamPreviewCardConstants.iconSpacing),
                             Expanded(
                               child: Text(
                                 location,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface.withOpacitySafe(TeamPreviewCardConstants.alphaOnSurfaceText),
-                                  fontSize: context.isMobile
-                                      ? TeamPreviewCardConstants.mobileFontSize * 0.9
-                                      : TeamPreviewCardConstants.desktopFontSize * 0.9,
-                                ),
-                                maxLines: TeamPreviewCardConstants.locationMaxLines.toInt(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withOpacitySafe(
+                                              TeamPreviewCardConstants
+                                                  .alphaOnSurfaceText),
+                                      fontSize: context.isMobile
+                                          ? TeamPreviewCardConstants
+                                                  .mobileFontSize *
+                                              0.9
+                                          : TeamPreviewCardConstants
+                                                  .desktopFontSize *
+                                              0.9,
+                                    ),
+                                maxLines: TeamPreviewCardConstants
+                                    .locationMaxLines
+                                    .toInt(),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -187,7 +229,11 @@ class TeamPreviewCard extends StatelessWidget {
                       border: Border.all(
                         color: isSelected
                             ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.onSurface.withOpacitySafe(TeamPreviewCardConstants.alphaOnSurface),
+                            : Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacitySafe(
+                                    TeamPreviewCardConstants.alphaOnSurface),
                         width: 1.5,
                       ),
                     ),

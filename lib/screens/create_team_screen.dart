@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import '../widgets/directional_icon.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../services/team_service.dart';
-import '../services/user_service.dart';
 import '../services/web_team_service.dart';
 import '../services/localization_service.dart';
 import '../utils/validators.dart';
 import '../models/city.dart';
 import '../repositories/team_repository.dart';
-import '../repositories/user_repository.dart';
-import '../services/api_service.dart';
+import '../widgets/directional_icon.dart';
+
 import '../widgets/enhanced_form_field.dart';
 import '../constants/form_constants.dart';
 import '../utils/design_system.dart';
@@ -29,13 +26,10 @@ class CreateTeamScreen extends StatefulWidget {
 
 class _CreateTeamScreenState extends State<CreateTeamScreen> {
   TeamService? _teamService;
-  UserService? _userService;
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final ImagePicker _imagePicker = ImagePicker();
-  File? _selectedImage;
-  String? _uploadedImageUrl;
+
   City? _selectedCity; // Selected city object
   int _numberOfPlayers = 11;
   bool _isRecruiting = false;
@@ -43,7 +37,6 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
   int? _minAge;
   int? _maxAge;
   bool _isLoading = false;
-  bool _isUploadingImage = false;
   bool _isLoadingCities = true; // Loading state for cities
   // Local submitting flag to prevent duplicate submissions and disable button while submitting.
   bool _isSubmitting = false;
@@ -75,13 +68,9 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Auth token is now handled automatically by Supabase client
-      final apiService = ApiService();
-
       // Initialize repositories and services
-      final teamRepository = TeamRepository(apiService);
-      final userRepository = UserRepository(apiService);
+      final teamRepository = TeamRepository(Supabase.instance.client);
       _teamService = TeamService(teamRepository);
-      _userService = UserService(userRepository);
 
       _loadCities();
 
@@ -137,14 +126,19 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
     });
 
     // Log focus changes for debugging IME issues
-    final focusedNode = [_nameFocusNode, _descriptionFocusNode, _cityFocusNode, _playersFocusNode]
-        .firstWhere((node) => node.hasFocus, orElse: () => FocusNode());
+    final focusedNode = [
+      _nameFocusNode,
+      _descriptionFocusNode,
+      _cityFocusNode,
+      _playersFocusNode
+    ].firstWhere((node) => node.hasFocus, orElse: () => FocusNode());
 
     if (focusedNode != FocusNode()) {
       debugPrint('Focus changed to: ${focusedNode.toString()}');
 
       // Handle IME visibility for text fields
-      if (focusedNode == _nameFocusNode || focusedNode == _descriptionFocusNode) {
+      if (focusedNode == _nameFocusNode ||
+          focusedNode == _descriptionFocusNode) {
         _handleImeVisibility(true);
       } else {
         _handleImeVisibility(false);
@@ -161,8 +155,12 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
       // Ensure the form scrolls to show the focused field
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          final focusedNode = [_nameFocusNode, _descriptionFocusNode, _cityFocusNode, _playersFocusNode]
-              .firstWhere((node) => node.hasFocus, orElse: () => _nameFocusNode);
+          final focusedNode = [
+            _nameFocusNode,
+            _descriptionFocusNode,
+            _cityFocusNode,
+            _playersFocusNode
+          ].firstWhere((node) => node.hasFocus, orElse: () => _nameFocusNode);
           if (focusedNode.context != null) {
             Scrollable.ensureVisible(
               focusedNode.context!,
@@ -201,97 +199,6 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
     super.dispose();
   }
 
-  Future<void> _pickImage() async {
-    try {
-      final pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-      if (pickedFile != null) {
-        if (kIsWeb) {
-          // For web, use bytes directly
-          final bytes = await pickedFile.readAsBytes();
-          await _uploadImageBytes(bytes, pickedFile.name);
-        } else {
-          setState(() {
-            _selectedImage = File(pickedFile.path);
-          });
-          await _uploadImage();
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error picking image: $e')));
-      }
-    }
-  }
-
-  Future<void> _uploadImage() async {
-    if (_selectedImage == null) return;
-
-    setState(() {
-      _isUploadingImage = true;
-    });
-
-    try {
-      // Skip upload for now, just show success
-      setState(() {
-        _uploadedImageUrl = 'placeholder_url';
-      });
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Logo selected (upload disabled)')),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error: $e')));
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isUploadingImage = false;
-        });
-      }
-    }
-  }
-
-  Future<void> _uploadImageBytes(Uint8List bytes, String filename) async {
-    setState(() {
-      _isUploadingImage = true;
-    });
-
-    try {
-      final imageUrl = await _userService?.uploadAvatarBytes(bytes, filename);
-      if (imageUrl == null) throw Exception('Upload failed');
-      setState(() {
-        _uploadedImageUrl = imageUrl;
-      });
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Logo uploaded successfully')),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error uploading image: $e')));
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isUploadingImage = false;
-        });
-      }
-    }
-  }
-
   Future<void> _createTeam() async {
     if (_formKey.currentState?.validate() != true) return;
 
@@ -306,7 +213,9 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
               name: _nameController.text.trim(),
               location: _selectedCity?.name,
               numberOfPlayers: _numberOfPlayers,
-              description: _descriptionController.text.trim().isEmpty ? null : _descriptionController.text.trim(),
+              description: _descriptionController.text.trim().isEmpty
+                  ? null
+                  : _descriptionController.text.trim(),
               isRecruiting: _isRecruiting,
               gender: _gender,
               minAge: _minAge,
@@ -316,13 +225,15 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
               name: _nameController.text.trim(),
               location: _selectedCity?.name,
               numberOfPlayers: _numberOfPlayers,
-              description: _descriptionController.text.trim().isEmpty ? null : _descriptionController.text.trim(),
+              description: _descriptionController.text.trim().isEmpty
+                  ? null
+                  : _descriptionController.text.trim(),
               isRecruiting: _isRecruiting,
               gender: _gender,
               minAge: _minAge,
               maxAge: _maxAge,
             );
-      
+
       if (team != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -335,12 +246,14 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
     } catch (e) {
       if (mounted) {
         String errorMessage = e.toString();
-        if (errorMessage.contains('duplicate') || errorMessage.contains('already exists')) {
+        if (errorMessage.contains('duplicate') ||
+            errorMessage.contains('already exists')) {
           errorMessage = 'You already have a team with this name';
         }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${LocalizationService().translate('error')}: $errorMessage'),
+            content: Text(
+                '${LocalizationService().translate('error')}: $errorMessage'),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -379,7 +292,8 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
         child: Center(
           child: Container(
             constraints: const BoxConstraints(maxWidth: 600),
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 32 : 16),
+            padding: EdgeInsets.all(
+                MediaQuery.of(context).size.width > 600 ? 32 : 16),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -392,15 +306,24 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-                            Theme.of(context).colorScheme.secondary.withValues(alpha: 0.05),
+                            Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withValues(alpha: 0.1),
+                            Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withValues(alpha: 0.05),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withValues(alpha: 0.2),
                           width: 1.5,
                         ),
                       ),
@@ -409,7 +332,10 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -421,18 +347,29 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                           const SizedBox(height: 16),
                           Text(
                             LocalizationService().translate('create_team'),
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            LocalizationService().translate('build_team_subtitle'),
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                            ),
+                            LocalizationService()
+                                .translate('build_team_subtitle'),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurface
+                                      .withValues(alpha: 0.7),
+                                ),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -448,7 +385,10 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                         color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .outline
+                              .withValues(alpha: 0.2),
                           width: 1,
                         ),
                       ),
@@ -464,11 +404,17 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                               ),
                               const SizedBox(width: 12),
                               Text(
-                                LocalizationService().translate('team_information'),
-                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.onSurface,
-                                ),
+                                LocalizationService()
+                                    .translate('team_information'),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
+                                    ),
                               ),
                             ],
                           ),
@@ -478,15 +424,19 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                             children: [
                               const Text(
                                 RequiredFieldIndicator.text,
-                                style: TextStyle(color: Colors.red, fontSize: 16),
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 16),
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 LocalizationService().translate('team_name'),
-                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: context.colors.textPrimary,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: context.colors.textPrimary,
+                                    ),
                               ),
                             ],
                           ),
@@ -494,8 +444,10 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                           EnhancedFormField(
                             controller: _nameController,
                             focusNode: _nameFocusNode,
-                            labelText: LocalizationService().translate('team_name'),
-                            hintText: LocalizationService().translate('enter_team_name'),
+                            labelText:
+                                LocalizationService().translate('team_name'),
+                            hintText: LocalizationService()
+                                .translate('enter_team_name'),
                             prefixIcon: Icon(
                               Icons.group,
                               color: context.colors.primary,
@@ -510,15 +462,19 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                             children: [
                               const Text(
                                 RequiredFieldIndicator.text,
-                                style: TextStyle(color: Colors.red, fontSize: 16),
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 16),
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 LocalizationService().translate('location'),
-                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: context.colors.textPrimary,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: context.colors.textPrimary,
+                                    ),
                               ),
                             ],
                           ),
@@ -538,30 +494,41 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                                     focusNode: _cityFocusNode,
                                     child: DropdownButtonFormField<City>(
                                       initialValue: _selectedCity,
-                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurface,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
                                       decoration: InputDecoration(
-                                        labelText: LocalizationService().translate('location'),
+                                        labelText: LocalizationService()
+                                            .translate('location'),
                                         border: InputBorder.none,
                                         prefixIcon: Icon(
                                           Icons.location_city,
                                           color: context.colors.primary,
                                         ),
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 16, vertical: 12),
                                       ),
                                       items: _availableCities.map((city) {
                                         return DropdownMenuItem(
                                           value: city,
                                           child: Text(
                                             city.name,
-                                            style: Theme.of(context).textTheme.bodyMedium,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
                                           ),
                                         );
                                       }).toList(),
                                       onChanged: (value) {
                                         setState(() => _selectedCity = value);
-                                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
                                           if (mounted) {
                                             _playersFocusNode.requestFocus();
                                           }
@@ -569,7 +536,8 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                                       },
                                       validator: (value) {
                                         if (value == null) {
-                                          return LocalizationService().translate('location_required');
+                                          return LocalizationService()
+                                              .translate('location_required');
                                         }
                                         return null;
                                       },
@@ -583,15 +551,19 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                             children: [
                               const Text(
                                 RequiredFieldIndicator.text,
-                                style: TextStyle(color: Colors.red, fontSize: 16),
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 16),
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 LocalizationService().translate('max_players'),
-                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: context.colors.textPrimary,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: context.colors.textPrimary,
+                                    ),
                               ),
                             ],
                           ),
@@ -609,30 +581,42 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                               focusNode: _playersFocusNode,
                               child: DropdownButtonFormField<int>(
                                 initialValue: _numberOfPlayers,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
+                                    ),
                                 decoration: InputDecoration(
-                                  labelText: LocalizationService().translate('max_players'),
+                                  labelText: LocalizationService()
+                                      .translate('max_players'),
                                   border: InputBorder.none,
                                   prefixIcon: Icon(
                                     Icons.people,
                                     color: context.colors.primary,
                                   ),
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 12),
                                 ),
-                                items: [5, 7, 9, 10, 11, 13, 15, 18, 22].map((players) {
+                                items: [5, 7, 9, 10, 11, 13, 15, 18, 22]
+                                    .map((players) {
                                   return DropdownMenuItem(
                                     value: players,
                                     child: Text(
                                       '$players ${LocalizationService().translate('players')}',
-                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
                                     ),
                                   );
                                 }).toList(),
                                 onChanged: (value) {
-                                  setState(() => _numberOfPlayers = value ?? 11);
-                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  setState(
+                                      () => _numberOfPlayers = value ?? 11);
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
                                     if (mounted) {
                                       _descriptionFocusNode.requestFocus();
                                     }
@@ -640,7 +624,8 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                                 },
                                 validator: (value) {
                                   if (value == null) {
-                                    return LocalizationService().translate('number_of_players_required');
+                                    return LocalizationService().translate(
+                                        'number_of_players_required');
                                   }
                                   return null;
                                 },
@@ -652,18 +637,21 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
 
                           Text(
                             LocalizationService().translate('team_description'),
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: context.colors.textPrimary,
-                            ),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: context.colors.textPrimary,
+                                    ),
                           ),
                           const SizedBox(height: FootConnectSpacing.space2),
                           TextFormField(
                             controller: _descriptionController,
                             focusNode: _descriptionFocusNode,
                             decoration: InputDecoration(
-                              labelText: LocalizationService().translate('team_description'),
-                              hintText: LocalizationService().translate('team_description_hint'),
+                              labelText: LocalizationService()
+                                  .translate('team_description'),
+                              hintText: LocalizationService()
+                                  .translate('team_description_hint'),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -684,31 +672,39 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                           // Gender Selection
                           Text(
                             'Gender',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: context.colors.textPrimary,
-                            ),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: context.colors.textPrimary,
+                                    ),
                           ),
                           const SizedBox(height: 8),
                           Container(
                             height: 48,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: context.colors.border, width: 1),
+                              border: Border.all(
+                                  color: context.colors.border, width: 1),
                             ),
                             child: DropdownButtonFormField<String>(
                               initialValue: _gender,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                prefixIcon: Icon(Icons.wc, color: context.colors.primary),
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                prefixIcon: Icon(Icons.wc,
+                                    color: context.colors.primary),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
                               ),
                               items: const [
-                                DropdownMenuItem(value: 'mixed', child: Text('Mixed')),
-                                DropdownMenuItem(value: 'male', child: Text('Male')),
-                                DropdownMenuItem(value: 'female', child: Text('Female')),
+                                DropdownMenuItem(
+                                    value: 'mixed', child: Text('Mixed')),
+                                DropdownMenuItem(
+                                    value: 'male', child: Text('Male')),
+                                DropdownMenuItem(
+                                    value: 'female', child: Text('Female')),
                               ],
-                              onChanged: (value) => setState(() => _gender = value ?? 'mixed'),
+                              onChanged: (value) =>
+                                  setState(() => _gender = value ?? 'mixed'),
                             ),
                           ),
 
@@ -717,10 +713,11 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                           // Age Range
                           Text(
                             'Age Range (Optional)',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: context.colors.textPrimary,
-                            ),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: context.colors.textPrimary,
+                                    ),
                           ),
                           const SizedBox(height: 8),
                           Row(
@@ -730,20 +727,37 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                                   height: 48,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: context.colors.border, width: 1),
+                                    border: Border.all(
+                                        color: context.colors.border, width: 1),
                                   ),
                                   child: DropdownButtonFormField<int>(
                                     initialValue: _minAge,
                                     decoration: InputDecoration(
                                       labelText: 'Min Age',
                                       border: InputBorder.none,
-                                      prefixIcon: Icon(Icons.calendar_today, color: context.colors.primary),
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                      prefixIcon: Icon(Icons.calendar_today,
+                                          color: context.colors.primary),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 12),
                                     ),
-                                    items: [13, 16, 18, 21, 25, 30, 35, 40, 45, 50].map((age) {
-                                      return DropdownMenuItem(value: age, child: Text('$age'));
+                                    items: [
+                                      13,
+                                      16,
+                                      18,
+                                      21,
+                                      25,
+                                      30,
+                                      35,
+                                      40,
+                                      45,
+                                      50
+                                    ].map((age) {
+                                      return DropdownMenuItem(
+                                          value: age, child: Text('$age'));
                                     }).toList(),
-                                    onChanged: (value) => setState(() => _minAge = value),
+                                    onChanged: (value) =>
+                                        setState(() => _minAge = value),
                                   ),
                                 ),
                               ),
@@ -753,20 +767,37 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                                   height: 48,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: context.colors.border, width: 1),
+                                    border: Border.all(
+                                        color: context.colors.border, width: 1),
                                   ),
                                   child: DropdownButtonFormField<int>(
                                     initialValue: _maxAge,
                                     decoration: InputDecoration(
                                       labelText: 'Max Age',
                                       border: InputBorder.none,
-                                      prefixIcon: Icon(Icons.calendar_today, color: context.colors.primary),
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                      prefixIcon: Icon(Icons.calendar_today,
+                                          color: context.colors.primary),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 12),
                                     ),
-                                    items: [18, 21, 25, 30, 35, 40, 45, 50, 60, 100].map((age) {
-                                      return DropdownMenuItem(value: age, child: Text('$age'));
+                                    items: [
+                                      18,
+                                      21,
+                                      25,
+                                      30,
+                                      35,
+                                      40,
+                                      45,
+                                      50,
+                                      60,
+                                      100
+                                    ].map((age) {
+                                      return DropdownMenuItem(
+                                          value: age, child: Text('$age'));
                                     }).toList(),
-                                    onChanged: (value) => setState(() => _maxAge = value),
+                                    onChanged: (value) =>
+                                        setState(() => _maxAge = value),
                                   ),
                                 ),
                               ),
@@ -779,10 +810,16 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHighest
+                                  .withValues(alpha: 0.5),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .outline
+                                    .withValues(alpha: 0.2),
                               ),
                             ),
                             child: Row(
@@ -791,42 +828,69 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                     color: _isRecruiting
-                                        ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
-                                        : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withValues(alpha: 0.1)
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onSurface
+                                            .withValues(alpha: 0.1),
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
-                                    _isRecruiting ? Icons.people : Icons.people_outline,
+                                    _isRecruiting
+                                        ? Icons.people
+                                        : Icons.people_outline,
                                     color: _isRecruiting
                                         ? Theme.of(context).colorScheme.primary
-                                        : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onSurface
+                                            .withValues(alpha: 0.7),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        LocalizationService().translate('recruiting'),
-                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: Theme.of(context).colorScheme.onSurface,
-                                        ),
+                                        LocalizationService()
+                                            .translate('recruiting'),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                            ),
                                       ),
                                       Text(
-                                        LocalizationService().translate('allow_join_requests_description'),
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                                        ),
+                                        LocalizationService().translate(
+                                            'allow_join_requests_description'),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface
+                                                  .withValues(alpha: 0.7),
+                                            ),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Switch(
                                   value: _isRecruiting,
-                                  onChanged: (value) => setState(() => _isRecruiting = value),
-                                  activeThumbColor: Theme.of(context).colorScheme.primary,
+                                  onChanged: (value) =>
+                                      setState(() => _isRecruiting = value),
+                                  activeThumbColor:
+                                      Theme.of(context).colorScheme.primary,
                                 ),
                               ],
                             ),
@@ -839,15 +903,19 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                             width: double.infinity,
                             height: 48,
                             child: ElevatedButton.icon(
-                              onPressed: (_isLoading || _isSubmitting) ? null : _createTeam,
-                              icon: _isLoading || _isSubmitting 
+                              onPressed: (_isLoading || _isSubmitting)
+                                  ? null
+                                  : _createTeam,
+                              icon: _isLoading || _isSubmitting
                                   ? const SizedBox(
                                       width: 16,
                                       height: 16,
-                                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 2, color: Colors.white),
                                     )
                                   : const Icon(Icons.group_add),
-                              label: Text(LocalizationService().translate('create_team')),
+                              label: Text(LocalizationService()
+                                  .translate('create_team')),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: context.colors.primary,
                                 foregroundColor: Colors.white,

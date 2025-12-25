@@ -40,7 +40,8 @@ class IconValidator {
   }
 
   /// Validate icon quality for a specific size.
-  static Future<IconQualityResult> _validateIconQuality(String assetPath, int expectedSize) async {
+  static Future<IconQualityResult> _validateIconQuality(
+      String assetPath, int expectedSize) async {
     final result = IconQualityResult();
 
     try {
@@ -60,7 +61,6 @@ class IconValidator {
       }
 
       result.isValid = result.errors.isEmpty;
-
     } catch (e) {
       result.errors.add('Failed to load icon $assetPath: $e');
     }
@@ -83,11 +83,6 @@ class IconValidator {
     final issues = <String>[];
 
     // Check for inconsistent naming patterns
-    final possiblePatterns = [
-      RegExp(r'logo_\d+\.png$'),
-      RegExp(r'app_icon.*\.png$'),
-    ];
-
     // This would typically scan the assets directory
     // For now, return empty list as this is a runtime check
     return issues;

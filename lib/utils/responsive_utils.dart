@@ -24,12 +24,12 @@ class ResponsiveBreakpoints {
 /// Enhanced screen size types for granular responsive design
 enum ScreenSize {
   extraSmallMobile, // <320px
-  smallMobile,      // 320-360px
-  largeMobile,      // 360-480px
-  tablet,           // 480-768px (mobile to tablet transition)
-  smallDesktop,     // 768-1024px (tablet to desktop transition)
-  desktop,          // 1024-1920px
-  ultraWide,        // >1920px
+  smallMobile, // 320-360px
+  largeMobile, // 360-480px
+  tablet, // 480-768px (mobile to tablet transition)
+  smallDesktop, // 768-1024px (tablet to desktop transition)
+  desktop, // 1024-1920px
+  ultraWide, // >1920px
 }
 
 /// Web-specific responsive utilities for ultra-wide screen support
@@ -61,7 +61,8 @@ class ResponsiveUtils {
   static const double extraSmallMobileMaxWidth = 320;
   static const double smallMobileMaxWidth = 360;
   static const double largeMobileMaxWidth = 480;
-  static const double tabletMaxWidth = 600; // Optimized tablet range (480-600px)
+  static const double tabletMaxWidth =
+      600; // Optimized tablet range (480-600px)
   static const double desktopMaxWidth = 1024;
   static const double ultraWideMinWidth = 1920;
 
@@ -95,12 +96,14 @@ class ResponsiveUtils {
   /// Check if device is small mobile (320-360px)
   static bool isSmallMobile(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return width >= ResponsiveBreakpoints.extraSmallMobileMaxWidth && width < ResponsiveBreakpoints.smallMobileMaxWidth;
+    return width >= ResponsiveBreakpoints.extraSmallMobileMaxWidth &&
+        width < ResponsiveBreakpoints.smallMobileMaxWidth;
   }
 
   /// Check if device is extra small mobile (<320px)
   static bool isExtraSmallMobile(BuildContext context) {
-    return MediaQuery.of(context).size.width < ResponsiveBreakpoints.extraSmallMobileMaxWidth;
+    return MediaQuery.of(context).size.width <
+        ResponsiveBreakpoints.extraSmallMobileMaxWidth;
   }
 
   /// Get responsive padding for small mobile devices
@@ -108,7 +111,8 @@ class ResponsiveUtils {
     if (isExtraSmallMobile(context)) {
       return const EdgeInsets.all(8.0); // Enhanced padding for <320px devices
     } else if (isSmallMobile(context)) {
-      return const EdgeInsets.all(12.0); // Enhanced padding for 320-360px devices
+      return const EdgeInsets.all(
+          12.0); // Enhanced padding for 320-360px devices
     }
     return getResponsivePadding(context);
   }
@@ -126,32 +130,36 @@ class ResponsiveUtils {
   /// Check if device is large mobile (360-480px)
   static bool isLargeMobile(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return width >= ResponsiveBreakpoints.smallMobileMaxWidth && width < ResponsiveBreakpoints.largeMobileMaxWidth;
+    return width >= ResponsiveBreakpoints.smallMobileMaxWidth &&
+        width < ResponsiveBreakpoints.largeMobileMaxWidth;
   }
 
   /// Check if device is in mobile range (320px-768px)
   static bool isMobileRange(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return width >= ResponsiveBreakpoints.extraSmallMobileMaxWidth && width < ResponsiveBreakpoints.mobileMaxWidth;
+    return width >= ResponsiveBreakpoints.extraSmallMobileMaxWidth &&
+        width < ResponsiveBreakpoints.mobileMaxWidth;
   }
 
   /// Check if device is in tablet range (768px-1024px)
   static bool isTabletRange(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return width >= ResponsiveBreakpoints.tabletMinWidth && width < ResponsiveBreakpoints.tabletMaxWidth;
+    return width >= ResponsiveBreakpoints.tabletMinWidth &&
+        width < ResponsiveBreakpoints.tabletMaxWidth;
   }
 
   /// Check if device is in desktop range (1024px+)
   static bool isDesktopRange(BuildContext context) {
-    return MediaQuery.of(context).size.width >= ResponsiveBreakpoints.desktopMinWidth;
+    return MediaQuery.of(context).size.width >=
+        ResponsiveBreakpoints.desktopMinWidth;
   }
 
   /// Check if current screen is mobile (any mobile size)
   static bool isMobile(BuildContext context) {
     final screenSize = getScreenSize(context);
     return screenSize == ScreenSize.extraSmallMobile ||
-           screenSize == ScreenSize.smallMobile ||
-           screenSize == ScreenSize.largeMobile;
+        screenSize == ScreenSize.smallMobile ||
+        screenSize == ScreenSize.largeMobile;
   }
 
   /// Check if current screen is tablet (any tablet size)
@@ -164,8 +172,8 @@ class ResponsiveUtils {
   static bool isDesktop(BuildContext context) {
     final screenSize = getScreenSize(context);
     return screenSize == ScreenSize.smallDesktop ||
-           screenSize == ScreenSize.desktop ||
-           screenSize == ScreenSize.ultraWide;
+        screenSize == ScreenSize.desktop ||
+        screenSize == ScreenSize.ultraWide;
   }
 
   /// Check if current screen is ultra-wide (>1920px)
@@ -232,7 +240,8 @@ class ResponsiveUtils {
 
     switch (screenSize) {
       case ScreenSize.extraSmallMobile:
-        return maxWidth ?? (screenWidth * 0.9); // Mobile: 90% for better visibility
+        return maxWidth ??
+            (screenWidth * 0.9); // Mobile: 90% for better visibility
       case ScreenSize.smallMobile:
       case ScreenSize.largeMobile:
         return maxWidth ?? (screenWidth * 0.85); // Mobile: 85% of screen width
@@ -415,8 +424,9 @@ class ResponsiveUtils {
   }
 
   /// Get RTL-aware directional icon (deprecated - use DirectionalIcon widget instead)
-  @deprecated
-  static IconData getDirectionalIcon(BuildContext context, IconData ltrIcon, IconData? rtlIcon) {
+  @Deprecated('Use DirectionalIcon widget instead')
+  static IconData getDirectionalIcon(
+      BuildContext context, IconData ltrIcon, IconData? rtlIcon) {
     final textDirection = Directionality.of(context);
     if (textDirection == TextDirection.rtl && rtlIcon != null) {
       return rtlIcon;
@@ -425,7 +435,7 @@ class ResponsiveUtils {
   }
 
   /// Get RTL-aware arrow icon (deprecated - use DirectionalIcon widget instead)
-  @deprecated
+  @Deprecated('Use DirectionalIcon widget instead')
   static IconData getArrowIcon(BuildContext context, {bool forward = true}) {
     final textDirection = Directionality.of(context);
     if (textDirection == TextDirection.rtl) {
@@ -435,7 +445,7 @@ class ResponsiveUtils {
   }
 
   /// Get RTL-aware chevron icon (deprecated - use DirectionalIcon widget instead)
-  @deprecated
+  @Deprecated('Use DirectionalIcon widget instead')
   static IconData getChevronIcon(BuildContext context, {bool right = true}) {
     final textDirection = Directionality.of(context);
     if (textDirection == TextDirection.rtl) {
@@ -673,7 +683,8 @@ extension ResponsiveContext on BuildContext {
     if (ResponsiveUtils.isUltraWide(this)) {
       return Center(
         child: Container(
-          constraints: const BoxConstraints(maxWidth: ResponsiveBreakpoints.maxContentWidth),
+          constraints: const BoxConstraints(
+              maxWidth: ResponsiveBreakpoints.maxContentWidth),
           child: child,
         ),
       );
@@ -715,7 +726,8 @@ extension ResponsiveWidget on Widget {
 
   /// Add responsive gap (spacing) using standardized sizes from ResponsiveConstants
   Widget gap(BuildContext context, String size) {
-    return SizedBox(height: ResponsiveConstants.getResponsiveSpacing(context, size));
+    return SizedBox(
+        height: ResponsiveConstants.getResponsiveSpacing(context, size));
   }
 
   /// Add responsive padding using standardized sizes from ResponsiveConstants
@@ -783,7 +795,8 @@ extension ResponsiveWidget on Widget {
     return Row(
       children: [
         this,
-        SizedBox(width: ResponsiveConstants.getResponsiveSpacing(context, size)),
+        SizedBox(
+            width: ResponsiveConstants.getResponsiveSpacing(context, size)),
       ],
     );
   }
@@ -793,7 +806,8 @@ extension ResponsiveWidget on Widget {
     return Column(
       children: [
         this,
-        SizedBox(height: ResponsiveConstants.getResponsiveSpacing(context, size)),
+        SizedBox(
+            height: ResponsiveConstants.getResponsiveSpacing(context, size)),
       ],
     );
   }

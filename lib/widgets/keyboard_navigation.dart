@@ -22,7 +22,8 @@ class KeyboardNavigationWrapper extends StatefulWidget {
   });
 
   @override
-  State<KeyboardNavigationWrapper> createState() => _KeyboardNavigationWrapperState();
+  State<KeyboardNavigationWrapper> createState() =>
+      _KeyboardNavigationWrapperState();
 }
 
 class _KeyboardNavigationWrapperState extends State<KeyboardNavigationWrapper> {
@@ -91,7 +92,8 @@ class _KeyboardNavigationWrapperState extends State<KeyboardNavigationWrapper> {
         nextFocus = _findFocusableWidget(currentFocus, TraversalDirection.left);
         break;
       case LogicalKeyboardKey.arrowRight:
-        nextFocus = _findFocusableWidget(currentFocus, TraversalDirection.right);
+        nextFocus =
+            _findFocusableWidget(currentFocus, TraversalDirection.right);
         break;
     }
 
@@ -100,7 +102,8 @@ class _KeyboardNavigationWrapperState extends State<KeyboardNavigationWrapper> {
     }
   }
 
-  FocusNode? _findFocusableWidget(FocusNode current, TraversalDirection direction) {
+  FocusNode? _findFocusableWidget(
+      FocusNode current, TraversalDirection direction) {
     // This is a simplified implementation
     // In a real app, you'd want more sophisticated focus traversal
     final context = current.context;
@@ -314,8 +317,6 @@ class _FocusGroupState extends State<FocusGroup> {
       case TraversalDirection.right:
         nextIndex = currentIndex + 1;
         break;
-      default:
-        return;
     }
 
     if (widget.loop) {
@@ -348,7 +349,8 @@ class _FocusGroupState extends State<FocusGroup> {
                       if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
                         _handleTraversal(node, TraversalDirection.up);
                         return KeyEventResult.handled;
-                      } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+                      } else if (event.logicalKey ==
+                          LogicalKeyboardKey.arrowDown) {
                         _handleTraversal(node, TraversalDirection.down);
                         return KeyEventResult.handled;
                       }
@@ -369,7 +371,8 @@ class _FocusGroupState extends State<FocusGroup> {
                       if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
                         _handleTraversal(node, TraversalDirection.left);
                         return KeyEventResult.handled;
-                      } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+                      } else if (event.logicalKey ==
+                          LogicalKeyboardKey.arrowRight) {
                         _handleTraversal(node, TraversalDirection.right);
                         return KeyEventResult.handled;
                       }

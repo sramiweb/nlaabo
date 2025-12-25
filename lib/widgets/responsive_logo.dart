@@ -30,7 +30,6 @@ class ResponsiveLogo extends StatefulWidget {
 class _ResponsiveLogoState extends State<ResponsiveLogo>
     with AutomaticKeepAliveClientMixin {
   bool _isLoaded = false;
-  bool _hasError = false;
 
   @override
   bool get wantKeepAlive => true;
@@ -49,17 +48,14 @@ class _ResponsiveLogoState extends State<ResponsiveLogo>
       height: logoHeight,
       fit: widget.fit,
       errorBuilder: (context, error, stackTrace) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            setState(() => _hasError = true);
-          }
-        });
         return _buildErrorPlaceholder(logoWidth, logoHeight);
       },
       frameBuilder: widget.enableLazyLoading
           ? (context, child, frame, wasSynchronouslyLoaded) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                if ((wasSynchronouslyLoaded || frame != null) && !_isLoaded && mounted) {
+                if ((wasSynchronouslyLoaded || frame != null) &&
+                    !_isLoaded &&
+                    mounted) {
                   setState(() => _isLoaded = true);
                 }
               });

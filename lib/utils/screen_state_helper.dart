@@ -55,7 +55,7 @@ class ScreenStateHelper {
     String cancelLabel = 'Cancel',
   }) async {
     if (!context.mounted) return false;
-    
+
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -109,6 +109,7 @@ class ScreenStateHelper {
     VoidCallback fn,
   ) {
     if (state.mounted) {
+      // ignore: invalid_use_of_protected_member
       state.setState(fn);
     }
   }

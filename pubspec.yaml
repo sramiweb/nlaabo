@@ -1,6 +1,6 @@
 name: nlaabo
 description: "nlaabo- Football match organizer and team connector app."
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -46,6 +46,7 @@ dependencies:
   flutter_screenutil: ^5.8.4
   url_launcher: ^6.2.2
   url_launcher_web: ^2.2.0
+  shared_preferences_platform_interface: ^2.4.1
 
 dev_dependencies:
   flutter_test:

@@ -10,7 +10,8 @@ import '../models/city.dart';
 import '../services/localization_service.dart';
 import '../repositories/team_repository.dart';
 import '../repositories/user_repository.dart';
-import '../services/api_service.dart';
+
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../utils/responsive_utils.dart';
 import '../widgets/team_card.dart';
 import '../widgets/optimized_filter_bar.dart';
@@ -27,13 +28,21 @@ class _TeamsScreenState extends State<TeamsScreen> {
   late final UserService _userService;
   Map<String, Map<String, dynamic>> _teamOwners = {}; // teamId -> owner info
   Map<String, int> _teamMemberCounts = {}; // teamId -> member count
-  final Map<String, bool> _ownerLoadingStates = {}; // teamId -> is loading owner
+  final Map<String, bool> _ownerLoadingStates =
+      {}; // teamId -> is loading owner
   bool _isLoadingCities = true; // Loading state for cities
   bool _isLoadingTeams = false; // Loading state for teams
   String _selectedCity = 'Nador'; // Default city for filtering
   List<City> _availableCities = []; // Available cities fetched from API
   String _selectedAgeGroup = 'All'; // Age filter
-  final List<String> _ageGroups = ['All', '16-20', '21-25', '26-30', '31-35', '36+'];
+  final List<String> _ageGroups = [
+    'All',
+    '16-20',
+    '21-25',
+    '26-30',
+    '31-35',
+    '36+'
+  ];
   List<Team> _filteredTeams = []; // Filtered teams to display
 
   @override
@@ -43,9 +52,8 @@ class _TeamsScreenState extends State<TeamsScreen> {
       // Auth token is now handled automatically by Supabase client
 
       // Initialize repositories and services
-      final apiService = ApiService();
-      final teamRepository = TeamRepository(apiService);
-      final userRepository = UserRepository(apiService);
+      final teamRepository = TeamRepository(Supabase.instance.client);
+      final userRepository = UserRepository(Supabase.instance.client);
       _teamService = TeamService(teamRepository);
       _userService = UserService(userRepository);
 
@@ -96,7 +104,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
     if (mounted) {
       setState(() => _isLoadingTeams = true);
     }
-    
+
     try {
       final authProvider = context.read<AuthProvider>();
       final allTeams = await _teamService.getAllTeams();
@@ -164,7 +172,6 @@ class _TeamsScreenState extends State<TeamsScreen> {
     }
   }
 
-
   void _refreshTeams() {
     _loadTeams();
   }
@@ -192,7 +199,8 @@ class _TeamsScreenState extends State<TeamsScreen> {
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${LocalizationService().translate('error_loading_owner')}: $e'),
+            content: Text(
+                '${LocalizationService().translate('error_loading_owner')}: $e'),
           ),
         );
       }
@@ -201,19 +209,25 @@ class _TeamsScreenState extends State<TeamsScreen> {
 
   bool _matchesAgeFilter(Team team) {
     if (_selectedAgeGroup == 'All') return true;
-    
+
     // For now, we'll use a simple random distribution since we don't have owner age data
     // In a real app, you'd filter based on team owner's age or team's target age group
     final teamHash = team.id.hashCode;
     final ageCategory = teamHash % 5;
-    
+
     switch (_selectedAgeGroup) {
-      case '16-20': return ageCategory == 0;
-      case '21-25': return ageCategory == 1;
-      case '26-30': return ageCategory == 2;
-      case '31-35': return ageCategory == 3;
-      case '36+': return ageCategory == 4;
-      default: return true;
+      case '16-20':
+        return ageCategory == 0;
+      case '21-25':
+        return ageCategory == 1;
+      case '26-30':
+        return ageCategory == 2;
+      case '31-35':
+        return ageCategory == 3;
+      case '36+':
+        return ageCategory == 4;
+      default:
+        return true;
     }
   }
 
@@ -237,13 +251,15 @@ class _TeamsScreenState extends State<TeamsScreen> {
             child: Row(
               children: [
                 FilterChip(
-                  label: Text('${LocalizationService().translate('city')}: $_selectedCity'),
+                  label: Text(
+                      '${LocalizationService().translate('city')}: $_selectedCity'),
                   onSelected: (_) => _showCityPicker(context),
                   avatar: const Icon(Icons.location_on, size: 18),
                 ),
                 const SizedBox(width: 8),
                 FilterChip(
-                  label: Text('${LocalizationService().translate('age')}: $_selectedAgeGroup'),
+                  label: Text(
+                      '${LocalizationService().translate('age')}: $_selectedAgeGroup'),
                   onSelected: (_) => _showAgePicker(context),
                   avatar: const Icon(Icons.calendar_today, size: 18),
                 ),
@@ -254,73 +270,89 @@ class _TeamsScreenState extends State<TeamsScreen> {
             child: _isLoadingTeams
                 ? const Center(child: CircularProgressIndicator())
                 : _filteredTeams.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.groups,
-                          size: 80,
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withAlpha((0.5 * 255).round()),
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.groups,
+                              size: 80,
+                              color: Theme.of(
+                                context,
+                              )
+                                  .colorScheme
+                                  .onSurface
+                                  .withAlpha((0.5 * 255).round()),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              '${LocalizationService().translate('no_teams_found_in_city')} $_selectedCity',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    )
+                                        .colorScheme
+                                        .onSurface
+                                        .withAlpha((0.7 * 255).round()),
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          '${LocalizationService().translate('no_teams_found_in_city')} $_selectedCity',
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withAlpha((0.7 * 255).round()),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  )
-                : RefreshIndicator(
-                    onRefresh: _loadTeams,
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final crossAxisCount = constraints.maxWidth > 1200 ? 3 : 
-                                             constraints.maxWidth > 800 ? 2 : 1;
-                        
-                        return GridView.builder(
-                          key: const PageStorageKey('teams_grid'),
-                          padding: EdgeInsets.only(
-                            left: constraints.maxWidth > 600 ? 32 : 16,
-                            right: constraints.maxWidth > 600 ? 32 : 16,
-                            top: 16,
-                            bottom: context.isMobile ? 80 : 16,
-                          ),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: crossAxisCount,
-                            childAspectRatio: context.isMobile ? 3.0 : 2.5,
-                            crossAxisSpacing: context.gridSpacing,
-                            mainAxisSpacing: context.gridSpacing,
-                          ),
-                          itemCount: _filteredTeams.length,
-                          itemBuilder: (context, index) {
-                            final team = _filteredTeams[index];
-                            final isOwner = authProvider.user?.id == team.ownerId;
-                            final ownerInfo =
-                                _teamOwners[team.id] ?? {'name': 'غير محدد'};
-                            final memberCount = _teamMemberCounts[team.id] ?? 0;
+                      )
+                    : RefreshIndicator(
+                        onRefresh: _loadTeams,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            final crossAxisCount = constraints.maxWidth > 1200
+                                ? 3
+                                : constraints.maxWidth > 800
+                                    ? 2
+                                    : 1;
 
-                            return TeamCard(
-                              key: ValueKey(team.id),
-                              team: team,
-                              ownerInfo: ownerInfo,
-                              memberCount: memberCount,
-                              isOwnerLoading: _ownerLoadingStates[team.id] ?? false,
-                              onRetry: () => _retryLoadOwner(team.id),
-                              onTap: () => _showTeamDetails(context, team),
+                            return GridView.builder(
+                              key: const PageStorageKey('teams_grid'),
+                              padding: EdgeInsets.only(
+                                left: constraints.maxWidth > 600 ? 32 : 16,
+                                right: constraints.maxWidth > 600 ? 32 : 16,
+                                top: 16,
+                                bottom: context.isMobile ? 80 : 16,
+                              ),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                childAspectRatio: context.isMobile ? 3.0 : 2.5,
+                                crossAxisSpacing: context.gridSpacing,
+                                mainAxisSpacing: context.gridSpacing,
+                              ),
+                              itemCount: _filteredTeams.length,
+                              itemBuilder: (context, index) {
+                                final team = _filteredTeams[index];
+                                final isOwner =
+                                    authProvider.user?.id == team.ownerId;
+                                final ownerInfo = _teamOwners[team.id] ??
+                                    {'name': 'غير محدد'};
+                                final memberCount =
+                                    _teamMemberCounts[team.id] ?? 0;
+
+                                return TeamCard(
+                                  key: ValueKey(team.id),
+                                  team: team,
+                                  ownerInfo: ownerInfo,
+                                  memberCount: memberCount,
+                                  isOwnerLoading:
+                                      _ownerLoadingStates[team.id] ?? false,
+                                  onRetry: () => _retryLoadOwner(team.id),
+                                  onTap: () => _showTeamDetails(context, team),
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                    ),
-                  ),
+                        ),
+                      ),
           ),
         ],
       ),
@@ -371,20 +403,20 @@ class _TeamsScreenState extends State<TeamsScreen> {
         title: Text(LocalizationService().translate('select_age_group')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: _ageGroups.map((age) => ListTile(
-            title: Text(age),
-            onTap: () {
-              Navigator.of(context).pop();
-              setState(() => _selectedAgeGroup = age);
-              _loadTeams();
-            },
-          )).toList(),
+          children: _ageGroups
+              .map((age) => ListTile(
+                    title: Text(age),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      setState(() => _selectedAgeGroup = age);
+                      _loadTeams();
+                    },
+                  ))
+              .toList(),
         ),
       ),
     );
   }
-
-
 
   void _showTeamDetails(BuildContext context, Team team) {
     context.push('/teams/${team.id}');
@@ -407,7 +439,8 @@ class _TeamsScreenState extends State<TeamsScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(LocalizationService().translate('join_request_message_hint')),
+              Text(
+                  LocalizationService().translate('join_request_message_hint')),
               const SizedBox(height: 16),
               TextField(
                 controller: messageController,
@@ -466,6 +499,3 @@ class _TeamsScreenState extends State<TeamsScreen> {
     );
   }
 }
-
-
-

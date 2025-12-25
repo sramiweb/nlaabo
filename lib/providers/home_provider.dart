@@ -7,7 +7,7 @@ import '../utils/app_logger.dart';
 import '../constants/home_constants.dart';
 
 class HomeProvider extends ChangeNotifier {
-  final ApiService _apiService = ApiService();
+  final ApiService _apiService;
 
   bool _isDisposed = false;
 
@@ -32,7 +32,8 @@ class HomeProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   TextEditingController get searchController => _searchController;
 
-  HomeProvider() {
+  HomeProvider({ApiService? apiService})
+      : _apiService = apiService ?? ApiService() {
     _searchController = TextEditingController();
     _searchController.addListener(_onSearchChanged);
   }
@@ -61,16 +62,19 @@ class HomeProvider extends ChangeNotifier {
         _allMatches = matches;
         _allTeams = teams;
 
-        logDebug('HomeProvider: Fetched ${_allMatches.length} matches, ${_allTeams.length} teams');
+        logDebug(
+            'HomeProvider: Fetched ${_allMatches.length} matches, ${_allTeams.length} teams');
 
         // Show error if both are empty
         if (_allMatches.isEmpty && _allTeams.isEmpty) {
-          _errorMessage = 'No matches or teams available. Create your first team or match to get started!';
+          _errorMessage =
+              'No matches or teams available. Create your first team or match to get started!';
           logWarning('HomeProvider: Database appears empty');
         }
       } catch (apiError) {
         logError('HomeProvider: API call failed: $apiError');
-        _errorMessage = 'Failed to load data. Please check your connection and try again.';
+        _errorMessage =
+            'Failed to load data. Please check your connection and try again.';
         _allMatches = [];
         _allTeams = [];
       }
@@ -152,18 +156,24 @@ class HomeProvider extends ChangeNotifier {
     if (_searchQuery.isEmpty) {
       // Remove duplicates based on match ID (primary key)
       final seenMatchIds = <String>{};
-      _featuredMatches = _allMatches.where((match) {
-        if (seenMatchIds.contains(match.id)) return false;
-        seenMatchIds.add(match.id);
-        return true;
-      }).take(HomeConstants.featuredItemsCount).toList();
-      
+      _featuredMatches = _allMatches
+          .where((match) {
+            if (seenMatchIds.contains(match.id)) return false;
+            seenMatchIds.add(match.id);
+            return true;
+          })
+          .take(HomeConstants.featuredItemsCount)
+          .toList();
+
       final seenTeamIds = <String>{};
-      _featuredTeams = _allTeams.where((team) {
-        if (seenTeamIds.contains(team.id)) return false;
-        seenTeamIds.add(team.id);
-        return true;
-      }).take(HomeConstants.featuredItemsCount).toList();
+      _featuredTeams = _allTeams
+          .where((team) {
+            if (seenTeamIds.contains(team.id)) return false;
+            seenTeamIds.add(team.id);
+            return true;
+          })
+          .take(HomeConstants.featuredItemsCount)
+          .toList();
     } else {
       final query = _searchQuery.toLowerCase();
       final filteredMatches = _allMatches.where((match) {
@@ -178,18 +188,24 @@ class HomeProvider extends ChangeNotifier {
 
       // Remove duplicates from search results
       final seenMatchIds = <String>{};
-      _featuredMatches = filteredMatches.where((match) {
-        if (seenMatchIds.contains(match.id)) return false;
-        seenMatchIds.add(match.id);
-        return true;
-      }).take(HomeConstants.maxSearchResults).toList();
-      
+      _featuredMatches = filteredMatches
+          .where((match) {
+            if (seenMatchIds.contains(match.id)) return false;
+            seenMatchIds.add(match.id);
+            return true;
+          })
+          .take(HomeConstants.maxSearchResults)
+          .toList();
+
       final seenTeamIds = <String>{};
-      _featuredTeams = filteredTeams.where((team) {
-        if (seenTeamIds.contains(team.id)) return false;
-        seenTeamIds.add(team.id);
-        return true;
-      }).take(HomeConstants.maxSearchResults).toList();
+      _featuredTeams = filteredTeams
+          .where((team) {
+            if (seenTeamIds.contains(team.id)) return false;
+            seenTeamIds.add(team.id);
+            return true;
+          })
+          .take(HomeConstants.maxSearchResults)
+          .toList();
     }
   }
 }

@@ -190,7 +190,8 @@ class _FootConnectFormFieldState extends State<FootConnectFormField>
               );
             },
           ),
-          if (widget.helperText != null && !_hasError) _buildHelperText(context),
+          if (widget.helperText != null && !_hasError)
+            _buildHelperText(context),
           if (_hasError) _buildErrorText(context),
         ],
       ),
@@ -222,7 +223,6 @@ class _FootConnectFormFieldState extends State<FootConnectFormField>
   }
 
   Widget _buildTextField(BuildContext context) {
-    final isSearchField = widget.variant == FormFieldVariant.search;
     final isPasswordField = widget.variant == FormFieldVariant.password;
 
     return TextFormField(
@@ -366,8 +366,10 @@ class _FootConnectFormFieldState extends State<FootConnectFormField>
   }
 
   EdgeInsets _getContentPadding() {
-    final hasPrefix = widget.prefixIcon != null || widget.variant == FormFieldVariant.search;
-    final hasSuffix = widget.suffixIcon != null || widget.variant == FormFieldVariant.password;
+    final hasPrefix =
+        widget.prefixIcon != null || widget.variant == FormFieldVariant.search;
+    final hasSuffix = widget.suffixIcon != null ||
+        widget.variant == FormFieldVariant.password;
 
     // Reduced padding for more compact design
     return EdgeInsets.only(
@@ -417,7 +419,9 @@ class _FootConnectFormFieldState extends State<FootConnectFormField>
 
     // Adjust for multi-line fields
     if ((widget.maxLines ?? 1) > 1) {
-      return baseHeight + ((widget.maxLines! - 1) * 16.0); // Reduced line height for compactness
+      return baseHeight +
+          ((widget.maxLines! - 1) *
+              16.0); // Reduced line height for compactness
     }
 
     return baseHeight;
@@ -463,7 +467,8 @@ class ResponsiveFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveMaxWidth = maxWidth ?? ResponsiveUtils.getFormFieldWidth(context);
+    final effectiveMaxWidth =
+        maxWidth ?? ResponsiveUtils.getFormFieldWidth(context);
     final effectivePadding = padding ?? EdgeInsets.zero;
 
     Widget constrainedChild = Container(

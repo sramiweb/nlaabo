@@ -30,8 +30,8 @@ class MatchManagementWidget extends StatelessWidget {
             Text(
               'Match Management',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 12),
             Wrap(
@@ -57,7 +57,8 @@ class MatchManagementWidget extends StatelessWidget {
             onPressed: () => _updateStatus(context, 'in_progress'),
           ),
           _ActionButton(
-            label: LocalizationService().translate(TranslationKeys.rescheduleMatch),
+            label: LocalizationService()
+                .translate(TranslationKeys.rescheduleMatch),
             icon: Icons.schedule,
             onPressed: () => _showRescheduleDialog(context),
           ),
@@ -72,7 +73,8 @@ class MatchManagementWidget extends StatelessWidget {
       case 'in_progress':
         buttons.add(
           _ActionButton(
-            label: LocalizationService().translate(TranslationKeys.completeMatch),
+            label:
+                LocalizationService().translate(TranslationKeys.completeMatch),
             icon: Icons.flag,
             color: Colors.blue,
             onPressed: () => _showResultDialog(context),
@@ -99,16 +101,18 @@ class MatchManagementWidget extends StatelessWidget {
 
   void _showRescheduleDialog(BuildContext context) {
     DateTime selectedDate = match.matchDate;
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(LocalizationService().translate(TranslationKeys.rescheduleMatch)),
+        title: Text(
+            LocalizationService().translate(TranslationKeys.rescheduleMatch)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              title: Text(LocalizationService().translate(TranslationKeys.newMatchDate)),
+              title: Text(LocalizationService()
+                  .translate(TranslationKeys.newMatchDate)),
               subtitle: Text(selectedDate.toString().split('.')[0]),
               trailing: const Icon(Icons.calendar_today),
               onTap: () async {
@@ -118,13 +122,14 @@ class MatchManagementWidget extends StatelessWidget {
                   firstDate: DateTime.now(),
                   lastDate: DateTime.now().add(const Duration(days: 365)),
                 );
-                if (date != null) {
+                if (date != null && context.mounted) {
                   final time = await showTimePicker(
                     context: context,
                     initialTime: TimeOfDay.fromDateTime(selectedDate),
                   );
                   if (time != null) {
-                    selectedDate = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+                    selectedDate = DateTime(date.year, date.month, date.day,
+                        time.hour, time.minute);
                   }
                 }
               },
@@ -134,13 +139,16 @@ class MatchManagementWidget extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(LocalizationService().translate(TranslationKeys.cancel)),
+            child:
+                Text(LocalizationService().translate(TranslationKeys.cancel)),
           ),
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(context);
               try {
-                await context.read<ApiService>().rescheduleMatch(match.id, selectedDate);
+                await context
+                    .read<ApiService>()
+                    .rescheduleMatch(match.id, selectedDate);
                 if (context.mounted) {
                   context.showSuccess('Match rescheduled');
                 }
@@ -165,28 +173,32 @@ class MatchManagementWidget extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(LocalizationService().translate(TranslationKeys.recordResult)),
+        title:
+            Text(LocalizationService().translate(TranslationKeys.recordResult)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: team1Controller,
               decoration: InputDecoration(
-                labelText: LocalizationService().translate(TranslationKeys.team1Score),
+                labelText:
+                    LocalizationService().translate(TranslationKeys.team1Score),
               ),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: team2Controller,
               decoration: InputDecoration(
-                labelText: LocalizationService().translate(TranslationKeys.team2Score),
+                labelText:
+                    LocalizationService().translate(TranslationKeys.team2Score),
               ),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: notesController,
               decoration: InputDecoration(
-                labelText: LocalizationService().translate(TranslationKeys.matchNotes),
+                labelText:
+                    LocalizationService().translate(TranslationKeys.matchNotes),
               ),
               maxLines: 3,
             ),
@@ -195,18 +207,21 @@ class MatchManagementWidget extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(LocalizationService().translate(TranslationKeys.cancel)),
+            child:
+                Text(LocalizationService().translate(TranslationKeys.cancel)),
           ),
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(context);
               try {
                 await context.read<ApiService>().recordMatchResult(
-                  match.id,
-                  team1Score: int.tryParse(team1Controller.text),
-                  team2Score: int.tryParse(team2Controller.text),
-                  notes: notesController.text.isEmpty ? null : notesController.text,
-                );
+                      match.id,
+                      team1Score: int.tryParse(team1Controller.text),
+                      team2Score: int.tryParse(team2Controller.text),
+                      notes: notesController.text.isEmpty
+                          ? null
+                          : notesController.text,
+                    );
                 if (context.mounted) {
                   context.showSuccess('Match result recorded');
                 }

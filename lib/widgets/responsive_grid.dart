@@ -21,7 +21,6 @@ class ResponsiveGrid extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final crossAxisCount = ResponsiveUtils.getGridCrossAxisCount(context);
-        final itemSpacing = ResponsiveUtils.getItemSpacing(context);
 
         return GridView.builder(
           padding: padding ?? ResponsiveUtils.getResponsivePadding(context),
@@ -58,7 +57,8 @@ class ResponsiveHorizontalGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: context.horizontalListHeight,
-      padding: padding ?? ResponsiveUtils.getResponsiveHorizontalPadding(context),
+      padding:
+          padding ?? ResponsiveUtils.getResponsiveHorizontalPadding(context),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: children.length,

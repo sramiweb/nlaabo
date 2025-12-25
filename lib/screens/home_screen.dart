@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
 import '../providers/home_provider.dart';
 import '../services/localization_service.dart';
-import '../utils/app_logger.dart';
 import '../constants/translation_keys.dart';
 import '../widgets/match_card.dart';
 import '../widgets/team_card.dart';

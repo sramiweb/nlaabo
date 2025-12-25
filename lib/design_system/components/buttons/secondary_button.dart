@@ -102,7 +102,8 @@ class _SecondaryButtonState extends State<SecondaryButton>
 
   @override
   Widget build(BuildContext context) {
-    final isEnabled = !widget.isDisabled && !widget.isLoading && widget.onPressed != null;
+    final isEnabled =
+        !widget.isDisabled && !widget.isLoading && widget.onPressed != null;
 
     return Semantics(
       button: true,
@@ -119,11 +120,13 @@ class _SecondaryButtonState extends State<SecondaryButton>
                 width: widget.width,
                 height: widget.height ?? 48.0,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppSpacing.borderRadiusMd),
+                  borderRadius:
+                      BorderRadius.circular(AppSpacing.borderRadiusMd),
                   boxShadow: [
                     if (_hoverAnimation.value > 0)
                       BoxShadow(
-                        color: context.colors.primary.withOpacity(0.2 * _hoverAnimation.value),
+                        color: context.colors.primary
+                            .withOpacity(0.2 * _hoverAnimation.value),
                         blurRadius: 6.0,
                         offset: const Offset(0, 3),
                       ),
@@ -143,7 +146,8 @@ class _SecondaryButtonState extends State<SecondaryButton>
                         _hoverController.reverse();
                       }
                     },
-                    borderRadius: BorderRadius.circular(AppSpacing.borderRadiusMd),
+                    borderRadius:
+                        BorderRadius.circular(AppSpacing.borderRadiusMd),
                     child: Ink(
                       decoration: BoxDecoration(
                         color: _hoverAnimation.value > 0 && isEnabled
@@ -155,7 +159,8 @@ class _SecondaryButtonState extends State<SecondaryButton>
                               : context.colors.primary.withValues(alpha: 0.5),
                           width: 1.5,
                         ),
-                        borderRadius: BorderRadius.circular(AppSpacing.borderRadiusMd),
+                        borderRadius:
+                            BorderRadius.circular(AppSpacing.borderRadiusMd),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -166,12 +171,14 @@ class _SecondaryButtonState extends State<SecondaryButton>
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (widget.leadingIcon != null && !widget.isLoading) ...[
+                            if (widget.leadingIcon != null &&
+                                !widget.isLoading) ...[
                               Icon(
                                 widget.leadingIcon,
                                 color: isEnabled
                                     ? context.colors.primary
-                                    : context.colors.primary.withValues(alpha: 0.5),
+                                    : context.colors.primary
+                                        .withValues(alpha: 0.5),
                                 size: 20.0,
                               ),
                               const SizedBox(width: 8.0),
@@ -195,19 +202,22 @@ class _SecondaryButtonState extends State<SecondaryButton>
                                 style: AppTextStyles.buttonText.copyWith(
                                   color: isEnabled
                                       ? context.colors.primary
-                                      : context.colors.primary.withValues(alpha: 0.5),
+                                      : context.colors.primary
+                                          .withValues(alpha: 0.5),
                                 ),
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            if (widget.trailingIcon != null && !widget.isLoading) ...[
+                            if (widget.trailingIcon != null &&
+                                !widget.isLoading) ...[
                               const SizedBox(width: 8.0),
                               Icon(
                                 widget.trailingIcon,
                                 color: isEnabled
                                     ? context.colors.primary
-                                    : context.colors.primary.withValues(alpha: 0.5),
+                                    : context.colors.primary
+                                        .withValues(alpha: 0.5),
                                 size: 20.0,
                               ),
                             ],

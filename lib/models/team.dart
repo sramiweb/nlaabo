@@ -48,7 +48,8 @@ class Team {
     if (!['male', 'female', 'mixed'].contains(gender)) {
       throw ArgumentError('Gender must be male, female, or mixed');
     }
-    if ((minAge != null && maxAge == null) || (minAge == null && maxAge != null)) {
+    if ((minAge != null && maxAge == null) ||
+        (minAge == null && maxAge != null)) {
       throw ArgumentError('Both min and max age must be set or both null');
     }
     final min = minAge;
@@ -113,7 +114,7 @@ class Team {
     if (ownerData != null) {
       try {
         owner = User.fromJson({
-          ...ownerData,
+          ...ownerData as Map<String, dynamic>,
           'name': ownerData['full_name'] ?? ownerData['name'] ?? '',
         });
       } catch (e) {
@@ -134,8 +135,12 @@ class Team {
       isRecruiting: json['is_recruiting'] == true,
       deletedAt: deletedAt,
       gender: json['gender']?.toString() ?? 'mixed',
-      minAge: json['min_age'] != null ? int.tryParse(json['min_age'].toString()) : null,
-      maxAge: json['max_age'] != null ? int.tryParse(json['max_age'].toString()) : null,
+      minAge: json['min_age'] != null
+          ? int.tryParse(json['min_age'].toString())
+          : null,
+      maxAge: json['max_age'] != null
+          ? int.tryParse(json['max_age'].toString())
+          : null,
     );
   }
 
@@ -235,7 +240,8 @@ class TeamJoinRequest {
     // Validate required fields
     final id = json['id'];
     if (id == null || id.toString().trim().isEmpty) {
-      throw const FormatException('Join request ID is required and cannot be empty');
+      throw const FormatException(
+          'Join request ID is required and cannot be empty');
     }
 
     final teamId = json['team_id'];
@@ -286,7 +292,7 @@ class TeamJoinRequest {
     Team? team;
     if (json['teams'] != null) {
       try {
-        team = Team.fromJson(json['teams']);
+        team = Team.fromJson(json['teams'] as Map<String, dynamic>);
       } catch (e) {
         // Silently fail for team parsing - not critical for join request data
       }
@@ -297,7 +303,7 @@ class TeamJoinRequest {
     if (userData != null) {
       try {
         user = User.fromJson({
-          ...userData,
+          ...userData as Map<String, dynamic>,
           'name': userData['full_name'] ?? userData['name'] ?? '',
         });
       } catch (e) {

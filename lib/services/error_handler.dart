@@ -217,7 +217,8 @@ class ErrorHandler {
   /// Convert any exception to a standardized AppError
   static AppError standardizeError(dynamic error, [StackTrace? stackTrace]) {
     if (error is AppError) return error;
-    if (error == null) return GenericError('Unknown error occurred', stackTrace: stackTrace);
+    if (error == null)
+      return GenericError('Unknown error occurred', stackTrace: stackTrace);
 
     final String errorString = error.toString().toLowerCase();
 
@@ -231,7 +232,7 @@ class ErrorHandler {
         stackTrace: stackTrace,
       );
     }
-    
+
     // Network errors
     if (errorString.contains('socket') ||
         errorString.contains('network') ||
@@ -289,11 +290,11 @@ class ErrorHandler {
         errorString.contains('null value') ||
         errorString.contains('pg') ||
         errorString.contains('foreign key')) {
-       return DatabaseError(
-         LocalizationService().translate('error_database'),
-         originalError: error,
-         stackTrace: stackTrace,
-       );
+      return DatabaseError(
+        LocalizationService().translate('error_database'),
+        originalError: error,
+        stackTrace: stackTrace,
+      );
     }
 
     // Duplicate key constraint errors (specific handling)
@@ -301,43 +302,44 @@ class ErrorHandler {
         errorString.contains('unique constraint') ||
         errorString.contains('violates unique constraint') ||
         errorString.contains('already exists')) {
-       // Check if it's related to user registration
-       if (errorString.contains('users_email_key') ||
-           errorString.contains('users.email') ||
-           errorString.contains('user') ||
-           errorString.contains('email')) {
-         return ValidationError(
-           'An account with this email already exists. Please try logging in instead.',
-           code: 'DUPLICATE_EMAIL',
-           originalError: error,
-           stackTrace: stackTrace,
-         );
-       } else {
-         return DatabaseError(
-           'This information already exists. Please use different values.',
-           code: 'DUPLICATE_DATA',
-           originalError: error,
-           stackTrace: stackTrace,
-         );
-       }
+      // Check if it's related to user registration
+      if (errorString.contains('users_email_key') ||
+          errorString.contains('users.email') ||
+          errorString.contains('user') ||
+          errorString.contains('email')) {
+        return ValidationError(
+          'An account with this email already exists. Please try logging in instead.',
+          code: 'DUPLICATE_EMAIL',
+          originalError: error,
+          stackTrace: stackTrace,
+        );
+      } else {
+        return DatabaseError(
+          'This information already exists. Please use different values.',
+          code: 'DUPLICATE_DATA',
+          originalError: error,
+          stackTrace: stackTrace,
+        );
+      }
     }
 
     // Constraint violations
     if (errorString.contains('constraint') ||
         errorString.contains('violates check constraint')) {
-       return ValidationError(
-         'Invalid data provided. Please check your information and try again.',
-         code: 'CONSTRAINT_VIOLATION',
-         originalError: error,
-         stackTrace: stackTrace,
-       );
+      return ValidationError(
+        'Invalid data provided. Please check your information and try again.',
+        code: 'CONSTRAINT_VIOLATION',
+        originalError: error,
+        stackTrace: stackTrace,
+      );
     }
 
     // Show detailed signup errors but filter out network false positives
     if (errorString.contains('signup failed:')) {
       String message = error.toString();
       // If it's a DNS error during signup, provide a more helpful message
-      if (message.contains('failed host lookup') || message.contains('no address associated with hostname')) {
+      if (message.contains('failed host lookup') ||
+          message.contains('no address associated with hostname')) {
         return NetworkError(
           'Cannot connect to FootConnect servers. Please check your internet connection and try again. If the problem persists, try switching between WiFi and mobile data.',
           originalError: error,
@@ -345,7 +347,8 @@ class ErrorHandler {
         );
       }
       // If it's a network error during signup, provide a more helpful message
-      if (message.contains('network connectivity lost') || message.contains('no internet connection')) {
+      if (message.contains('network connectivity lost') ||
+          message.contains('no internet connection')) {
         return NetworkError(
           'Connection issue during signup. Please check your internet connection and try again.',
           originalError: error,
@@ -454,13 +457,14 @@ class ErrorHandler {
     if (e == null) return;
 
     final AppError standardizedError = standardizeError(e, st);
-    
+
     // Only log in debug mode to avoid console spam
     if (kDebugMode) {
       final String ctx = context != null ? ' [$context]' : '';
-      logError(
-        'Error$ctx: ${standardizedError.runtimeType} (${standardizedError.code})',
+      debugPrint(
+        'Error$ctx: ${standardizedError.runtimeType} (${standardizedError.code}) - ${standardizedError.message}',
       );
+      if (st != null) debugPrint('Stack trace: $st');
     }
   }
 
@@ -477,11 +481,16 @@ class ErrorHandler {
     // Remove any potential sensitive information like URLs, tokens, or internal paths
     final sanitized = message
         .replaceAll(RegExp(r'https?://[^\s]+'), '[URL]')
-        .replaceAll(RegExp(r'\b\d{4,}\b'), '[NUMBER]') // Replace long numbers (potentially IDs)
-        .replaceAll(RegExp(r'\b[A-Za-z0-9+/=]{20,}\b'), '[TOKEN]') // Replace base64-like tokens
-        .replaceAll(RegExp(r'/[^\s]*\.(php|asp|jsp|py|js|ts|dart)[^\s]*'), '[SCRIPT]') // Replace script paths
-        .replaceAll(RegExp(r'\b\d+\.\d+\.\d+\.\d+\b'), '[IP]') // Replace IP addresses
-        .replaceAll(RegExp(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'), '[EMAIL]'); // Replace emails
+        .replaceAll(RegExp(r'\b\d{4,}\b'),
+            '[NUMBER]') // Replace long numbers (potentially IDs)
+        .replaceAll(RegExp(r'\b[A-Za-z0-9+/=]{20,}\b'),
+            '[TOKEN]') // Replace base64-like tokens
+        .replaceAll(RegExp(r'/[^\s]*\.(php|asp|jsp|py|js|ts|dart)[^\s]*'),
+            '[SCRIPT]') // Replace script paths
+        .replaceAll(
+            RegExp(r'\b\d+\.\d+\.\d+\.\d+\b'), '[IP]') // Replace IP addresses
+        .replaceAll(RegExp(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'),
+            '[EMAIL]'); // Replace emails
 
     return sanitized;
   }
@@ -536,11 +545,11 @@ class ErrorHandler {
   /// Check if an error is recoverable
   static bool isRecoverable(AppError error) {
     return error is NetworkError ||
-           error is GenericError ||
-           error is TimeoutError ||
-           error is RateLimitError ||
-           (error is ServiceUnavailableError && error.isTemporary) ||
-           error is OfflineError;
+        error is GenericError ||
+        error is TimeoutError ||
+        error is RateLimitError ||
+        (error is ServiceUnavailableError && error.isTemporary) ||
+        error is OfflineError;
   }
 
   /// Execute an async operation with retry logic
@@ -573,13 +582,12 @@ class ErrorHandler {
         }
 
         // Check if we should retry
-        final shouldRetry =
-            config.shouldRetry?.call(error) ??
+        final shouldRetry = config.shouldRetry?.call(error) ??
             (error is NetworkError ||
-             error is GenericError ||
-             error is TimeoutError ||
-             error is RateLimitError ||
-             (error is ServiceUnavailableError && error.isTemporary));
+                error is GenericError ||
+                error is TimeoutError ||
+                error is RateLimitError ||
+                (error is ServiceUnavailableError && error.isTemporary));
 
         if (!shouldRetry || attempts >= config.maxAttempts) {
           rethrow;
@@ -590,16 +598,23 @@ class ErrorHandler {
           delay = error.retryAfter;
         } else {
           // Add jitter to prevent thundering herd
-          final jitter = Duration(milliseconds: (delay.inMilliseconds * 0.1).round());
-          final actualDelay = delay + Duration(milliseconds: (jitter.inMilliseconds * (0.5 - (DateTime.now().millisecondsSinceEpoch % 1000) / 1000)).round());
+          final jitter =
+              Duration(milliseconds: (delay.inMilliseconds * 0.1).round());
+          final actualDelay = delay +
+              Duration(
+                  milliseconds: (jitter.inMilliseconds *
+                          (0.5 -
+                              (DateTime.now().millisecondsSinceEpoch % 1000) /
+                                  1000))
+                      .round());
 
           // Wait before retrying
           await Future.delayed(actualDelay);
 
           // Calculate next delay with exponential backoff
           delay = Duration(
-            milliseconds: (delay.inMilliseconds * config.backoffMultiplier)
-                .round(),
+            milliseconds:
+                (delay.inMilliseconds * config.backoffMultiplier).round(),
           );
 
           // Cap the delay
@@ -713,7 +728,8 @@ class ErrorHandler {
         return await operations[i]();
       } catch (e, st) {
         final error = standardizeError(e, st);
-        logError(error, st, '$context (fallback ${i + 1}/${operations.length})');
+        logError(
+            error, st, '$context (fallback ${i + 1}/${operations.length})');
 
         // If this is the last operation and we should rethrow, do so
         if (i == operations.length - 1 && rethrowOnAllFailed) {

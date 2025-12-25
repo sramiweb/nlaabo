@@ -94,12 +94,12 @@ class CacheService {
   // Optimized persistent cache methods
   Future<void> _setCacheData(String key, dynamic data, DateTime expiry) async {
     if (_prefs == null) return;
-    
+
     return ErrorHandler.withErrorHandling(
       () async {
         final cacheData = {'data': data, 'expiry': expiry.toIso8601String()};
         await _prefs!.setString(key, jsonEncode(cacheData));
-        
+
         // Also set in memory cache for faster access
         _setMemoryCache(key, data, expiry.difference(DateTime.now()));
       },
@@ -121,7 +121,7 @@ class CacheService {
 
       final cacheData = jsonDecode(cachedString);
       final expiry = DateTime.parse(cacheData['expiry']);
-      
+
       if (DateTime.now().isAfter(expiry)) {
         _prefs!.remove(key);
         return null;
@@ -150,7 +150,7 @@ class CacheService {
   List<City>? getCachedCities() {
     final data = _getCacheData(_citiesCacheKey);
     if (data == null) return null;
-    
+
     try {
       return (data as List).map((json) => City.fromJson(json)).toList();
     } catch (e) {
@@ -182,7 +182,7 @@ class CacheService {
   List<Team>? getCachedTeams() {
     final data = _getCacheData(_teamsCacheKey);
     if (data == null) return null;
-    
+
     try {
       return (data as List).map((json) => Team.fromJson(json)).toList();
     } catch (e) {
@@ -222,7 +222,7 @@ class CacheService {
     _memoryCache.remove(key);
     _refreshTimers[key]?.cancel();
     _refreshTimers.remove(key);
-    
+
     if (_prefs != null) {
       await ErrorHandler.withErrorHandling(
         () => _prefs!.remove(key),
@@ -233,12 +233,13 @@ class CacheService {
   }
 
   // Background refresh with debouncing
-  Future<void> refreshCriticalData(Future<void> Function() refreshCallback) async {
+  Future<void> refreshCriticalData(
+      Future<void> Function() refreshCallback) async {
     const refreshKey = 'critical_data_refresh';
-    
+
     // Cancel existing timer
     _refreshTimers[refreshKey]?.cancel();
-    
+
     // Debounce refresh calls
     _refreshTimers[refreshKey] = Timer(const Duration(seconds: 2), () async {
       await ErrorHandler.withErrorHandling(
@@ -258,12 +259,12 @@ class CacheService {
     List<Map<String, dynamic>>? matches,
   }) async {
     final futures = <Future>[];
-    
+
     if (cities != null) futures.add(cacheCities(cities));
     if (teams != null) futures.add(cacheTeams(teams));
     if (userStats != null) futures.add(cacheUserStats(userStats));
     if (matches != null) futures.add(cacheMatches(matches));
-    
+
     await Future.wait(futures);
   }
 
@@ -274,7 +275,7 @@ class CacheService {
     Future<Map<String, dynamic>> Function()? fetchUserStats,
   }) async {
     final futures = <Future>[];
-    
+
     // High priority: user stats (needed immediately)
     if (fetchUserStats != null && getCachedUserStats() == null) {
       futures.add(
@@ -288,7 +289,7 @@ class CacheService {
         ),
       );
     }
-    
+
     // Medium priority: teams (frequently accessed)
     if (fetchTeams != null && getCachedTeams() == null) {
       futures.add(
@@ -302,7 +303,7 @@ class CacheService {
         ),
       );
     }
-    
+
     // Low priority: cities (rarely change)
     if (fetchCities != null && getCachedCities() == null) {
       futures.add(
@@ -316,17 +317,18 @@ class CacheService {
         ),
       );
     }
-    
+
     await Future.wait(futures);
   }
 
   // Cache maintenance and cleanup
   Future<void> _cleanupExpiredCache() async {
     if (_prefs == null) return;
-    
+
     await ErrorHandler.withErrorHandling(
       () async {
-        final keys = _prefs!.getKeys()
+        final keys = _prefs!
+            .getKeys()
             .where((key) => key.startsWith('cached_'))
             .toList();
 
@@ -356,11 +358,12 @@ class CacheService {
       timer.cancel();
     }
     _refreshTimers.clear();
-    
+
     if (_prefs != null) {
       await ErrorHandler.withErrorHandling(
         () async {
-          final keys = _prefs!.getKeys()
+          final keys = _prefs!
+              .getKeys()
               .where((key) => key.startsWith('cached_'))
               .toList();
           for (final key in keys) {
@@ -371,28 +374,29 @@ class CacheService {
         rethrowOnError: false,
       );
     }
-    
+
     await clearImageCache();
   }
 
   // Cache statistics for monitoring
   Future<Map<String, dynamic>> getCacheStats() async {
     if (_prefs == null) return {'size': 0, 'entries': 0, 'memoryEntries': 0};
-    
+
     return ErrorHandler.withFallback(
       () async {
-        final keys = _prefs!.getKeys()
+        final keys = _prefs!
+            .getKeys()
             .where((key) => key.startsWith('cached_'))
             .toList();
-        
+
         int size = 0;
         int validEntries = 0;
-        
+
         for (final key in keys) {
           final value = _prefs!.getString(key);
           if (value != null) {
             size += value.length * 2; // Rough estimate in bytes
-            
+
             try {
               final cacheData = jsonDecode(value);
               final expiry = DateTime.parse(cacheData['expiry']);
@@ -404,7 +408,7 @@ class CacheService {
             }
           }
         }
-        
+
         return {
           'size': size,
           'entries': validEntries,
@@ -428,7 +432,8 @@ class CacheService {
 
   Future<Map<String, dynamic>> getUserStatsWithOfflineSupport() async {
     final cached = getCachedUserStats();
-    return cached ?? {'matches_joined': 0, 'matches_created': 0, 'teams_owned': 0};
+    return cached ??
+        {'matches_joined': 0, 'matches_created': 0, 'teams_owned': 0};
   }
 
   // Home screen data caching for matches and teams combined
@@ -456,7 +461,8 @@ class CacheService {
   }
 
   // Owner data caching with error state handling
-  Future<void> cacheOwner(String ownerId, Map<String, dynamic> ownerData) async {
+  Future<void> cacheOwner(
+      String ownerId, Map<String, dynamic> ownerData) async {
     final expiry = DateTime.now().add(_ownersCacheDuration);
     final ownersCache = _getCacheData(_ownersCacheKey) ?? <String, dynamic>{};
 
@@ -472,24 +478,26 @@ class CacheService {
     final ownersCache = _getCacheData(_ownersCacheKey);
     if (ownersCache == null) return null;
 
-    final ownerEntry = ownersCache[ownerId];
+    final ownerEntry = ownersCache[ownerId] as Map<String, dynamic>?;
     if (ownerEntry == null) return null;
 
     // Check if owner data is still valid (within cache duration)
-    final cachedAt = DateTime.parse(ownerEntry['cachedAt']);
+    final cachedAt = DateTime.parse(ownerEntry['cachedAt'] as String);
     if (DateTime.now().difference(cachedAt) > _ownersCacheDuration) {
       // Remove expired entry
       ownersCache.remove(ownerId);
-      _setCacheData(_ownersCacheKey, ownersCache, DateTime.now().add(_ownersCacheDuration));
+      _setCacheData(_ownersCacheKey, ownersCache,
+          DateTime.now().add(_ownersCacheDuration));
       return null;
     }
 
-    return ownerEntry['data'];
+    return ownerEntry['data'] as Map<String, dynamic>;
   }
 
   Future<void> cacheOwnerError(String ownerId, String errorMessage) async {
     final expiry = DateTime.now().add(_ownerErrorsCacheDuration);
-    final errorsCache = _getCacheData(_ownerErrorsCacheKey) ?? <String, dynamic>{};
+    final errorsCache =
+        _getCacheData(_ownerErrorsCacheKey) ?? <String, dynamic>{};
 
     errorsCache[ownerId] = {
       'error': errorMessage,
@@ -503,32 +511,35 @@ class CacheService {
     final errorsCache = _getCacheData(_ownerErrorsCacheKey);
     if (errorsCache == null) return null;
 
-    final errorEntry = errorsCache[ownerId];
+    final errorEntry = errorsCache[ownerId] as Map<String, dynamic>?;
     if (errorEntry == null) return null;
 
     // Check if error is still valid (within error cache duration)
-    final cachedAt = DateTime.parse(errorEntry['cachedAt']);
+    final cachedAt = DateTime.parse(errorEntry['cachedAt'] as String);
     if (DateTime.now().difference(cachedAt) > _ownerErrorsCacheDuration) {
       // Remove expired error entry
       errorsCache.remove(ownerId);
-      _setCacheData(_ownerErrorsCacheKey, errorsCache, DateTime.now().add(_ownerErrorsCacheDuration));
+      _setCacheData(_ownerErrorsCacheKey, errorsCache,
+          DateTime.now().add(_ownerErrorsCacheDuration));
       return null;
     }
 
-    return errorEntry['error'];
+    return errorEntry['error'] as String;
   }
 
   Future<void> invalidateOwnerCache(String ownerId) async {
     final ownersCache = _getCacheData(_ownersCacheKey);
     if (ownersCache != null) {
       ownersCache.remove(ownerId);
-      await _setCacheData(_ownersCacheKey, ownersCache, DateTime.now().add(_ownersCacheDuration));
+      await _setCacheData(_ownersCacheKey, ownersCache,
+          DateTime.now().add(_ownersCacheDuration));
     }
 
     final errorsCache = _getCacheData(_ownerErrorsCacheKey);
     if (errorsCache != null) {
       errorsCache.remove(ownerId);
-      await _setCacheData(_ownerErrorsCacheKey, errorsCache, DateTime.now().add(_ownerErrorsCacheDuration));
+      await _setCacheData(_ownerErrorsCacheKey, errorsCache,
+          DateTime.now().add(_ownerErrorsCacheDuration));
     }
   }
 

@@ -1,26 +1,22 @@
-import 'package:logger/logger.dart';
+import 'package:flutter/foundation.dart';
 
-final appLogger = Logger(
-  printer: PrettyPrinter(
-    methodCount: 2,
-    errorMethodCount: 8,
-    lineLength: 120,
-    colors: true,
-    printEmojis: false,
-  ),
-  level: Level.debug,
-);
+/// Simplified logger for debugging Stack Overflow
+void logDebug(String message) {
+  if (kDebugMode) debugPrint('DEBUG: $message');
+}
 
-/// Log debug message
-void logDebug(String message) => appLogger.d(message);
+void logInfo(String message) {
+  if (kDebugMode) debugPrint('INFO: $message');
+}
 
-/// Log info message
-void logInfo(String message) => appLogger.i(message);
+void logWarning(String message) {
+  if (kDebugMode) debugPrint('WARNING: $message');
+}
 
-/// Log warning message
-void logWarning(String message) => appLogger.w(message);
-
-/// Log error message
 void logError(String message, [dynamic error, StackTrace? stackTrace]) {
-  appLogger.e(message, error: error, stackTrace: stackTrace);
+  if (kDebugMode) {
+    debugPrint('ERROR: $message');
+    if (error != null) debugPrint('ERROR DETAILS: $error');
+    if (stackTrace != null) debugPrint('STACK TRACE: $stackTrace');
+  }
 }

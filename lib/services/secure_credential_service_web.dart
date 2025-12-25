@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use, avoid_web_libraries_in_flutter
 import 'package:flutter/foundation.dart';
 import 'dart:html' as html;
 
@@ -14,7 +15,7 @@ class SecureCredentialService {
   }) async {
     try {
       debugPrint('Initializing secure credentials (web)...');
-      
+
       if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
         throw ArgumentError('Supabase URL and anonymous key cannot be empty');
       }

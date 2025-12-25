@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/error_handler.dart';
-import '../services/localization_service.dart';
+
 import 'error_message_formatter.dart';
 
 /// Centralized validation error handling and display
@@ -11,15 +11,15 @@ class ValidationErrorHandler {
     String? fieldName,
   }) {
     if (validationError == null) return '';
-    
+
     // If it's already a localized message, return as-is
     if (validationError.isEmpty) return '';
-    
+
     // Add field context if provided
     if (fieldName != null && !validationError.contains(fieldName)) {
       return '$fieldName: $validationError';
     }
-    
+
     return validationError;
   }
 
@@ -44,9 +44,8 @@ class ValidationErrorHandler {
   }) {
     if (errors.isEmpty) return;
 
-    final errorList = errors.entries
-        .map((e) => '• ${e.key}: ${e.value}')
-        .join('\n');
+    final errorList =
+        errors.entries.map((e) => '• ${e.key}: ${e.value}').join('\n');
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -61,7 +60,8 @@ class ValidationErrorHandler {
                 Expanded(
                   child: Text(
                     'Validation Errors',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -141,7 +141,7 @@ extension ValidationErrorExtension<T> on FormFieldState<T> {
       ValidationErrorHandler.showValidationError(
         context,
         errorText,
-        fieldName: fieldName ?? widget.label,
+        fieldName: fieldName,
       );
     }
   }
@@ -150,34 +150,7 @@ extension ValidationErrorExtension<T> on FormFieldState<T> {
   String? getFormattedError({String? fieldName}) {
     return ValidationErrorHandler.getFieldErrorMessage(
       errorText,
-      fieldName: fieldName ?? widget.label,
+      fieldName: fieldName,
     );
-  }
-}
-
-/// Extension for Form validation
-extension FormValidationExtension on FormState {
-  /// Validate and collect all errors
-  Map<String, String> validateAndCollectErrors() {
-    final errors = <String, String>{};
-    
-    for (final field in fields) {
-      if (field is FormFieldState) {
-        field.validate();
-        if (field.errorText != null) {
-          errors[field.widget.label ?? 'Field'] = field.errorText!;
-        }
-      }
-    }
-    
-    return errors;
-  }
-
-  /// Show all validation errors
-  void showAllValidationErrors(BuildContext context) {
-    final errors = validateAndCollectErrors();
-    if (errors.isNotEmpty) {
-      ValidationErrorHandler.showMultipleValidationErrors(context, errors);
-    }
   }
 }

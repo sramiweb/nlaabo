@@ -10,11 +10,10 @@ import '../models/user.dart' as app_user;
 import '../utils/app_logger.dart';
 
 class AuthProvider with ChangeNotifier {
-  final ApiService _apiService = ApiService();
+  final ApiService _apiService;
   app_user.User? _currentUser;
   bool _isLoading = false;
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
-
 
   void _safeNotifyListeners() {
     // Only notify if there are active listeners to prevent assertion errors
@@ -41,7 +40,8 @@ class AuthProvider with ChangeNotifier {
   // Add token getter for backward compatibility with tests
   String? get token => null; // Supabase handles tokens automatically
 
-  AuthProvider() {
+  AuthProvider({ApiService? apiService})
+      : _apiService = apiService ?? ApiService() {
     _initialize();
   }
 
@@ -93,11 +93,11 @@ class AuthProvider with ChangeNotifier {
           // Initialize real-time subscriptions in ApiService
           _apiService.initializeRealtimeSubscriptions();
         }
-      } catch (e) {
+      } catch (e, st) {
         if (e.toString().contains('not initialized')) {
           logDebug('Supabase not initialized yet during auth check: $e');
         } else {
-          logDebug('User not authenticated: $e');
+          logError('User not authenticated: $e', e, st);
         }
         _currentUser = null;
       }
@@ -150,7 +150,8 @@ class AuthProvider with ChangeNotifier {
       // Handle different API response structures
       if (response.containsKey('user') || response.containsKey('data')) {
         final dynamic userData = response['user'] ?? response['data']?['user'];
-        final dynamic sessionData = response['session'] ?? response['data']?['session'];
+        final dynamic sessionData =
+            response['session'] ?? response['data']?['session'];
 
         if (userData != null) {
           _currentUser = _createUserSafely(
@@ -159,10 +160,13 @@ class AuthProvider with ChangeNotifier {
             fallbackEmail: email,
           );
 
-          logDebug('User object created successfully. User ID: ${_currentUser?.id}');
+          logDebug(
+              'User object created successfully. User ID: ${_currentUser?.id}');
 
           // Store session token if available (for confirmed accounts)
-          if (sessionData != null && sessionData is Map<String, dynamic> && sessionData.containsKey('access_token')) {
+          if (sessionData != null &&
+              sessionData is Map<String, dynamic> &&
+              sessionData.containsKey('access_token')) {
             await _saveToken(sessionData['access_token'] as String);
             logDebug('Session token saved. User is logged in.');
 
@@ -175,7 +179,8 @@ class AuthProvider with ChangeNotifier {
             return true; // Email confirmed and session active
           } else {
             // Email confirmation required - user created but not confirmed
-            logDebug('Email confirmation required. User created but not logged in.');
+            logDebug(
+                'Email confirmation required. User created but not logged in.');
             _isLoading = false;
             _safeNotifyListeners();
             return false; // Email confirmation pending
@@ -236,7 +241,8 @@ class AuthProvider with ChangeNotifier {
           _currentUser = userData as app_user.User;
         }
 
-        logDebug('User object created successfully. User ID: ${_currentUser?.id}');
+        logDebug(
+            'User object created successfully. User ID: ${_currentUser?.id}');
 
         // Save token if available
         if (response.containsKey('access_token')) {
@@ -339,11 +345,11 @@ class AuthProvider with ChangeNotifier {
     try {
       // Clean up real-time subscriptions before logout
       _profileSubscription?.cancel();
-      await _apiService.dispose();
+      _apiService.dispose();
 
       // Sign out from Supabase
       await RobustSupabaseClient.client.auth.signOut();
-      
+
       await _clearToken();
       _currentUser = null;
       _safeNotifyListeners();
@@ -396,8 +402,9 @@ class AuthProvider with ChangeNotifier {
     String? location,
     String? skillLevel,
   }) async {
-    logDebug('updateProfile called with: name=$name, position=$position, bio=$bio, phone=$phone, age=$age, location=$location, gender=$gender, skillLevel=$skillLevel, imageUrl=$imageUrl');
-    
+    logDebug(
+        'updateProfile called with: name=$name, position=$position, bio=$bio, phone=$phone, age=$age, location=$location, gender=$gender, skillLevel=$skillLevel, imageUrl=$imageUrl');
+
     try {
       final updatedUser = await _apiService.updateProfile(
         name: name,
@@ -408,10 +415,9 @@ class AuthProvider with ChangeNotifier {
         phone: phone,
         age: age,
         location: location,
-        skillLevel: skillLevel,
       );
       logDebug('updateProfile completed successfully');
-      
+
       _currentUser = updatedUser;
       _safeNotifyListeners();
     } catch (e, st) {
@@ -439,13 +445,14 @@ class AuthProvider with ChangeNotifier {
     try {
       final completeData = {
         ...userData,
-        if (fallbackName != null && (userData['name'] == null || userData['full_name'] == null))
+        if (fallbackName != null &&
+            (userData['name'] == null || userData['full_name'] == null))
           'name': fallbackName,
       };
       return app_user.User.fromJson(completeData);
     } catch (e) {
       logWarning('User.fromJson failed: $e. Creating fallback user.');
-      
+
       final id = userData['id']?.toString();
       if (id == null || id.isEmpty) {
         throw ArgumentError('Cannot create user without valid ID');
@@ -456,10 +463,20 @@ class AuthProvider with ChangeNotifier {
         throw ArgumentError('Cannot create user without valid email');
       }
 
-      final name = userData['name']?.toString() ??
+      final validRoles = ['player', 'admin', 'moderator'];
+      String role = userData['role']?.toString() ?? 'player';
+      if (!validRoles.contains(role)) {
+        role = 'player';
+      }
+
+      String name = userData['name']?.toString() ??
           userData['full_name']?.toString() ??
           fallbackName ??
-          email.split('@').first;
+          (email.isNotEmpty ? email.split('@').first : 'Player');
+
+      if (name.trim().isEmpty) {
+        name = 'Player';
+      }
 
       DateTime createdAt;
       try {
@@ -474,15 +491,18 @@ class AuthProvider with ChangeNotifier {
         id: id,
         name: name,
         email: email,
-        role: userData['role']?.toString() ?? 'player',
+        role: role,
         createdAt: createdAt,
-        age: userData['age'] != null ? int.tryParse(userData['age'].toString()) : null,
+        age: userData['age'] != null
+            ? int.tryParse(userData['age'].toString())
+            : null,
         phone: userData['phone']?.toString(),
         gender: userData['gender']?.toString(),
         location: userData['location']?.toString(),
         position: userData['position']?.toString(),
         bio: userData['bio']?.toString(),
-        imageUrl: userData['avatar_url']?.toString() ?? userData['image_url']?.toString(),
+        imageUrl: userData['avatar_url']?.toString() ??
+            userData['image_url']?.toString(),
       );
     }
   }

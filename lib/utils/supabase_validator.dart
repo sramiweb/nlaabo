@@ -8,7 +8,7 @@ class SupabaseValidator {
   static Future<ValidationResult> validateConfig() async {
     final url = await supabaseUrl;
     final key = await supabaseAnonKey;
-    
+
     // Check if values are present
     if (url.isEmpty) {
       return ValidationResult(
@@ -16,30 +16,32 @@ class SupabaseValidator {
         message: 'SUPABASE_URL is empty or not loaded from .env file',
       );
     }
-    
+
     if (key.isEmpty) {
       return ValidationResult(
         isValid: false,
         message: 'SUPABASE_ANON_KEY is empty or not loaded from .env file',
       );
     }
-    
+
     // Validate URL format
     if (!url.startsWith('https://') || !url.contains('.supabase.co')) {
       return ValidationResult(
         isValid: false,
-        message: 'Invalid Supabase URL format. Should be https://[project-id].supabase.co',
+        message:
+            'Invalid Supabase URL format. Should be https://[project-id].supabase.co',
       );
     }
-    
+
     // Validate JWT token format
     if (!_isValidJWT(key)) {
       return ValidationResult(
         isValid: false,
-        message: 'Invalid Supabase anon key format. Should be a valid JWT token',
+        message:
+            'Invalid Supabase anon key format. Should be a valid JWT token',
       );
     }
-    
+
     // Test DNS resolution
     try {
       final uri = Uri.parse(url);
@@ -56,7 +58,7 @@ class SupabaseValidator {
         message: 'DNS resolution failed for ${Uri.parse(url).host}: $e',
       );
     }
-    
+
     // Test API connectivity
     try {
       final response = await http.get(
@@ -67,7 +69,7 @@ class SupabaseValidator {
           'User-Agent': 'FootConnect/1.0',
         },
       ).timeout(const Duration(seconds: 10));
-      
+
       if (response.statusCode >= 200 && response.statusCode < 500) {
         return ValidationResult(
           isValid: true,
@@ -82,7 +84,8 @@ class SupabaseValidator {
       } else {
         return ValidationResult(
           isValid: false,
-          message: 'Supabase server returned unexpected status: ${response.statusCode}',
+          message:
+              'Supabase server returned unexpected status: ${response.statusCode}',
         );
       }
     } catch (e) {
@@ -92,40 +95,43 @@ class SupabaseValidator {
       );
     }
   }
-  
+
   /// Check if string is a valid JWT token
   static bool _isValidJWT(String token) {
     final parts = token.split('.');
     if (parts.length != 3) return false;
-    
+
     try {
       // Try to decode the header and payload
-      final header = utf8.decode(base64Url.decode(base64Url.normalize(parts[0])));
-      final payload = utf8.decode(base64Url.decode(base64Url.normalize(parts[1])));
-      
+      final header =
+          utf8.decode(base64Url.decode(base64Url.normalize(parts[0])));
+      final payload =
+          utf8.decode(base64Url.decode(base64Url.normalize(parts[1])));
+
       // Check if they're valid JSON
       jsonDecode(header);
-      final payloadJson = jsonDecode(payload);
-      
+      final payloadJson = jsonDecode(payload) as Map<String, dynamic>;
+
       // Check if it's a Supabase token
       return payloadJson['iss'] == 'supabase' && payloadJson['role'] == 'anon';
     } catch (e) {
       return false;
     }
   }
-  
+
   /// Get detailed configuration info
   static Future<Map<String, dynamic>> getConfigInfo() async {
     final url = await supabaseUrl;
     final key = await supabaseAnonKey;
-    
+
     Map<String, dynamic> info = {
       'url_present': url.isNotEmpty,
       'key_present': key.isNotEmpty,
-      'url_format_valid': url.startsWith('https://') && url.contains('.supabase.co'),
+      'url_format_valid':
+          url.startsWith('https://') && url.contains('.supabase.co'),
       'key_format_valid': _isValidJWT(key),
     };
-    
+
     if (url.isNotEmpty) {
       try {
         final uri = Uri.parse(url);
@@ -135,20 +141,24 @@ class SupabaseValidator {
         info['url_parse_error'] = e.toString();
       }
     }
-    
+
     if (key.isNotEmpty && _isValidJWT(key)) {
       try {
         final parts = key.split('.');
-        final payload = jsonDecode(utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))));
+        final payload = jsonDecode(
+                utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))))
+            as Map<String, dynamic>;
         info['token_issuer'] = payload['iss'];
         info['token_role'] = payload['role'];
         info['token_ref'] = payload['ref'];
-        info['token_expires'] = DateTime.fromMillisecondsSinceEpoch(payload['exp'] * 1000).toIso8601String();
+        info['token_expires'] =
+            DateTime.fromMillisecondsSinceEpoch((payload['exp'] as int) * 1000)
+                .toIso8601String();
       } catch (e) {
         info['token_decode_error'] = e.toString();
       }
     }
-    
+
     return info;
   }
 }
@@ -157,7 +167,7 @@ class ValidationResult {
   final bool isValid;
   final String message;
   final Map<String, dynamic>? details;
-  
+
   ValidationResult({
     required this.isValid,
     required this.message,

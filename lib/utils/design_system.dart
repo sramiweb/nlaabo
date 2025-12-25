@@ -12,7 +12,8 @@ class FootConnectColors {
   static const Color primaryLight = Color(0xFF5A9DD5); // Accents, highlights
 
   // Secondary Colors
-  static const Color successGreen = Color(0xFF10B981); // Recruitment badge, success states
+  static const Color successGreen =
+      Color(0xFF10B981); // Recruitment badge, success states
   static const Color warningOrange = Color(0xFFF59E0B); // Pending actions
   static const Color errorRed = Color(0xFFEF4444); // Destructive actions
   static const Color neutralGray = Color(0xFF6B7280); // Secondary text, borders
@@ -20,7 +21,8 @@ class FootConnectColors {
   // Background Colors
   static const Color backgroundPrimary = Color(0xFFFFFFFF); // Light mode
   static const Color backgroundSecondary = Color(0xFFF9FAFB); // Cards, sections
-  static const Color backgroundTertiary = Color(0xFFF3F4F6); // Subtle highlights
+  static const Color backgroundTertiary =
+      Color(0xFFF3F4F6); // Subtle highlights
 
   // Dark Mode Background Colors
   static const Color darkBackgroundPrimary = Color(0xFF1F2937);
@@ -28,14 +30,16 @@ class FootConnectColors {
   static const Color darkBackgroundTertiary = Color(0xFF374151);
 
   // Text Colors
-  static const Color textPrimary = Color(0xFF111827); // Headings, important text
-  static const Color textSecondary = Color(0xFF6B7280); // Body text, descriptions
+  static const Color textPrimary =
+      Color(0xFF111827); // Headings, important text
+  static const Color textSecondary =
+      Color(0xFF6B7280); // Body text, descriptions
   static const Color textTertiary = Color(0xFF9CA3AF); // Meta info, captions
   static const Color textInverse = Color(0xFFFFFFFF); // On dark backgrounds
 
   // Helper methods for opacity variations
   static Color withOpacity(Color color, double opacity) {
-    return color.withOpacity(opacity);
+    return color.withValues(alpha: opacity);
   }
 
   // Gradient definitions
@@ -176,13 +180,13 @@ class FootConnectTypography {
 
 /// Spacing System - Base Unit: 4px
 class FootConnectSpacing {
-  static const double space1 = 4;   // Tight spacing
-  static const double space2 = 8;   // Compact spacing
-  static const double space3 = 12;  // Standard spacing
-  static const double space4 = 16;  // Comfortable spacing
-  static const double space5 = 20;  // Section spacing
-  static const double space6 = 24;  // Large spacing
-  static const double space8 = 32;  // Extra large
+  static const double space1 = 4; // Tight spacing
+  static const double space2 = 8; // Compact spacing
+  static const double space3 = 12; // Standard spacing
+  static const double space4 = 16; // Comfortable spacing
+  static const double space5 = 20; // Section spacing
+  static const double space6 = 24; // Large spacing
+  static const double space8 = 32; // Extra large
   static const double space10 = 40; // Section dividers
   static const double space12 = 48; // Page sections
 }
@@ -236,7 +240,8 @@ class FootConnectAnimations {
   static const Duration slowDuration = Duration(milliseconds: 300);
 
   static const Curve standardCurve = Curves.easeInOut;
-  static const Curve materialCurve = Cubic(0.4, 0.0, 0.2, 1); // Material standard
+  static const Curve materialCurve =
+      Cubic(0.4, 0.0, 0.2, 1); // Material standard
 
   // Scale animations
   static const double buttonPressScale = 0.98;
@@ -278,8 +283,10 @@ class FootConnectComponentSizing {
   static const double tabletButtonHeightSmall = 26; // Reduced from 30px
 
   // Form field heights (further optimized for mobile UX)
-  static const double textFieldHeight = 40; // Mobile (further reduced for better UX)
-  static const double desktopTextFieldHeight = 44; // Desktop (further reduced for consistency)
+  static const double textFieldHeight =
+      40; // Mobile (further reduced for better UX)
+  static const double desktopTextFieldHeight =
+      44; // Desktop (further reduced for consistency)
 
   // Card dimensions
   static const double cardBorderRadius = 16;
@@ -307,8 +314,8 @@ class DesignSystem {
   static const double spacingXxl = 48;
 
   // Form-specific spacing
-  static const double fieldSpacing = 16.0;       // Between form fields
-  static const double sectionSpacing = 24.0;     // Between sections
+  static const double fieldSpacing = 16.0; // Between form fields
+  static const double sectionSpacing = 24.0; // Between sections
 
   // Content padding for form fields
   static const double horizontalPadding = 12.0;
@@ -332,9 +339,9 @@ class BorderRadiusSystem {
 
 class ButtonSizing {
   // Desktop button heights
-  static const double heightLarge = 48.0;   // Primary actions
-  static const double heightMedium = 40.0;  // Secondary actions
-  static const double heightSmall = 32.0;   // Tertiary actions
+  static const double heightLarge = 48.0; // Primary actions
+  static const double heightMedium = 40.0; // Secondary actions
+  static const double heightSmall = 32.0; // Tertiary actions
 
   // Mobile-specific button heights
   static const double mobileHeightLarge = 44.0;
@@ -349,8 +356,8 @@ class ButtonSizing {
 
 class FormFieldSizing {
   // Desktop form field heights
-  static const double textFieldHeight = 48.0;    // Standard text fields
-  static const double dropdownHeight = 48.0;     // Dropdown fields
+  static const double textFieldHeight = 48.0; // Standard text fields
+  static const double dropdownHeight = 48.0; // Dropdown fields
 
   // Mobile-specific form field heights
   static const double mobileTextFieldHeight = 44.0;

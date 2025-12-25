@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
 import '../providers/auth_provider.dart';
-import '../providers/localization_provider.dart';
+
 import '../services/localization_service.dart';
 import '../services/error_handler.dart';
 import '../utils/validators.dart';
@@ -40,11 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _changeLanguage(BuildContext context, String languageCode) async {
-    final localizationProvider = Provider.of<LocalizationProvider>(context, listen: false);
-    await localizationProvider.setLanguage(languageCode);
-  }
-
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -57,7 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       if (!mounted) return;
 
-      if (mounted) context.showSuccess(LocalizationService().translate('login_success'));
+      if (mounted)
+        context.showSuccess(LocalizationService().translate('login_success'));
       if (mounted) context.go('/home');
     } catch (error, st) {
       if (!mounted) return;
@@ -71,8 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isLargeScreen = screenWidth > 1024;
 
     return Scaffold(
       body: SafeArea(
@@ -96,16 +90,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           AppSpacing.verticalLg,
                           Text(
-                            LocalizationService().translate(TranslationKeys.loginTitle),
-                            style: AppTextStyles.getResponsivePageTitle(context),
+                            LocalizationService()
+                                .translate(TranslationKeys.loginTitle),
+                            style:
+                                AppTextStyles.getResponsivePageTitle(context),
                             textAlign: TextAlign.center,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           AppSpacing.verticalSm,
                           Text(
-                            LocalizationService().translate(TranslationKeys.loginSubtitle),
-                            style: AppTextStyles.getResponsiveBodyText(context).copyWith(
+                            LocalizationService()
+                                .translate(TranslationKeys.loginSubtitle),
+                            style: AppTextStyles.getResponsiveBodyText(context)
+                                .copyWith(
                               color: context.colors.textSubtle,
                             ),
                             textAlign: TextAlign.center,
@@ -115,9 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                     ),
-
                     AppSpacing.verticalXxl,
-
                     Form(
                       key: _formKey,
                       child: Column(
@@ -126,29 +122,34 @@ class _LoginScreenState extends State<LoginScreen> {
                             delay: const Duration(milliseconds: 400),
                             child: AppTextField(
                               controller: _emailController,
-                              labelText: LocalizationService().translate('email'),
-                              hintText: LocalizationService().translate(TranslationKeys.enterEmail),
+                              labelText:
+                                  LocalizationService().translate('email'),
+                              hintText: LocalizationService()
+                                  .translate(TranslationKeys.enterEmail),
                               prefixIcon: const Icon(Icons.email_outlined),
                               keyboardType: TextInputType.emailAddress,
                               validator: validateEmail,
                             ),
                           ),
-
                           AppSpacing.verticalLg,
-
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 600),
                             child: AppTextField(
                               controller: _passwordController,
-                              labelText: LocalizationService().translate(TranslationKeys.password),
-                              hintText: LocalizationService().translate('enter_password'),
+                              labelText: LocalizationService()
+                                  .translate(TranslationKeys.password),
+                              hintText: LocalizationService()
+                                  .translate('enter_password'),
                               prefixIcon: const Icon(Icons.lock_outline),
                               obscureText: _obscurePassword,
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                                  _obscurePassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                 ),
-                                onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                                onPressed: () => setState(
+                                    () => _obscurePassword = !_obscurePassword),
                                 padding: const EdgeInsets.all(12),
                                 constraints: const BoxConstraints(
                                   minWidth: 48,
@@ -159,9 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               validator: validatePassword,
                             ),
                           ),
-
                           AppSpacing.verticalMd,
-
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 800),
                             child: Align(
@@ -169,7 +168,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: TextButton(
                                 onPressed: () => context.go('/forgot-password'),
                                 child: Text(
-                                  LocalizationService().translate(TranslationKeys.forgotPassword),
+                                  LocalizationService().translate(
+                                      TranslationKeys.forgotPassword),
                                   style: AppTextStyles.labelText.copyWith(
                                     color: context.colors.primary,
                                   ),
@@ -177,57 +177,64 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-
                           AppSpacing.verticalXl,
-
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 1000),
                             child: SizedBox(
                               width: double.infinity,
                               child: PrimaryButton(
-                                text: LocalizationService().translate(TranslationKeys.loginButton),
-                                onPressed: (authProvider.isLoading || _isSubmitting) ? null : _login,
-                                isLoading: authProvider.isLoading || _isSubmitting,
+                                text: LocalizationService()
+                                    .translate(TranslationKeys.loginButton),
+                                onPressed:
+                                    (authProvider.isLoading || _isSubmitting)
+                                        ? null
+                                        : _login,
+                                isLoading:
+                                    authProvider.isLoading || _isSubmitting,
                               ),
                             ),
                           ),
-
                           AppSpacing.verticalLg,
-
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 1200),
                             child: Row(
                               children: [
-                                Expanded(child: Divider(color: context.colors.border)),
+                                Expanded(
+                                    child:
+                                        Divider(color: context.colors.border)),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: AppSpacing.md),
                                   child: Text(
-                                    LocalizationService().translate(TranslationKeys.or),
+                                    LocalizationService()
+                                        .translate(TranslationKeys.or),
                                     style: AppTextStyles.caption.copyWith(
                                       color: context.colors.textSubtle,
                                     ),
                                   ),
                                 ),
-                                Expanded(child: Divider(color: context.colors.border)),
+                                Expanded(
+                                    child:
+                                        Divider(color: context.colors.border)),
                               ],
                             ),
                           ),
-
                           AppSpacing.verticalLg,
-
                           FadeInAnimation(
                             delay: const Duration(milliseconds: 1400),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  LocalizationService().translate(TranslationKeys.dontHaveAccount),
+                                  LocalizationService().translate(
+                                      TranslationKeys.dontHaveAccount),
                                   style: AppTextStyles.bodyText,
                                 ),
                                 TextButton(
                                   onPressed: () => context.go('/signup'),
                                   child: Text(
-                                    LocalizationService().translate(TranslationKeys.signupButton),
+                                    LocalizationService().translate(
+                                        TranslationKeys.signupButton),
                                     style: AppTextStyles.labelText.copyWith(
                                       color: context.colors.primary,
                                     ),

@@ -55,11 +55,13 @@ class ForgotPasswordConfirmationScreen extends StatelessWidget {
 
                     // Title
                     Text(
-                      LocalizationService().translate(TranslationKeys.resetLinkSent),
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                      LocalizationService()
+                          .translate(TranslationKeys.resetLinkSent),
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
                       textAlign: TextAlign.center,
                     ),
 
@@ -67,10 +69,14 @@ class ForgotPasswordConfirmationScreen extends StatelessWidget {
 
                     // Instructions
                     Text(
-                      LocalizationService().translate(TranslationKeys.checkEmailInstructions),
+                      LocalizationService()
+                          .translate(TranslationKeys.checkEmailInstructions),
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                      ),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
+                          ),
                       textAlign: TextAlign.center,
                     ),
 
@@ -83,7 +89,10 @@ class ForgotPasswordConfirmationScreen extends StatelessWidget {
                         color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .outline
+                              .withValues(alpha: 0.2),
                         ),
                       ),
                       child: Row(
@@ -96,9 +105,12 @@ class ForgotPasswordConfirmationScreen extends StatelessWidget {
                           Expanded(
                             child: Text(
                               email,
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
                             ),
                           ),
                         ],
@@ -114,16 +126,22 @@ class ForgotPasswordConfirmationScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () => context.go('/login'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           elevation: 4,
-                          shadowColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                          shadowColor: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withValues(alpha: 0.3),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
                         child: Text(
-                          LocalizationService().translate(TranslationKeys.backToLogin),
+                          LocalizationService()
+                              .translate(TranslationKeys.backToLogin),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,

@@ -8,7 +8,6 @@ import '../services/api_service.dart';
 import '../services/team_service.dart';
 import '../widgets/optimized_filter_bar.dart';
 import '../utils/notification_handler.dart';
-import '../services/team_service.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
